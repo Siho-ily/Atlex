@@ -18,10 +18,27 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                try {
+                  const savedTheme = localStorage.getItem("theme");
+                  const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+                  document.documentElement.classList.toggle(
+                    "dark",
+                    savedTheme === "dark" || (!savedTheme && systemDark)
+                  );
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         {children}
       </body>
     </html>
