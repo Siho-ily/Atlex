@@ -1,12 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
+
+// =========================
+// 버튼 기능 import
+// =========================
+import {
+    handleIdCheck,
+    handleNicknameCheck,
+    handleCancel,
+} from "../components/buttons/signupButtons"
 
 export default function Test() {
+    const router = useRouter();
+
     // =========================
     // 다크모드 상태
     // =========================
     const [isDark, setIsDark] = useState(false);
+
+    // =========================
+    // 비밀번호 보기 상태
+    // true면 비밀번호 / 비밀번호 확인 둘 다 보이기
+    // false면 둘 다 숨기기
+    // =========================
+    const [showPassword, setShowPassword] = useState(false);
 
     // =========================
     // 회원가입 입력값 상태
@@ -16,10 +37,10 @@ export default function Test() {
     const [emailDomain, setEmailDomain] = useState(""); // 이메일 도메인
     const [password, setPassword] = useState(""); // 비밀번호
     const [passwordCheck, setPasswordCheck] = useState(""); // 비밀번호 확인
-    const [nickname, setNickname] = useState(""); // 닉네임(name으로 전송)
+    const [nickname, setNickname] = useState(""); // 닉네임
 
     // =========================
-    // 중복확인 메시지 상태
+    // 중복확인 상태
     // =========================
     const [idCheck, setIdCheck] = useState("");
     const [nickCheck, setNickCheck] = useState("");
@@ -32,9 +53,19 @@ export default function Test() {
 
     // =========================
     // 처음 렌더링 시 현재 다크모드 상태 확인
+    // localStorage에 저장된 theme 값 기준으로 적용
     // =========================
     useEffect(() => {
-        setIsDark(document.documentElement.classList.contains("dark"));
+        const savedTheme = localStorage.getItem("theme");
+        const html = document.documentElement;
+
+        if (savedTheme === "dark") {
+            html.classList.add("dark");
+            setIsDark(true);
+        } else {
+            html.classList.remove("dark");
+            setIsDark(false);
+        }
     }, []);
 
     // =========================
@@ -73,88 +104,75 @@ export default function Test() {
     }
 
     // =========================
-    // 아이디 중복확인 (현재는 테스트용)
-    // 실제로는 API 호출로 바꾸면 됨
+    // 이메일 형식 검사 함수
     // =========================
-    function handleIdCheck() {
-        if (userId.trim() === "") {
-            setIdCheck("empty");
-            return;
-        }
+    function isValidEmail() {
+        if (!emailId.trim() || !emailDomain.trim()) return false;
 
-        if (userId === "admin") {
-            setIdCheck("duplicate");
-        } else {
-            setIdCheck("ok");
-        }
+        const email = `${emailId}@${emailDomain}`;
+        const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        return regex.test(email);
     }
 
     // =========================
-    // 닉네임 중복확인 (현재는 테스트용)
-    // 실제로는 API 호출로 바꾸면 됨
+    // 비밀번호 조건 체크 함수
+    // 각 조건 충족 여부를 true / false로 반환
     // =========================
-    function handleNicknameCheck() {
-        if (nickname.trim() === "") {
-            setNickCheck("empty");
-            return;
-        }
-
-        if (nickname === "admin") {
-            setNickCheck("duplicate");
-        } else {
-            setNickCheck("ok");
-        }
+    function getPasswordChecks(pw) {
+        return {
+            length: pw.length >= 10,
+            lower: /[a-z]/.test(pw),
+            upper: /[A-Z]/.test(pw),
+            number: /[0-9]/.test(pw),
+            special: /[!@#$%^&*]/.test(pw),
+        };
     }
+
+    const checks = getPasswordChecks(password);
 
     // =========================
     // 비밀번호 강도 계산 함수
-    // 길이, 소문자, 대문자, 숫자 포함 여부로 계산
     // =========================
     function getStrength(pw) {
+        let score = 0;
 
-    let score = 0;
+        if (checks.length) score++;
+        if (checks.lower) score++;
+        if (checks.upper) score++;
+        if (checks.number) score++;
+        if (checks.special) score++;
 
-    if (pw.length >= 10) score++;
+        if (pw.length === 0) {
+            return {
+                width: "0%",
+                color: "bg-gray-300",
+                text: "",
+            };
+        }
 
-    if (/[a-z]/.test(pw)) score++;
+        if (score <= 2) {
+            return {
+                width: "33%",
+                color: "bg-red-400",
+                text: "약함",
+            };
+        }
 
-    if (/[A-Z]/.test(pw)) score++;
+        if (score <= 4) {
+            return {
+                width: "66%",
+                color: "bg-yellow-400",
+                text: "보통",
+            };
+        }
 
-    if (/[0-9]/.test(pw)) score++;
-
-    if (/[!@#$%^&*]/.test(pw)) score++; // 특수문자 검사 추가
-
-
-    if (pw.length === 0) {
         return {
-            width: "0%",
-            color: "bg-gray-300",
-            text: "",
+            width: "100%",
+            color: "bg-green-500",
+            text: "강함",
         };
     }
-
-    if (score <= 2) {
-        return {
-            width: "33%",
-            color: "bg-red-400",
-            text: "약함",
-        };
-    }
-
-    if (score <= 4) {
-        return {
-            width: "66%",
-            color: "bg-yellow-400",
-            text: "보통",
-        };
-    }
-
-    return {
-        width: "100%",
-        color: "bg-green-500",
-        text: "강함",
-    };
-}
 
     // =========================
     // 현재 비밀번호 강도 결과
@@ -162,98 +180,102 @@ export default function Test() {
     const strength = getStrength(password);
 
     // =========================
-    // 이메일 전체 조합
-    // ex) test + gmail.com => test@gmail.com
+    // 비밀번호 조건 모두 만족 여부
     // =========================
-    const fullEmail = emailId && emailDomain ? `${emailId}@${emailDomain}` : "";
+    const isPasswordValid =
+        checks.length &&
+        checks.lower &&
+        checks.upper &&
+        checks.number &&
+        checks.special;
+
+    // =========================
+    // 비밀번호 확인 일치 여부
+    // passwordCheck에 입력이 있을 때만 메시지 표시
+    // =========================
+    const passwordMatch =
+        passwordCheck.length > 0 && password === passwordCheck;
+
+    const passwordMismatch =
+        passwordCheck.length > 0 && password !== passwordCheck;
+
+    // =========================
+    // 회원가입 버튼 활성화 조건
+    // =========================
+    const canSignup =
+        userId.trim() !== "" &&
+        nickname.trim() !== "" &&
+        password.trim() !== "" &&
+        passwordCheck.trim() !== "" &&
+        password === passwordCheck &&
+        isPasswordValid &&
+        isValidEmail() &&
+        idCheck === "ok" &&
+        nickCheck === "ok" &&
+        !loading;
 
     // =========================
     // 회원가입 버튼 클릭 시 실행
-    // 백엔드로 POST 요청 보냄
+    // 현재는 성공 시 토스트 메시지 후 메인페이지 이동
     // =========================
-    async function handleSignup() {
-        // 기존 메시지 초기화
+    function onSignup() {
         setMessage("");
 
-        // 아이디 입력 검사
         if (userId.trim() === "") {
             setMessage("아이디를 입력하세요.");
+            toast.error("아이디를 입력하세요.");
             return;
         }
 
-        // 이메일 입력 검사
-        if (emailId.trim() === "" || emailDomain.trim() === "") {
-            setMessage("이메일을 입력하세요.");
+        if (idCheck !== "ok") {
+            setMessage("아이디 중복확인을 완료하세요.");
+            toast.error("아이디 중복확인을 완료하세요.");
             return;
         }
 
-        // 비밀번호 입력 검사
-        if (password.trim() === "") {
-            setMessage("비밀번호를 입력하세요.");
+        if (!isValidEmail()) {
+            setMessage("올바른 이메일 형식을 입력하세요.");
+            toast.error("올바른 이메일 형식을 입력하세요.");
             return;
         }
 
-        // 비밀번호 확인 검사
+        if (!isPasswordValid) {
+            setMessage("비밀번호 조건을 모두 만족하세요.");
+            toast.error("비밀번호 조건을 모두 만족하세요.");
+            return;
+        }
+
         if (password !== passwordCheck) {
             setMessage("비밀번호가 일치하지 않습니다.");
+            toast.error("비밀번호가 일치하지 않습니다.");
             return;
         }
 
-        // 닉네임 입력 검사
         if (nickname.trim() === "") {
             setMessage("닉네임을 입력하세요.");
+            toast.error("닉네임을 입력하세요.");
             return;
         }
 
-        // 백엔드에 보낼 데이터 형식
-        const requestData = {
-            userId: userId,
-            email: fullEmail,
-            password: password,
-            name: nickname,
-        };
+        if (nickCheck !== "ok") {
+            setMessage("닉네임 중복확인을 완료하세요.");
+            toast.error("닉네임 중복확인을 완료하세요.");
+            return;
+        }
 
         try {
             setLoading(true);
+            toast.success("회원가입이 완료되었습니다!");
 
-            // 회원가입 요청
-            const response = await fetch("http://localhost:8080/api/v1/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(requestData),
-            });
-
-            // 응답 본문을 텍스트로 받음
-            const resultText = await response.text();
-
-            // 응답 성공 / 실패 처리
-            if (response.ok) {
-                setMessage(resultText || "회원가입이 완료되었습니다.");
-            } else {
-                setMessage(resultText || "회원가입에 실패했습니다.");
-            }
+            setTimeout(() => {
+                router.push("/");
+            }, 800);
         } catch (error) {
-            setMessage("서버 연결 중 오류가 발생했습니다.");
-        } finally {
+            console.error(error);
+            setMessage("회원가입 처리 중 오류가 발생했습니다.");
+            toast.error("회원가입 처리 중 오류가 발생했습니다.");
             setLoading(false);
         }
-    }
-
-    // =========================
-    // 취소 버튼 클릭 시 입력값 초기화
-    // =========================
-    function handleCancel() {
-        setUserId("");
-        setIdCheck("");
-        setEmailId("");
-        setEmailDomain("");
-        setPassword("");
-        setPasswordCheck("");
-        setNickname("");
-        setNickCheck("");
-        setMessage("");
     }
 
     return (
@@ -299,7 +321,7 @@ export default function Test() {
 
                             <button
                                 type="button"
-                                onClick={handleIdCheck}
+                                onClick={() => handleIdCheck(userId, setIdCheck)}
                                 className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
                             >
                                 중복확인
@@ -365,6 +387,11 @@ export default function Test() {
                             </select>
                         </div>
 
+                        {emailId !== "" && emailDomain !== "" && !isValidEmail() && (
+                            <p className="text-xs text-red-500 mt-2">
+                                올바른 이메일 형식을 입력하세요.
+                            </p>
+                        )}
                     </div>
 
                     {/* 비밀번호 입력 영역 */}
@@ -373,12 +400,53 @@ export default function Test() {
                             비밀번호
                         </label>
 
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full border rounded px-3 py-2 mt-2 text-black dark:text-white bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none"
-                        />
+                        {/* =========================
+                        input과 눈 아이콘 버튼을 반드시 같은 relative 박스 안에 넣어야 함
+                        ========================= */}
+                        <div className="relative mt-2">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full border rounded px-3 py-2 pr-12 text-black dark:text-white bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none"
+                            />
+
+                            {/* =========================
+                            눈 아이콘 버튼
+                            input 안쪽 오른쪽 중앙에 고정
+                            반드시 input 바로 아래, 같은 div 안에 있어야 함
+                            ========================= */}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black dark:hover:text-white"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
+
+                        {/* 비밀번호 조건 실시간 체크 UI */}
+                        <div className="text-xs mt-2 space-y-1">
+                            <p className={checks.length ? "text-green-500" : "text-gray-500"}>
+                                {checks.length ? "✔" : "✖"} 10자 이상
+                            </p>
+
+                            <p className={checks.upper ? "text-green-500" : "text-gray-500"}>
+                                {checks.upper ? "✔" : "✖"} 대문자 포함
+                            </p>
+
+                            <p className={checks.lower ? "text-green-500" : "text-gray-500"}>
+                                {checks.lower ? "✔" : "✖"} 소문자 포함
+                            </p>
+
+                            <p className={checks.number ? "text-green-500" : "text-gray-500"}>
+                                {checks.number ? "✔" : "✖"} 숫자 포함
+                            </p>
+
+                            <p className={checks.special ? "text-green-500" : "text-gray-500"}>
+                                {checks.special ? "✔" : "✖"} 특수문자 포함
+                            </p>
+                        </div>
 
                         {/* 비밀번호 강도 바 */}
                         <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 mt-2 rounded overflow-hidden">
@@ -392,11 +460,6 @@ export default function Test() {
                         <p className="text-xs text-black dark:text-white mt-2">
                             {strength.text}
                         </p>
-
-                        {/* 비밀번호 안내문 */}
-                        <p className="text-xs text-gray-500 dark:text-gray-300">
-                            10자 이상, 대문자, 소문자, 숫자, 특수문자를 포함하세요
-                        </p>
                     </div>
 
                     {/* 비밀번호 확인 영역 */}
@@ -406,12 +469,24 @@ export default function Test() {
                         </label>
 
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="비밀번호 확인"
                             value={passwordCheck}
                             onChange={(e) => setPasswordCheck(e.target.value)}
                             className="w-full border rounded px-3 py-2 mt-2 text-black dark:text-white bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none"
                         />
+
+                        {passwordMatch && (
+                            <p className="text-green-500 text-xs mt-2">
+                                비밀번호가 일치합니다.
+                            </p>
+                        )}
+
+                        {passwordMismatch && (
+                            <p className="text-red-500 text-xs mt-2">
+                                비밀번호가 일치하지 않습니다.
+                            </p>
+                        )}
                     </div>
 
                     {/* 닉네임 입력 영역 */}
@@ -434,7 +509,9 @@ export default function Test() {
 
                             <button
                                 type="button"
-                                onClick={handleNicknameCheck}
+                                onClick={() =>
+                                    handleNicknameCheck(nickname, setNickCheck)
+                                }
                                 className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
                             >
                                 중복확인
@@ -471,15 +548,15 @@ export default function Test() {
                 {/* 하단 버튼 영역 */}
                 <div className="flex gap-3 mt-6">
                     <button
-                        onClick={handleSignup}
-                        disabled={loading}
-                        className="w-1/2 bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500 disabled:opacity-60"
+                        onClick={onSignup}
+                        disabled={!canSignup}
+                        className="w-1/2 bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? "처리중..." : "회원가입"}
                     </button>
 
                     <button
-                        onClick={handleCancel}
+                        onClick={() => handleCancel(router)}
                         type="button"
                         className="w-1/2 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500"
                     >
