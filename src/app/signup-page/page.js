@@ -365,7 +365,7 @@ export default function Page() {
                                     onClick={() => setShowPasswordCheck(!showPasswordCheck)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black dark:hover:text-white"
                                 >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    {showPasswordCheck ? <EyeOff size={20} /> : <Eye size={20} />}
                                 </button>
                             </div>
 
