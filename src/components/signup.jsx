@@ -9,9 +9,10 @@ UI는 page.js에서 관리한다.
 ========================================
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import mockUsers from "@/components/data/mockusers.json";
 
 export default function useSignup() {
 
@@ -44,6 +45,23 @@ export default function useSignup() {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // 이메일 인증 상태
+    const [emailCode, setEmailCode] = useState("");
+    const [emailCodeSent, setEmailCodeSent] = useState(false);
+    const [emailVerified, setEmailVerified] = useState(false);
+    const [emailVerifyMessage, setEmailVerifyMessage] = useState("");
+    const [emailSendLoading, setEmailSendLoading] = useState(false);
+    const [emailVerifyLoading, setEmailVerifyLoading] = useState(false);
+    const [emailTimer, setEmailTimer] = useState(0);
+
+    /*
+    ============================
+    공통 정리 함수
+    ============================
+    */
+    function normalize(value) {
+        return value?.trim()?.toLowerCase() || "";
+    }
 
     /*
     ============================
@@ -51,20 +69,25 @@ export default function useSignup() {
     ============================
     */
     function handleIdCheck() {
+        const normalizedUserId = normalize(userId);
 
-        if (userId.trim() === "") {
+        setMessage("");
+
+        if (normalizedUserId === "") {
             setIdCheck("empty");
             return;
         }
 
-        // 테스트용 중복 처리
-        if (userId.toLowerCase() === "admin") {
+        const isDuplicate = mockUsers.some(
+            (user) => normalize(user.user_id) === normalizedUserId
+        );
+
+        if (isDuplicate) {
             setIdCheck("duplicate");
         } else {
             setIdCheck("ok");
         }
     }
-
 
     /*
     ============================
@@ -72,19 +95,25 @@ export default function useSignup() {
     ============================
     */
     function handleNicknameCheck() {
+        const normalizedNickname = normalize(nickname);
 
-        if (nickname.trim() === "") {
+        setMessage("");
+
+        if (normalizedNickname === "") {
             setNickCheck("empty");
             return;
         }
 
-        if (nickname.toLowerCase() === "admin") {
+        const isDuplicate = mockUsers.some(
+            (user) => normalize(user.name) === normalizedNickname
+        );
+
+        if (isDuplicate) {
             setNickCheck("duplicate");
         } else {
             setNickCheck("ok");
         }
     }
-
 
     /*
     ============================
@@ -95,7 +124,6 @@ export default function useSignup() {
         router.push("/");
     }
 
-
     /*
     ============================
     이메일 도메인 입력 변경
@@ -105,14 +133,12 @@ export default function useSignup() {
         setEmailDomain(e.target.value);
     }
 
-
     /*
     ============================
     이메일 select 변경
     ============================
     */
     function handleSelectChange(e) {
-
         const value = e.target.value;
 
         if (value === "custom") {
@@ -122,14 +148,12 @@ export default function useSignup() {
         }
     }
 
-
     /*
     ============================
     이메일 형식 검사
     ============================
     */
     function isValidEmail() {
-
         if (!emailId.trim() || !emailDomain.trim()) return false;
 
         const email = `${emailId}@${emailDomain}`;
@@ -140,6 +164,173 @@ export default function useSignup() {
         return regex.test(email);
     }
 
+    /*
+    ============================
+    이메일 변경 시 인증 상태 초기화
+    ============================
+    */
+    useEffect(() => {
+        setEmailCode("");
+        setEmailCodeSent(false);
+        setEmailVerified(false);
+        setEmailVerifyMessage("");
+        setEmailTimer(0);
+    }, [emailId, emailDomain]);
+
+    /*
+    ============================
+    이메일 인증 타이머
+    ============================
+    */
+    useEffect(() => {
+        if (emailTimer <= 0) return;
+
+        const timer = setInterval(() => {
+            setEmailTimer((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [emailTimer]);
+
+    /*
+    ============================
+    이메일 인증번호 전송
+    ============================
+    */
+    async function handleSendEmailCode() {
+        setEmailVerifyMessage("");
+        setMessage("");
+
+        if (!isValidEmail()) {
+            setEmailCode("");
+            setEmailCodeSent(false);
+            setEmailVerified(false);
+            setEmailTimer(0);
+            setEmailVerifyMessage("올바른 이메일 형식을 입력하세요.");
+            return;
+        }
+
+        try {
+            setEmailSendLoading(true);
+
+            const fullEmail = `${emailId}@${emailDomain}`;
+
+            const res = await fetch("/api/v1/email/send-code", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: fullEmail,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                setEmailCode("");
+                setEmailCodeSent(false);
+                setEmailVerified(false);
+                setEmailTimer(0);
+                setEmailVerifyMessage(data.message || "인증번호 전송 실패");
+                toast.error(data.message || "인증번호 전송 실패");
+                return;
+            }
+
+            setEmailCode("");
+            setEmailCodeSent(true);
+            setEmailVerified(false);
+            setEmailTimer(180);
+            setEmailVerifyMessage(
+                data.message || "인증번호를 전송했습니다. 테스트용 인증번호는 123456 입니다."
+            );
+
+            toast.success("인증번호 전송 완료");
+
+        } catch (error) {
+            setEmailCode("");
+            setEmailCodeSent(false);
+            setEmailVerified(false);
+            setEmailTimer(0);
+            setEmailVerifyMessage("인증번호 전송 중 오류 발생");
+            toast.error("인증번호 전송 실패");
+        } finally {
+            setEmailSendLoading(false);
+        }
+    }
+
+    /*
+    ============================
+    이메일 인증번호 확인
+    ============================
+    */
+    async function handleVerifyEmailCode() {
+        setEmailVerifyMessage("");
+        setMessage("");
+
+        if (!emailCode.trim()) {
+            setEmailVerifyMessage("인증번호를 입력하세요.");
+            return;
+        }
+
+        if (emailTimer === 0) {
+            setEmailVerifyMessage("인증시간이 만료되었습니다. 다시 전송하세요.");
+            return;
+        }
+
+        try {
+            setEmailVerifyLoading(true);
+
+            const fullEmail = `${emailId}@${emailDomain}`;
+
+            const res = await fetch("/api/v1/email/verify-code", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: fullEmail,
+                    code: emailCode,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                setEmailVerified(false);
+                setEmailVerifyMessage(data.message || "이메일 인증 실패");
+                toast.error(data.message || "이메일 인증 실패");
+                return;
+            }
+
+            setEmailVerified(true);
+            setEmailVerifyMessage(data.message || "이메일 인증이 완료되었습니다.");
+            toast.success("이메일 인증 완료");
+
+        } catch (error) {
+            setEmailVerified(false);
+            setEmailVerifyMessage("인증번호가 올바르지 않습니다.");
+            toast.error("이메일 인증 실패");
+        } finally {
+            setEmailVerifyLoading(false);
+        }
+    }
+
+    /*
+    ============================
+    인증번호 입력
+    ============================
+    */
+    function handleEmailCodeChange(e) {
+        const onlyNumber = e.target.value.replace(/[^0-9]/g, "").slice(0, 6);
+        setEmailCode(onlyNumber);
+    }
 
     /*
     ============================
@@ -147,7 +338,6 @@ export default function useSignup() {
     ============================
     */
     function getPasswordChecks(pw) {
-
         return {
             length: pw.length >= 10,
             lower: /[a-z]/.test(pw),
@@ -157,14 +347,12 @@ export default function useSignup() {
         };
     }
 
-
     /*
     ============================
     비밀번호 강도 계산
     ============================
     */
     function getStrength(pw) {
-
         const checks = getPasswordChecks(pw);
 
         let score = 0;
@@ -206,13 +394,11 @@ export default function useSignup() {
         };
     }
 
-
     /*
     ============================
     계산 값
     ============================
     */
-
     const checks = getPasswordChecks(password);
     const strength = getStrength(password);
 
@@ -231,6 +417,8 @@ export default function useSignup() {
         passwordCheck.length > 0 &&
         password !== passwordCheck;
 
+    const formattedEmailTime =
+        `${String(Math.floor(emailTimer / 60)).padStart(2, "0")}:${String(emailTimer % 60).padStart(2, "0")}`;
 
     /*
     ============================
@@ -247,8 +435,8 @@ export default function useSignup() {
         isValidEmail() &&
         idCheck === "ok" &&
         nickCheck === "ok" &&
+        emailVerified &&
         !loading;
-
 
     /*
     ============================
@@ -256,63 +444,72 @@ export default function useSignup() {
     ============================
     */
     async function onSignup() {
+        setMessage("");
 
-    setMessage("");
-
-    if (!canSignup) {
-        toast.error("입력값을 확인하세요.");
-        return;
-    }
-
-    try {
-
-        setLoading(true);
-
-        // 이메일 합치기
-        const fullEmail = `${emailId}@${emailDomain}`;
-
-        // 서버로 보낼 데이터
-        const requestData = {
-            userId: userId,
-            password: password,
-            name: nickname,
-            email: fullEmail,
-        };
-
-        console.log("회원가입 요청:", requestData);
-
-        const res = await fetch("/api/v1/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            throw new Error(data.message || "회원가입 실패");
+        if (!canSignup) {
+            setMessage("입력값을 확인하세요.");
+            toast.error("입력값을 확인하세요.");
+            return;
         }
 
-        toast.success("회원가입 완료");
+        try {
+            setLoading(true);
 
-        // 성공 시 이동
-        router.push("/");
+            const fullEmail = `${emailId}@${emailDomain}`;
 
-    } catch (error) {
+            const requestData = {
+                userId: userId,
+                password: password,
+                name: nickname,
+                email: fullEmail,
+            };
 
-        console.error(error);
+            console.log("회원가입 요청:", requestData);
 
-        toast.error(error.message || "오류 발생");
+            const res = await fetch("/api/v1/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            });
 
-    } finally {
+            const data = await res.json();
 
-        setLoading(false);
+            if (!res.ok) {
+                throw new Error(data.message || "회원가입 실패");
+            }
 
+            setMessage("");
+            toast.success("회원가입 완료");
+            router.push("/");
+
+        } catch (error) {
+            const errorMessage = error.message || "오류 발생";
+
+            console.error(error);
+            setMessage(errorMessage);
+            toast.error(errorMessage);
+
+            if (errorMessage.includes("아이디")) {
+                setIdCheck("duplicate");
+            }
+
+            if (errorMessage.includes("닉네임")) {
+                setNickCheck("duplicate");
+            }
+
+            if (errorMessage.includes("이메일")) {
+                setEmailVerified(false);
+                setEmailVerifyMessage(errorMessage);
+                setEmailCodeSent(false);
+                setEmailTimer(0);
+            }
+
+        } finally {
+            setLoading(false);
+        }
     }
-}
-
 
     /*
     ============================
@@ -320,7 +517,6 @@ export default function useSignup() {
     ============================
     */
     return {
-
         showPassword,
         setShowPassword,
 
@@ -369,5 +565,22 @@ export default function useSignup() {
         handleSelectChange,
         isValidEmail,
         onSignup,
+
+        emailCode,
+        setEmailCode,
+
+        emailCodeSent,
+        emailVerified,
+        emailVerifyMessage,
+
+        emailSendLoading,
+        emailVerifyLoading,
+
+        emailTimer,
+        formattedEmailTime,
+
+        handleSendEmailCode,
+        handleVerifyEmailCode,
+        handleEmailCodeChange,
     };
 }

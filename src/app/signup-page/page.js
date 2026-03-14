@@ -88,6 +88,21 @@ export default function Page() {
         handleSelectChange,
         isValidEmail,
         onSignup,
+
+        emailCode,
+        emailCodeSent,
+        emailVerified,
+        emailVerifyMessage,
+
+        emailSendLoading,
+        emailVerifyLoading,
+
+        emailTimer,
+        formattedEmailTime,
+
+        handleSendEmailCode,
+        handleVerifyEmailCode,
+        handleEmailCodeChange,
     } = useSignup();
 
     /*
@@ -127,49 +142,24 @@ export default function Page() {
     }
 
     return (
-        /*
-        ============================
-        전체 페이지 배경 영역
-        ============================
-        - min-h-screen : 화면 전체 높이
-        - w-full       : 전체 너비
-        - bg-gray-100  : 라이트모드 배경
-        - dark:bg-gray-900 : 다크모드 배경
-        */
         <div className="min-h-screen w-full bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
 
-            {/* 다크모드 전환 버튼 */}
             <DarkModeToggle isDark={isDark} onToggle={toggleTheme} />
 
-            {/* 회원가입 카드 가운데 정렬 영역 */}
             <div className="min-h-screen flex items-center justify-center px-4">
 
-                {/*
-                ============================
-                회원가입 카드 박스
-                ============================
-                - 라이트/다크 모드에 따라 카드 색 변경
-                */}
                 <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300">
 
-                    {/* 제목 */}
                     <h2 className="text-2xl font-bold text-center mb-2 text-black dark:text-white">
                         회원가입
                     </h2>
 
-                    {/* 설명 문구 */}
                     <p className="text-sm text-gray-500 dark:text-gray-300 text-center mb-6">
                         이메일, 비밀번호, 닉네임을 입력해주세요.
                     </p>
 
-                    {/* 입력 영역 전체 */}
                     <div className="space-y-4">
 
-                        {/*
-                        ============================
-                        아이디 입력 영역
-                        ============================
-                        */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-black dark:text-white">
                                 아이디
@@ -196,7 +186,6 @@ export default function Page() {
                                 </Button>
                             </div>
 
-                            {/* 아이디 중복확인 결과 메시지 */}
                             {idCheck === "ok" && (
                                 <p className="text-xs text-green-500 mt-2">
                                     사용 가능한 아이디입니다.
@@ -216,12 +205,6 @@ export default function Page() {
                             )}
                         </div>
 
-                        {/*
-                        ============================
-                        이메일 입력 영역
-                        ============================
-                        이메일 아이디 + @ + 도메인 + select
-                        */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-black dark:text-white">
                                 이메일
@@ -265,23 +248,79 @@ export default function Page() {
                                 </select>
                             </div>
 
-                            {/* 이메일 형식 오류 메시지 */}
                             {emailId !== "" && emailDomain !== "" && !isValidEmail() && (
                                 <p className="text-xs text-red-500 mt-2">
                                     올바른 이메일 형식을 입력하세요.
                                 </p>
                             )}
+
+                            <div className="mt-3">
+                                <Button
+                                    type="button"
+                                    onClick={handleSendEmailCode}
+                                    disabled={!isValidEmail() || emailSendLoading}
+                                    className="w-full"
+                                >
+                                    {emailSendLoading
+                                        ? "전송중..."
+                                        : emailCodeSent
+                                        ? "인증번호 재전송"
+                                        : "인증번호 전송"}
+                                </Button>
+                            </div>
+
+                            {/* 핵심 수정: 인증번호 전송 실패 / 중복 이메일 / 성공 메시지를
+                               emailCodeSent 여부와 상관없이 보여준다 */}
+                            {emailVerifyMessage && (
+                                <p
+                                    className={`text-xs mt-2 ${
+                                        emailVerified || emailCodeSent
+                                            ? "text-green-500"
+                                            : "text-red-500"
+                                    }`}
+                                >
+                                    {emailVerifyMessage}
+                                </p>
+                            )}
+
+                            {emailCodeSent && (
+                                <div className="mt-3">
+                                    <div className="flex gap-2">
+                                        <div className="relative flex-1">
+                                            <InputField
+                                                type="text"
+                                                placeholder="인증번호 6자리 입력"
+                                                value={emailCode}
+                                                onChange={handleEmailCodeChange}
+                                                className="w-full pr-16"
+                                            />
+
+                                            {!emailVerified && emailTimer > 0 && (
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-red-500">
+                                                    {formattedEmailTime}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <Button
+                                            type="button"
+                                            onClick={handleVerifyEmailCode}
+                                            disabled={emailVerifyLoading || emailVerified || emailTimer === 0}
+                                            className="px-4 py-2 whitespace-nowrap"
+                                        >
+                                            {emailVerifyLoading ? "확인중..." : "인증확인"}
+                                        </Button>
+                                    </div>
+
+                                    {emailTimer === 0 && !emailVerified && (
+                                        <p className="text-xs text-red-500 mt-2">
+                                            인증시간이 만료되었습니다. 인증번호를 다시 전송하세요.
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
-                        {/*
-                        ============================
-                        비밀번호 입력 영역
-                        ============================
-                        - 입력창
-                        - 보기/숨기기 버튼
-                        - 비밀번호 조건 안내
-                        - 강도 바
-                        */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-black dark:text-white">
                                 비밀번호
@@ -297,7 +336,6 @@ export default function Page() {
                                     className="w-full pr-12"
                                 />
 
-                                {/* 비밀번호 보기/숨기기 버튼 */}
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -307,7 +345,6 @@ export default function Page() {
                                 </button>
                             </div>
 
-                            {/* 비밀번호 조건 체크 */}
                             <div className="text-xs mt-2 space-y-1">
                                 <p className={checks.length ? "text-green-500" : "text-gray-500"}>
                                     {checks.length ? "✔" : "✖"} 10자 이상
@@ -326,7 +363,6 @@ export default function Page() {
                                 </p>
                             </div>
 
-                            {/* 비밀번호 강도 바 */}
                             <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 mt-2 rounded overflow-hidden">
                                 <div
                                     className={`h-2 rounded ${strength.color}`}
@@ -334,17 +370,11 @@ export default function Page() {
                                 />
                             </div>
 
-                            {/* 비밀번호 강도 텍스트 */}
                             <p className="text-xs text-black dark:text-white mt-2">
                                 {strength.text}
                             </p>
                         </div>
 
-                        {/*
-                        ============================
-                        비밀번호 확인 영역
-                        ============================
-                        */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-black dark:text-white">
                                 비밀번호 확인
@@ -369,7 +399,6 @@ export default function Page() {
                                 </button>
                             </div>
 
-                            {/* 비밀번호 일치 여부 */}
                             {passwordMatch && (
                                 <p className="text-green-500 text-xs mt-2">
                                     비밀번호가 일치합니다.
@@ -383,11 +412,6 @@ export default function Page() {
                             )}
                         </div>
 
-                        {/*
-                        ============================
-                        닉네임 입력 영역
-                        ============================
-                        */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-black dark:text-white">
                                 닉네임
@@ -414,7 +438,6 @@ export default function Page() {
                                 </Button>
                             </div>
 
-                            {/* 닉네임 중복확인 결과 메시지 */}
                             {nickCheck === "ok" && (
                                 <p className="text-xs text-green-500 mt-2">
                                     사용 가능한 닉네임입니다.
@@ -435,20 +458,12 @@ export default function Page() {
                         </div>
                     </div>
 
-                    {/* 전체 오류 메시지 */}
                     {message && (
                         <p className="text-sm mt-4 text-center text-red-500 dark:text-red-400">
                             {message}
                         </p>
                     )}
 
-                    {/*
-                    ============================
-                    하단 버튼 영역
-                    ============================
-                    - 회원가입 버튼
-                    - 취소 버튼
-                    */}
                     <div className="flex gap-3 mt-6">
                         <Button
                             type="button"
@@ -469,6 +484,12 @@ export default function Page() {
                             취소
                         </Button>
                     </div>
+
+                    {!emailVerified && (
+                        <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-3">
+                            이메일 인증 완료 후 회원가입이 가능합니다.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
