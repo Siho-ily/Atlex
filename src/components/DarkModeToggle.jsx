@@ -1,5 +1,3 @@
-"use client";
-
 export default function DarkModeToggle({ isDark, onToggle }) {
     return (
         <button

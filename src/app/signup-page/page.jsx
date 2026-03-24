@@ -21,7 +21,7 @@ import { Eye, EyeOff } from "lucide-react";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import Button from "@/components/common/Button";
 import InputField from "@/components/common/InputField";
-import useSignup from "@/components/signup";
+import useSignup from "@/hooks/signup";
 
 export default function Page() {
     /*
