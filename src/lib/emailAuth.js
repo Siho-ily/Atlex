@@ -1,4 +1,4 @@
-export async function sendTestEmailCode(email) {
+export async function requestEmailCodeApi(email) {
   const res = await fetch("/api/v1/email/send-code", {
     method: "POST",
     headers: {
@@ -7,10 +7,12 @@ export async function sendTestEmailCode(email) {
     body: JSON.stringify({ email }),
   });
 
-  return await res.json();
+  const data = await res.json();
+
+  return { res, data };
 }
 
-export async function verifyTestEmailCode(email, code) {
+export async function verifyEmailCodeApi(email, code) {
   const res = await fetch("/api/v1/email/verify-code", {
     method: "POST",
     headers: {
@@ -19,5 +21,7 @@ export async function verifyTestEmailCode(email, code) {
     body: JSON.stringify({ email, code }),
   });
 
-  return await res.json();
+  const data = await res.json();
+
+  return { res, data };
 }

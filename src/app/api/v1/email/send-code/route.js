@@ -1,4 +1,4 @@
-import mockUsers from "@/components/data/mockusers.json";
+import mockUsers from "@/data/mockusers.json";
 
 export async function POST(req) {
     try {
