@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useSignupFormState } from "@/components/domain/auth/signup/feature/signup-form-state";
-import { useSignupFormActions } from "@/components/domain/auth/signup/feature/signup-form-actions";
-import { useEmailVerification } from "@/components/domain/auth/signup/feature/email-verification";
-import { useSignupSelectors } from "@/components/domain/auth/signup/feature/signup-selectors";
-import { useSignupSubmit } from "@/components/domain/auth/signup/feature/signup-submit";
+import { useSignupFormState } from "@/hooks/auth/signup/signup-form-state";
+import { useSignupFormActions } from "@/hooks/auth/signup/signup-form-actions";
+import { useEmailVerification } from "@/hooks/auth/signup/email-verification";
+import { useSignupSelectors } from "@/hooks/auth/signup/signup-selectors";
+import { useSignupSubmit } from "@/hooks/auth/signup/signup-submit";
 
 export default function useSignup() {
     const router = useRouter();

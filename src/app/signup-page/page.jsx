@@ -1,6 +1,6 @@
 "use client";
 
-import useSignup from "@/hooks/signup";
+import useSignup from "@/hooks/auth/signup/signup";
 import SignupContainer from "@/components/domain/auth/signup/layout/SignupContainer";
 import SignupHeader from "@/components/domain/auth/signup/layout/SignupHeader";
 import SignupIdSection from "@/components/domain/auth/signup/layout/SignupIdSection";

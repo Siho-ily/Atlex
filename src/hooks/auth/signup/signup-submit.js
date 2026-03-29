@@ -1,7 +1,7 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { signupApi } from "@/lib/signup";
+import { signupApi } from "@/lib/api/signup";
 
 export function useSignupSubmit({
     router,

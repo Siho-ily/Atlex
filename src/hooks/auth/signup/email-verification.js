@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { isValidEmailFormat } from "@/components/domain/auth/signup/shared/validation";
-import { requestEmailCodeApi, verifyEmailCodeApi } from "@/lib/emailAuth";
+import { requestEmailCodeApi, verifyEmailCodeApi } from "@/lib/api/emailAuth";
 
 export function useEmailVerification({
     emailId,

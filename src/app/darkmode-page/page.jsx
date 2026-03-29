@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DarkModeToggle from "@/components/common/feature/DarkModeToggle";
+import DarkModeToggle from "@/components/common/ui/DarkModeToggle";
 
 export default function DarkModePage() {
     const [isDark, setIsDark] = useState(false);
