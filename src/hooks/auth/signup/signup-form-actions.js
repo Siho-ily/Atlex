@@ -1,8 +1,19 @@
 "use client";
 
-import { isDuplicateNickname, isDuplicateUserId } from "@/components/domain/auth/signup/shared/validation";
-import { normalize } from "@/components/domain/auth/signup/shared/normalize";
+import toast from "react-hot-toast";
+import { normalize } from "@/lib/auth/signup/normalize";
+import {
+    checkUserIdApi,
+    checkNicknameApi,
+} from "@/lib/api/signupValidation";
 
+/**
+ * 회원가입 폼 액션 처리
+ * - 아이디 중복확인
+ * - 닉네임 중복확인
+ * - 취소 이동
+ * - 이메일 도메인 입력/선택
+ */
 export function useSignupFormActions({
     router,
     userId,
@@ -10,10 +21,9 @@ export function useSignupFormActions({
     setIdCheck,
     setNickCheck,
     setMessage,
-    emailDomain,
     setEmailDomain,
 }) {
-    function handleIdCheck() {
+    async function handleIdCheck() {
         const normalizedUserId = normalize(userId);
         setMessage("");
 
@@ -22,10 +32,35 @@ export function useSignupFormActions({
             return;
         }
 
-        setIdCheck(isDuplicateUserId(userId) ? "duplicate" : "ok");
+        try {
+            const { res, data } = await checkUserIdApi(normalizedUserId);
+
+            if (!res.ok || data.success === false) {
+                if (data.type === "empty") {
+                    setIdCheck("empty");
+                    return;
+                }
+
+                throw new Error(data.message || "아이디 중복확인 실패");
+            }
+
+            setIdCheck(data.type);
+
+            if (data.type === "ok") {
+                toast.success("사용 가능한 아이디입니다.");
+            }
+
+            if (data.type === "duplicate") {
+                toast.error("이미 사용중인 아이디입니다.");
+            }
+        } catch (error) {
+            setIdCheck("");
+            setMessage(error.message || "아이디 중복확인 중 오류가 발생했습니다.");
+            toast.error(error.message || "아이디 중복확인 실패");
+        }
     }
 
-    function handleNicknameCheck() {
+    async function handleNicknameCheck() {
         const normalizedNickname = normalize(nickname);
         setMessage("");
 
@@ -34,7 +69,32 @@ export function useSignupFormActions({
             return;
         }
 
-        setNickCheck(isDuplicateNickname(nickname) ? "duplicate" : "ok");
+        try {
+            const { res, data } = await checkNicknameApi(normalizedNickname);
+
+            if (!res.ok || data.success === false) {
+                if (data.type === "empty") {
+                    setNickCheck("empty");
+                    return;
+                }
+
+                throw new Error(data.message || "닉네임 중복확인 실패");
+            }
+
+            setNickCheck(data.type);
+
+            if (data.type === "ok") {
+                toast.success("사용 가능한 닉네임입니다.");
+            }
+
+            if (data.type === "duplicate") {
+                toast.error("이미 사용중인 닉네임입니다.");
+            }
+        } catch (error) {
+            setNickCheck("");
+            setMessage(error.message || "닉네임 중복확인 중 오류가 발생했습니다.");
+            toast.error(error.message || "닉네임 중복확인 실패");
+        }
     }
 
     function handleCancel() {
@@ -56,6 +116,5 @@ export function useSignupFormActions({
         handleCancel,
         handleDomainChange,
         handleSelectChange,
-        emailDomain,
     };
 }

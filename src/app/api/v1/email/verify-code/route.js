@@ -19,7 +19,6 @@ export async function POST(req) {
             });
         }
 
-        // 테스트용 고정 인증번호
         if (code !== "123456") {
             return Response.json({
                 success: false,

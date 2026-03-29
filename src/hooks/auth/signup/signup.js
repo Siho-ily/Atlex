@@ -7,9 +7,16 @@ import { useEmailVerification } from "@/hooks/auth/signup/email-verification";
 import { useSignupSelectors } from "@/hooks/auth/signup/signup-selectors";
 import { useSignupSubmit } from "@/hooks/auth/signup/signup-submit";
 
+/**
+ * 회원가입 기능 전체를 묶는 최상위 훅
+ * - 상태
+ * - 액션
+ * - 이메일 인증
+ * - 파생값 계산
+ * - 제출
+ */
 export default function useSignup() {
     const router = useRouter();
-
     const state = useSignupFormState();
 
     const emailVerification = useEmailVerification({
@@ -32,7 +39,6 @@ export default function useSignup() {
         setIdCheck: state.setIdCheck,
         setNickCheck: state.setNickCheck,
         setMessage: state.setMessage,
-        emailDomain: state.emailDomain,
         setEmailDomain: state.setEmailDomain,
     });
 
@@ -66,6 +72,7 @@ export default function useSignup() {
         setEmailVerifyMessage: state.setEmailVerifyMessage,
         setEmailCodeSent: state.setEmailCodeSent,
         setEmailTimer: state.setEmailTimer,
+        resetSignupState: state.resetSignupState,
     });
 
     return {

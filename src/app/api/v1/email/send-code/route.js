@@ -24,7 +24,6 @@ export async function POST(req) {
             });
         }
 
-        // 테스트용 고정 인증번호
         return Response.json({
             success: true,
             message: "인증번호를 전송했습니다. 테스트용 인증번호는 123456 입니다.",

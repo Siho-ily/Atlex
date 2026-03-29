@@ -1,3 +1,6 @@
+/**
+ * 비밀번호 조건 검사
+ */
 export function getPasswordChecks(password) {
     return {
         length: password.length >= 10,

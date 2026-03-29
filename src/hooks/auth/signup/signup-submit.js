@@ -3,6 +3,9 @@
 import toast from "react-hot-toast";
 import { signupApi } from "@/lib/api/signup";
 
+/**
+ * 회원가입 최종 제출 로직
+ */
 export function useSignupSubmit({
     router,
     userId,
@@ -19,6 +22,7 @@ export function useSignupSubmit({
     setEmailVerifyMessage,
     setEmailCodeSent,
     setEmailTimer,
+    resetSignupState,
 }) {
     async function onSignup() {
         setMessage("");
@@ -45,8 +49,12 @@ export function useSignupSubmit({
                 throw new Error(data.message || "회원가입 실패");
             }
 
-            setMessage("");
             toast.success("회원가입 완료");
+
+            if (resetSignupState) {
+                resetSignupState();
+            }
+
             router.push("/");
         } catch (error) {
             const errorMessage = error.message || "오류 발생";

@@ -1,14 +1,17 @@
 "use client";
 
 import useSignup from "@/hooks/auth/signup/signup";
+
+// ✅ 전부 기존 위치 그대로 (components/domain 유지)
 import SignupContainer from "@/components/domain/auth/signup/layout/SignupContainer";
 import SignupHeader from "@/components/domain/auth/signup/layout/SignupHeader";
+import SignupMessage from "@/components/domain/auth/signup/layout/SignupMessage";
+
 import SignupIdSection from "@/components/domain/auth/signup/layout/SignupIdSection";
 import SignupEmailSection from "@/components/domain/auth/signup/layout/SignupEmailSection";
 import SignupPasswordSection from "@/components/domain/auth/signup/layout/SignupPasswordSection";
 import SignupPasswordCheckSection from "@/components/domain/auth/signup/layout/SignupPasswordCheckSection";
 import SignupNicknameSection from "@/components/domain/auth/signup/layout/SignupNicknameSection";
-import SignupMessage from "@/components/domain/auth/signup/layout/SignupMessage";
 import SignupActionButtons from "@/components/domain/auth/signup/layout/SignupActionButtons";
 
 export default function Page() {

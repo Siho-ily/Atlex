@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { isValidEmailFormat } from "@/components/domain/auth/signup/shared/validation";
+import { isValidEmailFormat } from "@/lib/auth/signup/validation";
 import { requestEmailCodeApi, verifyEmailCodeApi } from "@/lib/api/emailAuth";
 
 export function useEmailVerification({
@@ -29,7 +29,15 @@ export function useEmailVerification({
         setEmailVerified(false);
         setEmailVerifyMessage("");
         setEmailTimer(0);
-    }, [emailId, emailDomain, setEmailCode, setEmailCodeSent, setEmailVerified, setEmailVerifyMessage, setEmailTimer]);
+    }, [
+        emailId,
+        emailDomain,
+        setEmailCode,
+        setEmailCodeSent,
+        setEmailVerified,
+        setEmailVerifyMessage,
+        setEmailTimer,
+    ]);
 
     useEffect(() => {
         let timer;
@@ -64,7 +72,7 @@ export function useEmailVerification({
 
             const { res, data } = await requestEmailCodeApi(fullEmail);
 
-            if (!res.ok) {
+            if (!res.ok || data.success === false) {
                 throw new Error(data.message || "인증번호 전송 실패");
             }
 
@@ -77,6 +85,7 @@ export function useEmailVerification({
                     : data?.message || "인증번호가 전송되었습니다."
             );
             setEmailTimer(180);
+
             toast.success("인증번호 전송 완료");
         } catch (error) {
             const errorMessage = error.message || "이메일 인증 요청 실패";
@@ -101,7 +110,7 @@ export function useEmailVerification({
 
             const { res, data } = await verifyEmailCodeApi(fullEmail, emailCode);
 
-            if (!res.ok) {
+            if (!res.ok || data.success === false) {
                 throw new Error(data.message || "이메일 인증 실패");
             }
 
@@ -111,7 +120,7 @@ export function useEmailVerification({
         } catch (error) {
             setEmailVerified(false);
             setEmailVerifyMessage(error.message || "이메일 인증 실패");
-            toast.error("이메일 인증 실패");
+            toast.error(error.message || "이메일 인증 실패");
         } finally {
             setEmailVerifyLoading(false);
         }

@@ -1,8 +1,15 @@
 "use client";
 
-import { getPasswordChecks, getPasswordStrength } from "@/components/domain/auth/signup/shared/password";
-import { isValidEmailFormat } from "@/components/domain/auth/signup/shared/validation";
+import { getPasswordChecks } from "@/lib/auth/signup/password";
+import { isValidEmailFormat } from "@/lib/auth/signup/validation";
 
+/**
+ * 상태값으로부터 파생값 계산
+ * - 비밀번호 조건
+ * - 비밀번호 일치 여부
+ * - 타이머 표시 형식
+ * - 회원가입 가능 여부
+ */
 export function useSignupSelectors({
     userId,
     emailId,
