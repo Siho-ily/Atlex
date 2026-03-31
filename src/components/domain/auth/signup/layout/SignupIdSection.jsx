@@ -23,8 +23,7 @@ export default function SignupIdSection({
                     value={userId}
                     onChange={(e) => {
                         const filteredValue = e.target.value
-                            .replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "")
-                            .replace(/\s/g, "");
+                            .replace(/[^A-Za-z0-9]/g, "");
 
                         setUserId(filteredValue);
                         setIdCheck("");

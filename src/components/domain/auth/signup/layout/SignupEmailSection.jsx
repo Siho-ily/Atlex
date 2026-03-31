@@ -33,7 +33,9 @@ export default function SignupEmailSection({
                     type="text"
                     placeholder="이메일 입력"
                     value={emailId}
-                    onChange={(e) => setEmailId(e.target.value)}
+                    onChange={(e) =>
+                        setEmailId(e.target.value.replace(/[^A-Za-z0-9]/g, ""))
+                    }
                     className="w-[38%]"
                 />
 

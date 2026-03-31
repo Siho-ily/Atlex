@@ -21,7 +21,9 @@ export default function SignupPasswordSection({
                     type={showPassword ? "text" : "password"}
                     placeholder="비밀번호 입력"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) =>
+                        setPassword(e.target.value.replace(/[^A-Za-z0-9!@#$%^&*]/g, ""))
+                    }
                     autoComplete="new-password"
                     className="w-full pr-12"
                 />

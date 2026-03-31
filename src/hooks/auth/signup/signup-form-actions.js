@@ -102,6 +102,7 @@ export function useSignupFormActions({
     }
 
     function handleDomainChange(e) {
+        const filteredValue = e.target.value.replace(/[^A-Za-z0-9.]/g, "");
         setEmailDomain(e.target.value);
     }
 

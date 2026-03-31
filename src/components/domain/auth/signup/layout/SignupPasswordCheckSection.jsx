@@ -22,7 +22,9 @@ export default function SignupPasswordCheckSection({
                     type={showPasswordCheck ? "text" : "password"}
                     placeholder="비밀번호 확인"
                     value={passwordCheck}
-                    onChange={(e) => setPasswordCheck(e.target.value)}
+                    onChange={(e) =>
+                        setPasswordCheck(e.target.value.replace(/[^A-Za-z0-9!@#$%^&*]/g, ""))
+                    }
                     autoComplete="new-password"
                     className="w-full pr-12"
                 />
