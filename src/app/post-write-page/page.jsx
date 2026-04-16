@@ -14,6 +14,7 @@ import { postEditorCopy } from "@/data/post-editor/post-editor-copy";
 import { postEditorDrafts } from "@/data/post-editor/post-editor-drafts";
 import { postEditorToolCategories } from "@/data/post-editor/post-editor-tool-categories";
 import usePostEditorPanels from "@/hooks/post-editor/post-editor-panels";
+import usePostEditorRichText from "@/hooks/post-editor/post-editor-rich-text";
 import usePostEditorTags from "@/hooks/post-editor/post-editor-tags";
 
 const INITIAL_BODY =
@@ -22,7 +23,10 @@ const INITIAL_BODY =
 export default function PostWritePage() {
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false);
   const [title, setTitle] = useState(postEditorDrafts[0]?.title ?? "");
-  const [body, setBody] = useState(INITIAL_BODY);
+  // 본문 관련 편집 상태는 전용 훅으로 분리해서, 페이지는 레이아웃 조합에만 집중하게 한다.
+  const richText = usePostEditorRichText({
+    initialContent: INITIAL_BODY,
+  });
 
   const {
     activeGroup,
@@ -38,7 +42,7 @@ export default function PostWritePage() {
     initialToolId: "text-style",
   });
 
-  const tagField = usePostEditorTags(body, {
+  const tagField = usePostEditorTags(richText.bodyText, {
     initialManualTags: ["공지", "운영"],
   });
 
@@ -70,9 +74,10 @@ export default function PostWritePage() {
             isToolPanelOpen={isToolPanelOpen && hasActiveToolPanel}
             content={
               <PostEditorContentSection
-                body={body}
                 bodyPlaceholder={postEditorCopy.bodyPlaceholder}
-                onBodyChange={setBody}
+                bodyText={richText.bodyText}
+                editor={richText.editor}
+                isEditorEmpty={richText.isEditorEmpty}
               />
             }
             toolPanel={
@@ -80,7 +85,9 @@ export default function PostWritePage() {
                 <PostEditorSidebar
                   activeGroup={activeGroup}
                   activeTool={activeTool}
+                  getItemState={richText.getToolbarItemState}
                   onClose={closeToolPanel}
+                  onExecuteItem={richText.executeToolbarItem}
                   onSelectGroup={selectGroup}
                 />
               ) : null
