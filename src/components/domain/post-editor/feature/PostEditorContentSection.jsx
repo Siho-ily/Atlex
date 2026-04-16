@@ -4,15 +4,16 @@ export default function PostEditorContentSection({
   onBodyChange,
 }) {
   return (
-    <div className="flex min-h-[820px] flex-col">
-      <div className="flex-1 p-5 sm:p-7">
-        <div className="flex h-full min-h-[680px] flex-col rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 sm:p-6">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex-1 min-h-0 p-5 sm:p-7">
+        <div className="flex h-full min-h-0 flex-col rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 sm:p-6">
           <p className="text-lg font-semibold text-slate-800">본문</p>
           <textarea
             value={body}
             placeholder={bodyPlaceholder}
             onChange={(event) => onBodyChange(event.target.value)}
-            className="mt-4 h-full min-h-[560px] w-full resize-none bg-transparent text-base leading-8 text-slate-700 outline-none placeholder:text-slate-400"
+            wrap="soft"
+            className="mt-4 flex-1 min-h-0 w-full resize-none overflow-y-scroll overflow-x-hidden break-words bg-transparent text-base leading-8 text-slate-700 outline-none placeholder:text-slate-400"
           />
         </div>
       </div>

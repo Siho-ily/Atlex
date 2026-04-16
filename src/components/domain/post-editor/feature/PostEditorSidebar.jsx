@@ -7,7 +7,7 @@ export default function PostEditorSidebar({
   onSelectGroup,
 }) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -27,7 +27,7 @@ export default function PostEditorSidebar({
         </button>
       </div>
 
-      <div className="flex-1 space-y-5 overflow-y-auto p-5">
+      <div className="flex-1 min-h-0 space-y-5 overflow-y-scroll p-5">
         <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
           <div>
             <p className="text-sm font-semibold text-slate-500">현재 도구</p>

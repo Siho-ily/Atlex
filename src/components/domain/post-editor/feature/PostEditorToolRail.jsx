@@ -4,12 +4,12 @@ export default function PostEditorToolRail({
   toolCategories,
 }) {
   return (
-    <div className="flex h-full flex-col items-center justify-between px-3 py-5">
+    <div className="flex h-full min-h-0 flex-col items-center px-3 py-5">
       <p className="[writing-mode:vertical-rl] text-xs font-semibold tracking-[0.24em] text-slate-500">
         도구 패널
       </p>
 
-      <div className="flex flex-col gap-3">
+      <div className="mt-5 flex flex-1 min-h-0 flex-col gap-3 overflow-y-scroll">
         {toolCategories.map((tool) => {
           const isActive = tool.id === selectedToolId;
 
