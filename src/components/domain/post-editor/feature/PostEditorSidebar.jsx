@@ -1,9 +1,14 @@
 import { X } from "lucide-react";
 
+const COLOR_GROUP_NOTICE =
+  "색상 관련 기능은 이번 작업 범위에서 제외해서 버튼만 비활성화해 두었습니다.";
+
 export default function PostEditorSidebar({
   activeGroup,
   activeTool,
+  getItemState,
   onClose,
+  onExecuteItem,
   onSelectGroup,
 }) {
   return (
@@ -27,7 +32,7 @@ export default function PostEditorSidebar({
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 space-y-5 overflow-y-scroll p-5">
+      <div className="min-h-0 flex-1 space-y-5 overflow-y-scroll p-5">
         <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
           <div>
             <p className="text-sm font-semibold text-slate-500">현재 도구</p>
@@ -44,7 +49,8 @@ export default function PostEditorSidebar({
           <div>
             <h2 className="text-lg font-semibold text-slate-900">상위 옵션</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              도구 묶음 버튼을 누르면 이 영역이 열리고 여기서 다시 세부 그룹을 선택할 수 있습니다.
+              도구 묶음 버튼을 누르면 해당 영역이 열리고 거기서 다시 세부 그룹을
+              선택할 수 있습니다.
             </p>
           </div>
 
@@ -83,7 +89,7 @@ export default function PostEditorSidebar({
           <div>
             <h2 className="text-lg font-semibold text-slate-900">하위 옵션</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              상위 옵션에서 선택한 그룹의 세부 항목이 아래에 표시됩니다.
+              상위 옵션에서 선택한 그룹 안의 세부 항목을 바로 실행할 수 있습니다.
             </p>
           </div>
 
@@ -95,18 +101,41 @@ export default function PostEditorSidebar({
               <p className="mt-2 text-sm leading-6 text-slate-500">
                 {activeGroup.description}
               </p>
+              {activeGroup.id === "font-color" ? (
+                <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-900">
+                  {COLOR_GROUP_NOTICE}
+                </p>
+              ) : null}
             </div>
 
             <div className="mt-4 grid gap-3">
-              {activeGroup.items.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-4 text-left text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-                >
-                  {item}
-                </button>
-              ))}
+              {activeGroup.items.map((item) => {
+                // 버튼마다 활성/비활성 상태를 따로 계산해서, 현재 적용된 서식을 바로 확인할 수 있게 한다.
+                const { isActive, isDisabled } = getItemState(
+                  activeGroup.id,
+                  item,
+                );
+
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    disabled={isDisabled}
+                    aria-pressed={isActive}
+                    onClick={() => onExecuteItem(activeGroup.id, item)}
+                    className={[
+                      "rounded-xl border px-4 py-4 text-left text-sm font-semibold transition",
+                      isDisabled
+                        ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
+                        : isActive
+                          ? "border-slate-900 bg-slate-900 text-white"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                    ].join(" ")}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </section>
