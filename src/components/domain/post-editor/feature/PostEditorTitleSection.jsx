@@ -1,4 +1,6 @@
-import PostEditorTagField from "@/components/domain/post-editor/ui/PostEditorTagField";
+import PostEditorTagFieldSection from "@/components/domain/post-editor/feature/PostEditorTagFieldSection";
+
+const TITLE_LABEL = "\uC81C\uBAA9";
 
 export default function PostEditorTitleSection({
   title,
@@ -7,20 +9,12 @@ export default function PostEditorTitleSection({
   tagPlaceholder,
   tagField,
 }) {
-  const {
-    bodyTags,
-    combinedTags,
-    manualTags,
-    onRemoveTag,
-    onTagInputChange,
-    onTagInputKeyDown,
-    tagInput,
-  } = tagField;
-
   return (
     <section className="border-b border-slate-200">
       <div className="px-5 py-6 sm:px-7">
-        <label className="block text-sm font-semibold text-slate-500">제목</label>
+        <label className="block text-sm font-semibold text-slate-500">
+          {TITLE_LABEL}
+        </label>
         <input
           type="text"
           value={title}
@@ -30,14 +24,8 @@ export default function PostEditorTitleSection({
         />
       </div>
 
-      <PostEditorTagField
-        bodyTags={bodyTags}
-        combinedTags={combinedTags}
-        manualTags={manualTags}
-        onRemoveTag={onRemoveTag}
-        onTagInputChange={onTagInputChange}
-        onTagInputKeyDown={onTagInputKeyDown}
-        tagInput={tagInput}
+      <PostEditorTagFieldSection
+        tagField={tagField}
         tagPlaceholder={tagPlaceholder}
       />
     </section>
