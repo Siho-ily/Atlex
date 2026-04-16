@@ -20,10 +20,7 @@ export default function PostEditorTitleSection({
   return (
     <section className="border-b border-slate-200">
       <div className="px-5 py-6 sm:px-7">
-        {/* 게시물 제목을 입력하는 기본 영역입니다. */}
-        <label className="block text-sm font-semibold text-slate-500">
-          {"\uC81C\uBAA9"}
-        </label>
+        <label className="block text-sm font-semibold text-slate-500">제목</label>
         <input
           type="text"
           value={title}
@@ -33,16 +30,15 @@ export default function PostEditorTitleSection({
         />
       </div>
 
-      {/* 태그 입력 UI는 별도 컴포넌트로 분리해서 책임을 나눴습니다. */}
       <PostEditorTagField
-        tagInput={tagInput}
-        tagPlaceholder={tagPlaceholder}
-        manualTags={manualTags}
         bodyTags={bodyTags}
         combinedTags={combinedTags}
+        manualTags={manualTags}
+        onRemoveTag={onRemoveTag}
         onTagInputChange={onTagInputChange}
         onTagInputKeyDown={onTagInputKeyDown}
-        onRemoveTag={onRemoveTag}
+        tagInput={tagInput}
+        tagPlaceholder={tagPlaceholder}
       />
     </section>
   );

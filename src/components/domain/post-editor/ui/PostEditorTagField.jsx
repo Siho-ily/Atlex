@@ -21,7 +21,7 @@ function TagChip({ tag, variant, onRemove }) {
       type="button"
       onClick={() => onRemove(tag)}
       className={className}
-      aria-label={`${tag} ${"\uD0DC\uADF8 \uC0AD\uC81C"}`}
+      aria-label={`${tag} 태그 삭제`}
     >
       <span>{tag}</span>
       <X className="h-3.5 w-3.5" />
@@ -30,31 +30,28 @@ function TagChip({ tag, variant, onRemove }) {
 }
 
 export default function PostEditorTagField({
-  tagInput,
-  tagPlaceholder,
-  manualTags,
   bodyTags,
   combinedTags,
+  manualTags,
+  onRemoveTag,
   onTagInputChange,
   onTagInputKeyDown,
-  onRemoveTag,
+  tagInput,
+  tagPlaceholder,
 }) {
   const manualTagSet = new Set(manualTags);
 
   return (
     <div className="border-t border-slate-100 px-5 py-5 sm:px-7">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <label className="text-sm font-semibold text-slate-500">
-          {"\uD0DC\uADF8"}
-        </label>
+        <label className="text-sm font-semibold text-slate-500">태그</label>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-          {`\uCD1D ${combinedTags.length}\uAC1C`}
+          총 {combinedTags.length}개
         </span>
       </div>
 
       <div className="mt-4 rounded-[22px] border border-slate-200 bg-slate-50 px-4 py-3 transition focus-within:border-slate-400 focus-within:bg-white">
         <div className="flex flex-wrap items-center gap-2">
-          {/* 최종 태그 목록을 먼저 보여주고, 같은 줄에서 바로 새 태그를 입력합니다. */}
           {combinedTags.map((tag) => {
             const isManualTag = manualTagSet.has(tag);
 
@@ -72,9 +69,7 @@ export default function PostEditorTagField({
             type="text"
             value={tagInput}
             placeholder={
-              combinedTags.length === 0
-                ? tagPlaceholder
-                : "\uD0DC\uADF8\uB97C \uC785\uB825\uD558\uC138\uC694"
+              combinedTags.length === 0 ? tagPlaceholder : "태그를 입력하세요"
             }
             onChange={(event) => onTagInputChange(event.target.value)}
             onKeyDown={onTagInputKeyDown}
@@ -84,23 +79,19 @@ export default function PostEditorTagField({
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+        <p>Enter를 누르면 태그가 등록됩니다.</p>
         <p>
-          {"Enter\uB97C \uB204\uB974\uBA74 \uD0DC\uADF8\uAC00 \uB4F1\uB85D\uB429\uB2C8\uB2E4."}
-        </p>
-        <p>
-          {"\uBCF8\uBB38\uC758 "}
+          본문의{" "}
           <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-slate-700">
-            {"#\uD0DC\uADF8"}
+            #태그
           </span>
-          {"\uB3C4 \uC790\uB3D9\uC73C\uB85C \uCD94\uAC00\uB429\uB2C8\uB2E4."}
+          도 자동으로 추가됩니다.
         </p>
       </div>
 
       {bodyTags.length > 0 && (
         <p className="mt-3 text-sm text-slate-500">
-          {`\uBCF8\uBB38\uC5D0\uC11C \uAC10\uC9C0\uB41C \uD0DC\uADF8: ${bodyTags
-            .map((tag) => `#${tag}`)
-            .join(", ")}`}
+          본문에서 감지된 태그: {bodyTags.map((tag) => `#${tag}`).join(", ")}
         </p>
       )}
     </div>

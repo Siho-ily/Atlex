@@ -7,11 +7,15 @@ import {
   parseTagInput,
 } from "@/lib/post-editor/tags";
 
-export default function usePostEditorTags(body) {
+export default function usePostEditorTags(
+  body,
+  {
+    initialManualTags = [],
+  } = {},
+) {
   const [tagInput, setTagInput] = useState("");
-  const [manualTags, setManualTags] = useState([]);
+  const [manualTags, setManualTags] = useState(initialManualTags);
 
-  // 본문에서 추출한 태그와 직접 입력한 태그를 합쳐서 최종 태그 목록을 만듭니다.
   const bodyTags = extractBodyTags(body);
   const combinedTags = mergeTags(manualTags, bodyTags);
 
@@ -43,7 +47,6 @@ export default function usePostEditorTags(body) {
       return;
     }
 
-    // 벨로그처럼 Enter로 태그를 확정하고, 빈 입력 상태에선 Backspace로 마지막 태그를 지웁니다.
     if (event.key === "Enter") {
       event.preventDefault();
       registerTags(tagInput);
@@ -62,7 +65,7 @@ export default function usePostEditorTags(body) {
     manualTags,
     onRemoveTag: removeManualTag,
     onTagInputChange: handleTagInputChange,
-    tagInput,
     onTagInputKeyDown: handleTagInputKeyDown,
+    tagInput,
   };
 }

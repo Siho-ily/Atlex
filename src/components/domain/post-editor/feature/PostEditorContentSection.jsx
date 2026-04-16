@@ -7,10 +7,7 @@ export default function PostEditorContentSection({
     <div className="flex min-h-[820px] flex-col">
       <div className="flex-1 p-5 sm:p-7">
         <div className="flex h-full min-h-[680px] flex-col rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 sm:p-6">
-          {/* 본문 입력값은 상위 화면에서 관리해서 태그 추출과 글자 수 계산에 재사용합니다. */}
-          <p className="text-lg font-semibold text-slate-800">
-            {"\uBCF8\uBB38"}
-          </p>
+          <p className="text-lg font-semibold text-slate-800">본문</p>
           <textarea
             value={body}
             placeholder={bodyPlaceholder}
@@ -20,9 +17,8 @@ export default function PostEditorContentSection({
         </div>
       </div>
 
-      {/* 현재는 단순 글자 수만 보여주고 있습니다. */}
       <div className="px-5 pb-5 text-right text-sm text-slate-500 sm:px-7 sm:pb-6">
-        {`\uCD1D ${body.length}\uC790`}
+        총 {body.length}자
       </div>
     </div>
   );

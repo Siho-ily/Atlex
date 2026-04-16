@@ -1,14 +1,13 @@
 import { X } from "lucide-react";
 
 export default function PostEditorSidebar({
-  activeTool,
   activeGroup,
-  onSelectGroup,
+  activeTool,
   onClose,
+  onSelectGroup,
 }) {
   return (
     <div className="flex h-full flex-col">
-      {/* 현재 선택된 도구와 패널 닫기 버튼을 보여줍니다. */}
       <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -43,15 +42,13 @@ export default function PostEditorSidebar({
 
         <section>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">상위 패널</h2>
+            <h2 className="text-lg font-semibold text-slate-900">상위 옵션</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              도구모음 버튼을 누르면 이 영역이 열리고, 여기서 다시 세부
-              그룹을 선택할 수 있습니다.
+              도구 묶음 버튼을 누르면 이 영역이 열리고 여기서 다시 세부 그룹을 선택할 수 있습니다.
             </p>
           </div>
 
           <div className="mt-4 grid gap-3">
-            {/* 선택 가능한 그룹 목록입니다. */}
             {activeTool.groups.map((group) => {
               const isActive = group.id === activeGroup.id;
 
@@ -84,9 +81,9 @@ export default function PostEditorSidebar({
 
         <section>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">하위 패널</h2>
+            <h2 className="text-lg font-semibold text-slate-900">하위 옵션</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              상위 패널에서 선택한 그룹의 세부 항목이 아래에 열립니다.
+              상위 옵션에서 선택한 그룹의 세부 항목이 아래에 표시됩니다.
             </p>
           </div>
 
@@ -101,7 +98,6 @@ export default function PostEditorSidebar({
             </div>
 
             <div className="mt-4 grid gap-3">
-              {/* 실제 편집 액션 후보를 나열하는 자리입니다. */}
               {activeGroup.items.map((item) => (
                 <button
                   key={item}

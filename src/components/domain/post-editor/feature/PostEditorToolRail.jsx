@@ -10,7 +10,6 @@ export default function PostEditorToolRail({
       </p>
 
       <div className="flex flex-col gap-3">
-        {/* 툴 레일은 상위 도구 카테고리만 빠르게 전환하는 역할입니다. */}
         {toolCategories.map((tool) => {
           const isActive = tool.id === selectedToolId;
 

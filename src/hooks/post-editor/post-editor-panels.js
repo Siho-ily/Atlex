@@ -16,15 +16,23 @@ function getActiveGroup(tool, groupId) {
   return tool?.groups.find((group) => group.id === groupId) ?? tool?.groups[0] ?? null;
 }
 
-export default function usePostEditorPanels(toolCategories) {
-  const firstTool = getFirstTool(toolCategories);
-  const [isToolPanelOpen, setIsToolPanelOpen] = useState(false);
-  const [selectedToolId, setSelectedToolId] = useState(firstTool?.id ?? "");
-  const [selectedGroupId, setSelectedGroupId] = useState(
-    firstTool?.groups[0]?.id ?? ""
-  );
+export default function usePostEditorPanels(
+  toolCategories,
+  {
+    initialGroupId,
+    initialOpen = false,
+    initialToolId,
+  } = {},
+) {
+  const initialTool = getActiveTool(toolCategories, initialToolId);
+  const initialGroup = getActiveGroup(initialTool, initialGroupId);
 
-  // 선택된 도구/그룹 id를 기준으로 현재 패널에 보여줄 데이터를 계산합니다.
+  const [isToolPanelOpen, setIsToolPanelOpen] = useState(
+    initialOpen && Boolean(initialTool && initialGroup),
+  );
+  const [selectedToolId, setSelectedToolId] = useState(initialTool?.id ?? "");
+  const [selectedGroupId, setSelectedGroupId] = useState(initialGroup?.id ?? "");
+
   const activeTool = getActiveTool(toolCategories, selectedToolId);
   const activeGroup = getActiveGroup(activeTool, selectedGroupId);
 
