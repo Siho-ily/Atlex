@@ -1,89 +1,101 @@
 "use client";
 
-import useSignup from "@/hooks/auth/signup/signup";
-
-// ✅ 전부 기존 위치 그대로 (components/domain 유지)
 import SignupContainer from "@/components/domain/auth/signup/layout/SignupContainer";
 import SignupHeader from "@/components/domain/auth/signup/layout/SignupHeader";
-import SignupMessage from "@/components/domain/auth/signup/layout/SignupMessage";
-
-import SignupIdSection from "@/components/domain/auth/signup/layout/SignupIdSection";
-import SignupEmailSection from "@/components/domain/auth/signup/layout/SignupEmailSection";
-import SignupPasswordSection from "@/components/domain/auth/signup/layout/SignupPasswordSection";
-import SignupPasswordCheckSection from "@/components/domain/auth/signup/layout/SignupPasswordCheckSection";
-import SignupNicknameSection from "@/components/domain/auth/signup/layout/SignupNicknameSection";
-import SignupActionButtons from "@/components/domain/auth/signup/layout/SignupActionButtons";
+import SignupFooterButtons from "@/components/domain/auth/signup/layout/SignupFooterButtons";
+import SignupIdSection from "@/components/domain/auth/signup/sections/SignupIdSection";
+import SignupEmailSection from "@/components/domain/auth/signup/sections/SignupEmailSection";
+import SignupPasswordSection from "@/components/domain/auth/signup/sections/SignupPasswordSection";
+import SignupNicknameSection from "@/components/domain/auth/signup/sections/SignupNicknameSection";
+import { useSignup } from "@/hooks/auth/signup/signup";
 
 export default function Page() {
-    const signup = useSignup();
+    const {
+        userId,
+        emailId,
+        emailDomain,
+        password,
+        passwordCheck,
+        nickname,
+
+        idCheck,
+        nickCheck,
+        message,
+
+        showPassword,
+        showPasswordCheck,
+        setShowPassword,
+        setShowPasswordCheck,
+
+        loading,
+        canSubmit,
+
+        handleUserIdChange,
+        handleNicknameChange,
+        handlePasswordChange,
+        handlePasswordCheckChange,
+        handleEmailIdChange,
+        handleEmailDomainChange,
+
+        handleIdCheck,
+        handleNickCheck,
+        handlePrev,
+        handleSignup,
+
+        passwordChecks,
+    } = useSignup();
 
     return (
         <SignupContainer>
             <SignupHeader />
 
-            <div className="space-y-4">
+            <section className="space-y-6 rounded-2xl border border-blue-200 bg-blue-50 p-6">
                 <SignupIdSection
-                    userId={signup.userId}
-                    setUserId={signup.setUserId}
-                    idCheck={signup.idCheck}
-                    setIdCheck={signup.setIdCheck}
-                    handleIdCheck={signup.handleIdCheck}
+                    userId={userId}
+                    handleUserIdChange={handleUserIdChange}
+                    idCheck={idCheck}
+                    handleIdCheck={handleIdCheck}
                 />
 
                 <SignupEmailSection
-                    emailId={signup.emailId}
-                    setEmailId={signup.setEmailId}
-                    emailDomain={signup.emailDomain}
-                    handleDomainChange={signup.handleDomainChange}
-                    handleSelectChange={signup.handleSelectChange}
-                    isValidEmail={signup.isValidEmail}
-                    emailCode={signup.emailCode}
-                    emailCodeSent={signup.emailCodeSent}
-                    emailVerified={signup.emailVerified}
-                    emailVerifyMessage={signup.emailVerifyMessage}
-                    emailSendLoading={signup.emailSendLoading}
-                    emailVerifyLoading={signup.emailVerifyLoading}
-                    emailTimer={signup.emailTimer}
-                    formattedEmailTime={signup.formattedEmailTime}
-                    handleSendEmailCode={signup.handleSendEmailCode}
-                    handleVerifyEmailCode={signup.handleVerifyEmailCode}
-                    handleEmailCodeChange={signup.handleEmailCodeChange}
+                    emailId={emailId}
+                    emailDomain={emailDomain}
+                    handleEmailIdChange={handleEmailIdChange}
+                    handleEmailDomainChange={handleEmailDomainChange}
                 />
 
                 <SignupPasswordSection
-                    showPassword={signup.showPassword}
-                    setShowPassword={signup.setShowPassword}
-                    password={signup.password}
-                    setPassword={signup.setPassword}
-                    checks={signup.checks}
-                />
-
-                <SignupPasswordCheckSection
-                    showPasswordCheck={signup.showPasswordCheck}
-                    setShowPasswordCheck={signup.setShowPasswordCheck}
-                    passwordCheck={signup.passwordCheck}
-                    setPasswordCheck={signup.setPasswordCheck}
-                    passwordMatch={signup.passwordMatch}
-                    passwordMismatch={signup.passwordMismatch}
+                    password={password}
+                    passwordCheck={passwordCheck}
+                    showPassword={showPassword}
+                    showPasswordCheck={showPasswordCheck}
+                    setShowPassword={setShowPassword}
+                    setShowPasswordCheck={setShowPasswordCheck}
+                    handlePasswordChange={handlePasswordChange}
+                    handlePasswordCheckChange={handlePasswordCheckChange}
+                    passwordChecks={passwordChecks}
                 />
 
                 <SignupNicknameSection
-                    nickname={signup.nickname}
-                    setNickname={signup.setNickname}
-                    nickCheck={signup.nickCheck}
-                    setNickCheck={signup.setNickCheck}
-                    handleNicknameCheck={signup.handleNicknameCheck}
+                    nickname={nickname}
+                    handleNicknameChange={handleNicknameChange}
+                    nickCheck={nickCheck}
+                    handleNickCheck={handleNickCheck}
                 />
+            </section>
 
-                <SignupMessage message={signup.message} />
+            {message && (
+                <p className="mt-4 text-sm font-medium text-red-500">
+                    {message}
+                </p>
+            )}
 
-                <SignupActionButtons
-                    loading={signup.loading}
-                    canSignup={signup.canSignup}
-                    handleCancel={signup.handleCancel}
-                    onSignup={signup.onSignup}
-                />
-            </div>
+            <SignupFooterButtons
+                onPrev={handlePrev}
+                onSignup={handleSignup}
+                loading={loading}
+                canSubmit={canSubmit}
+            />
         </SignupContainer>
     );
 }

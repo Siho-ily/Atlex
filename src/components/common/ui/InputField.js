@@ -1,13 +1,14 @@
 "use client";
 
-export default function InputField({
-    className = "",
-    ...props
-}) {
+export default function InputField({ className = "", ...props }) {
     return (
         <input
             {...props}
-            className={`px-3 py-2 border rounded-lg text-black dark:text-white bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 outline-none ${className}`}
+            className={[
+                "w-full rounded-xl border border-gray-300 bg-white text-sm text-gray-900",
+                "placeholder:text-gray-400 outline-none focus:border-blue-500",
+                className,
+            ].join(" ")}
         />
     );
 }

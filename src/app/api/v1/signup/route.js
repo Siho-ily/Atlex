@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
-import mockUsers from "@/data/mockusers.json";
 
+/**
+ * 회원가입 요청을 처리하는 API 라우트
+ *
+ * 이 라우트는 실제 회원가입 로직을 직접 처리하지 않고
+ * 백엔드 서버로 요청을 전달하는 프록시 역할을 수행한다.
+ */
 export async function POST(req) {
     try {
         const body = await req.json();
@@ -13,50 +18,44 @@ export async function POST(req) {
             );
         }
 
-        const idExists = mockUsers.some((user) => user.user_id === userId);
-        if (idExists) {
+        const backendResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/signup`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId,
+                    password,
+                    name,
+                    email,
+                }),
+                cache: "no-store",
+            }
+        );
+
+        const data = await backendResponse.json().catch(() => ({}));
+
+        if (!backendResponse.ok) {
             return NextResponse.json(
-                { message: "이미 사용 중인 아이디입니다." },
-                { status: 409 }
+                {
+                    message: data.message || "회원가입에 실패했습니다.",
+                },
+                { status: backendResponse.status }
             );
         }
-
-        const nameExists = mockUsers.some((user) => user.name === name);
-        if (nameExists) {
-            return NextResponse.json(
-                { message: "이미 사용 중인 닉네임입니다." },
-                { status: 409 }
-            );
-        }
-
-        const newUser = {
-            id: mockUsers.length + 1,
-            user_id: userId,
-            email,
-            password,
-            name,
-            active: true,
-            create_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-        };
-
-        mockUsers.push(newUser);
-
-        console.log("새 회원가입 사용자:", newUser);
-        console.log("현재 mockUsers:", mockUsers);
 
         return NextResponse.json(
             {
-                message: "회원가입이 완료되었습니다.",
-                user: newUser,
+                message: data.message || "회원가입이 완료되었습니다.",
+                data,
             },
-            { status: 201 }
+            { status: 200 }
         );
     } catch (error) {
-        console.error(error);
-
         return NextResponse.json(
-            { message: "서버 오류가 발생했습니다." },
+            { message: "회원가입 처리 중 서버 오류가 발생했습니다." },
             { status: 500 }
         );
     }
