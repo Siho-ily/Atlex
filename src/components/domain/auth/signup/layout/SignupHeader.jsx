@@ -2,14 +2,11 @@
 
 export default function SignupHeader() {
     return (
-        <>
-            <h2 className="text-2xl font-bold text-center mb-2 text-black dark:text-white">
-                회원가입
-            </h2>
-
-            <p className="text-sm text-gray-500 dark:text-gray-300 text-center mb-6">
-                이메일, 비밀번호, 닉네임을 입력해주세요.
+        <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-gray-900">회원가입</h1>
+            <p className="mt-3 text-sm text-gray-500">
+                아래 정보를 입력해서 회원가입을 진행해주세요.
             </p>
-        </>
+        </div>
     );
 }

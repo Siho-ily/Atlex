@@ -224,6 +224,7 @@ body {
 }
 /* ===== password 기본 눈 아이콘 제거 ===== */
 
+/* password 기본 눈 아이콘 제거 */
 input::-ms-reveal,
 input::-ms-clear {
   display: none;

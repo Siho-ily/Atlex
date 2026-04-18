@@ -1,65 +1,52 @@
 "use client";
 
-import { getPasswordChecks } from "@/lib/auth/signup/password";
-import { isValidEmailFormat } from "@/lib/auth/signup/validation";
-
 /**
- * 상태값으로부터 파생값 계산
- * - 비밀번호 조건
- * - 비밀번호 일치 여부
- * - 타이머 표시 형식
- * - 회원가입 가능 여부
+ * 회원가입 폼에서 사용하는 계산값을 관리한다.
+ *
+ * 포함 항목:
+ * - 비밀번호 조건 검사
+ * - 회원가입 가능 여부 계산
  */
 export function useSignupSelectors({
     userId,
+    nickname,
     emailId,
     emailDomain,
     password,
     passwordCheck,
-    nickname,
-    idCheck,
-    nickCheck,
-    emailVerified,
-    loading,
-    emailTimer,
 }) {
-    const checks = getPasswordChecks(password);
+    function getPasswordChecks(value) {
+        return {
+            length: value.length >= 10,
+            lower: /[a-z]/.test(value),
+            upper: /[A-Z]/.test(value),
+            number: /[0-9]/.test(value),
+            special: /[!@#$%^&*]/.test(value),
+        };
+    }
+
+    const passwordChecks = getPasswordChecks(password);
 
     const isPasswordValid =
-        checks.length &&
-        checks.lower &&
-        checks.upper &&
-        checks.number &&
-        checks.special;
+        passwordChecks.length &&
+        passwordChecks.lower &&
+        passwordChecks.upper &&
+        passwordChecks.number &&
+        passwordChecks.special;
 
-    const passwordMatch =
-        passwordCheck.length > 0 &&
-        password === passwordCheck;
-
-    const passwordMismatch =
-        passwordCheck.length > 0 &&
-        password !== passwordCheck;
-
-    const formattedEmailTime = `${String(Math.floor(emailTimer / 60)).padStart(2, "0")}:${String(emailTimer % 60).padStart(2, "0")}`;
-
-    const canSignup =
-        userId &&
-        nickname &&
-        password &&
-        passwordCheck &&
+    const canSubmit =
+        !!userId.trim() &&
+        !!nickname.trim() &&
+        !!emailId.trim() &&
+        !!emailDomain.trim() &&
+        !!password &&
+        !!passwordCheck &&
         password === passwordCheck &&
-        isPasswordValid &&
-        isValidEmailFormat(emailId, emailDomain) &&
-        idCheck === "ok" &&
-        nickCheck === "ok" &&
-        emailVerified &&
-        !loading;
+        isPasswordValid;
 
     return {
-        checks,
-        passwordMatch,
-        passwordMismatch,
-        formattedEmailTime,
-        canSignup,
+        getPasswordChecks,
+        passwordChecks,
+        canSubmit,
     };
 }

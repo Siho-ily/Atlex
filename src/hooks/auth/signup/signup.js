@@ -1,85 +1,143 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useSignupFormState } from "@/hooks/auth/signup/signup-form-state";
-import { useSignupFormActions } from "@/hooks/auth/signup/signup-form-actions";
-import { useEmailVerification } from "@/hooks/auth/signup/email-verification";
-import { useSignupSelectors } from "@/hooks/auth/signup/signup-selectors";
-import { useSignupSubmit } from "@/hooks/auth/signup/signup-submit";
+import toast from "react-hot-toast";
+import { useSignupStore } from "@/lib/stores/signupStore";
+import { useSignupFormHandlers } from "./signup-form-handlers";
+import { useSignupFormActions } from "./signup-form-actions";
+import { useSignupSubmit } from "./signup-submit";
+import { useSignupSelectors } from "./signup-selectors";
 
 /**
- * 회원가입 기능 전체를 묶는 최상위 훅
- * - 상태
- * - 액션
- * - 이메일 인증
- * - 파생값 계산
- * - 제출
+ * 회원가입 화면에서 사용하는 메인 훅
+ *
+ * 역할:
+ * - zustand store 상태 조회
+ * - 입력 핸들러 연결
+ * - 중복확인 / 페이지 이동 기능 연결
+ * - 최종 회원가입 제출 기능 연결
+ * - 계산값 제공
  */
-export default function useSignup() {
+export function useSignup() {
     const router = useRouter();
-    const state = useSignupFormState();
 
-    const emailVerification = useEmailVerification({
-        emailId: state.emailId,
-        emailDomain: state.emailDomain,
-        setEmailCode: state.setEmailCode,
-        setEmailCodeSent: state.setEmailCodeSent,
-        setEmailVerified: state.setEmailVerified,
-        setEmailVerifyMessage: state.setEmailVerifyMessage,
-        setEmailTimer: state.setEmailTimer,
-        emailCode: state.emailCode,
-        setEmailVerifyLoading: state.setEmailVerifyLoading,
-        setEmailSendLoading: state.setEmailSendLoading,
+    const {
+        showPassword,
+        showPasswordCheck,
+
+        userId,
+        emailId,
+        emailDomain,
+        password,
+        passwordCheck,
+        nickname,
+
+        idCheck,
+        nickCheck,
+
+        message,
+        loading,
+
+        setShowPassword,
+        setShowPasswordCheck,
+
+        setUserId,
+        setEmailId,
+        setEmailDomain,
+        setPassword,
+        setPasswordCheck,
+        setNickname,
+
+        setIdCheck,
+        setNickCheck,
+
+        setMessage,
+        setLoading,
+
+        setEmailVerified,
+        setEmailVerifyMessage,
+        setEmailCode,
+    } = useSignupStore();
+
+    const email =
+        emailId.trim() && emailDomain.trim()
+            ? `${emailId.trim()}@${emailDomain.trim()}`
+            : "";
+
+    const {
+        getPasswordChecks,
+        passwordChecks,
+        canSubmit,
+    } = useSignupSelectors({
+        userId,
+        nickname,
+        emailId,
+        emailDomain,
+        password,
+        passwordCheck,
+    });
+
+    const handlers = useSignupFormHandlers({
+        setUserId,
+        setIdCheck,
+        setNickname,
+        setNickCheck,
+        setPassword,
+        setPasswordCheck,
+        setEmailId,
+        setEmailDomain,
+        setEmailVerified,
+        setEmailVerifyMessage,
+        setEmailCode,
     });
 
     const actions = useSignupFormActions({
         router,
-        userId: state.userId,
-        nickname: state.nickname,
-        setIdCheck: state.setIdCheck,
-        setNickCheck: state.setNickCheck,
-        setMessage: state.setMessage,
-        setEmailDomain: state.setEmailDomain,
+        userId,
+        nickname,
+        setIdCheck,
+        setNickCheck,
     });
 
-    const selectors = useSignupSelectors({
-        userId: state.userId,
-        emailId: state.emailId,
-        emailDomain: state.emailDomain,
-        password: state.password,
-        passwordCheck: state.passwordCheck,
-        nickname: state.nickname,
-        idCheck: state.idCheck,
-        nickCheck: state.nickCheck,
-        emailVerified: state.emailVerified,
-        loading: state.loading,
-        emailTimer: state.emailTimer,
-    });
-
-    const submit = useSignupSubmit({
+    const { handleSignup } = useSignupSubmit({
         router,
-        userId: state.userId,
-        emailId: state.emailId,
-        emailDomain: state.emailDomain,
-        password: state.password,
-        nickname: state.nickname,
-        canSignup: selectors.canSignup,
-        setLoading: state.setLoading,
-        setMessage: state.setMessage,
-        setIdCheck: state.setIdCheck,
-        setNickCheck: state.setNickCheck,
-        setEmailVerified: state.setEmailVerified,
-        setEmailVerifyMessage: state.setEmailVerifyMessage,
-        setEmailCodeSent: state.setEmailCodeSent,
-        setEmailTimer: state.setEmailTimer,
-        resetSignupState: state.resetSignupState,
+        userId,
+        nickname,
+        email,
+        password,
+        passwordCheck,
+        canSubmit,
+        setMessage,
+        setLoading,
+        getPasswordChecks,
+        toast,
     });
 
     return {
-        ...state,
+        showPassword,
+        showPasswordCheck,
+
+        userId,
+        emailId,
+        emailDomain,
+        password,
+        passwordCheck,
+        nickname,
+
+        idCheck,
+        nickCheck,
+
+        message,
+        loading,
+
+        setShowPassword,
+        setShowPasswordCheck,
+
+        ...handlers,
         ...actions,
-        ...emailVerification,
-        ...selectors,
-        onSignup: submit.onSignup,
+        handleSignup,
+
+        passwordChecks,
+        canSubmit,
     };
 }
