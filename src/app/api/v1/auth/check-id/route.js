@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createApiUrl } from "@/lib/api/baseUrl";
 
 /**
  * 아이디 중복 여부를 확인하는 API 라우트
@@ -18,8 +19,9 @@ export async function POST(req) {
             );
         }
 
+        // BASE_API_URL에는 /api/v1까지 포함되어 있으므로 endpoint만 넘긴다.
         const backendResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/check-id`,
+            createApiUrl("/auth/check-id"),
             {
                 method: "POST",
                 headers: {
