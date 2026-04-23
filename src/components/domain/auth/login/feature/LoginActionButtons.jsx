@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/common/ui/Button";
+import { Button } from "@/components/common/ui/button";
 
 export default function LoginActionButtons({
     onLogin,
