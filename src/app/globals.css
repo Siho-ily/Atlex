@@ -227,9 +227,10 @@ input[type="password"]::-webkit-textfield-decoration-container {
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-nanum-gothic-coding), "Apple SD Gothic Neo", "Malgun Gothic", monospace;
   }
 
   html {
-    @apply font-sans;
+    font-family: var(--font-nanum-gothic-coding), "Apple SD Gothic Neo", "Malgun Gothic", monospace;
   }
 }

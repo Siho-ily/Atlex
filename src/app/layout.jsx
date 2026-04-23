@@ -1,5 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nanum_Gothic_Coding } from "next/font/google";
 import "./globals.css";
+
+const nanumGothicCoding = Nanum_Gothic_Coding({
+  variable: "--font-nanum-gothic-coding",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${nanumGothicCoding.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <script
           dangerouslySetInnerHTML={{
