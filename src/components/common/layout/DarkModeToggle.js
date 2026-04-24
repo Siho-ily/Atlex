@@ -1,4 +1,4 @@
-export default function DarkModeToggle({ isDark, onToggle }) {
+export default function Deprecated_DarkModeToggle({ isDark, onToggle }) {
     return (
         <button
             type="button"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DarkModeToggle from "@/components/common/ui/DarkModeToggle";
+import Deprecated_DarkModeToggle from "@/components/common/layout/DarkModeToggle";
 
 export default function DarkModePage() {
     const [isDark, setIsDark] = useState(false);
@@ -35,7 +35,7 @@ export default function DarkModePage() {
                     다크모드 설정 페이지
                 </h1>
 
-                <DarkModeToggle isDark={isDark} onToggle={toggleTheme} />
+                <Deprecated_DarkModeToggle isDark={isDark} onToggle={toggleTheme} />
 
                 <p className="text-gray-600 dark:text-gray-300">
                     현재 모드: {isDark ? "다크모드" : "라이트모드"}
