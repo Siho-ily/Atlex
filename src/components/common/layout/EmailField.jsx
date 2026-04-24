@@ -32,7 +32,6 @@ export function EmailField({ localValue, domainValue, onLocalChange, onDomainCha
           size="lg"
           value={localValue}
           onChange={onLocalChange}
-          placeholder="이메일 아이디"
           aria-invalid={isInvalid || undefined}
           className="flex-1"
         />
