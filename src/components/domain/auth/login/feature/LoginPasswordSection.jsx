@@ -1,7 +1,7 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
-import InputField from "@/components/common/ui/InputField";
+import Deprecated_InputField from "@/components/common/ui/Deprecated_InputField";
 
 export default function LoginPasswordSection({
     password,
@@ -16,7 +16,7 @@ export default function LoginPasswordSection({
             </label>
 
             <div className="relative mt-2">
-                <InputField
+                <Deprecated_InputField
                     type={showPassword ? "text" : "password"}
                     placeholder="비밀번호 입력"
                     value={password}

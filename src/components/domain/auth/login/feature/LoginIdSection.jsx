@@ -1,6 +1,6 @@
 "use client";
 
-import InputField from "@/components/common/ui/InputField";
+import Deprecated_InputField from "@/components/common/ui/Deprecated_InputField";
 
 export default function LoginIdSection({
     userId,
@@ -12,7 +12,7 @@ export default function LoginIdSection({
                 아이디
             </label>
 
-            <InputField
+            <Deprecated_InputField
                 type="text"
                 placeholder="아이디 입력"
                 value={userId}
