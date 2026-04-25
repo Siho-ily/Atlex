@@ -23,9 +23,9 @@ import {
 export default function usePostEditorRichText({ initialContent = "" } = {}) {
   const [bodyText, setBodyText] = useState(initialContent);
   const [isEditorEmpty, setIsEditorEmpty] = useState(!initialContent.trim());
-  // 선택 범위가 바뀔 때마다 한 번 더 렌더링해서
-  // 볼드/링크 같은 툴바 활성 상태가 즉시 갱신되게 만든다.
-  const [, setSelectionTick] = useState(0);
+  // 본문 글자 수가 그대로여도 서식/undo 가능 여부는 바뀔 수 있어서
+  // 에디터 트랜잭션마다 한 번 더 렌더링해 패널 버튼 상태를 최신으로 맞춘다.
+  const [, setToolbarStateTick] = useState(0);
 
   // 태그 추출과 글자 수 표시는 HTML이 아니라 사용자가 보는 순수 텍스트 기준으로 맞춘다.
   function syncEditorState(nextEditor) {
@@ -47,14 +47,16 @@ export default function usePostEditorRichText({ initialContent = "" } = {}) {
     onCreate({ editor: nextEditor }) {
       // 첫 렌더 직후에도 본문 텍스트와 empty 상태를 맞춰 둔다.
       syncEditorState(nextEditor);
+      setToolbarStateTick((currentValue) => currentValue + 1);
     },
     onSelectionUpdate() {
       // 내용이 안 바뀌어도 커서 위치가 바뀌면 버튼 활성 상태는 달라질 수 있다.
-      setSelectionTick((currentValue) => currentValue + 1);
+      setToolbarStateTick((currentValue) => currentValue + 1);
     },
     onUpdate({ editor: nextEditor }) {
       // 사용자가 입력할 때마다 화면에서 보여 주는 본문 상태도 같이 갱신한다.
       syncEditorState(nextEditor);
+      setToolbarStateTick((currentValue) => currentValue + 1);
     },
   });
 
@@ -93,18 +95,19 @@ export default function usePostEditorRichText({ initialContent = "" } = {}) {
       };
     }
 
-    // undo / redo 는 현재 선택 상태보다 "지금 실행 가능한가?"가 더 중요해서 따로 본다.
+    // 실행 취소 / 다시 실행은 히스토리가 비어 있어도 항상 눌릴 수 있게 열어 둔다.
+    // 실제로 되돌릴 내용이 없으면 TipTap 명령이 조용히 no-op 으로 끝난다.
     if (itemLabel === "실행 취소") {
       return {
         isActive: false,
-        isDisabled: !editor.can().undo(),
+        isDisabled: false,
       };
     }
 
     if (itemLabel === "다시 실행") {
       return {
         isActive: false,
-        isDisabled: !editor.can().redo(),
+        isDisabled: false,
       };
     }
 
