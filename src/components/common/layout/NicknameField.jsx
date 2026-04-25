@@ -4,7 +4,7 @@ import { Field, FieldLabel, FieldError } from "@/components/common/ui/field"
 import { Input } from "@/components/common/ui/input"
 import { Button } from "@/components/common/ui/button"
 
-export function NicknameField({ value, onChange, onCheckDuplicate, checkResult, error }) {
+export function NicknameField({ value, onChange, onBlur, onCheckDuplicate, checkResult, error }) {
   const isInvalid = !!error || checkResult?.ok === false
 
   return (
@@ -16,6 +16,7 @@ export function NicknameField({ value, onChange, onCheckDuplicate, checkResult, 
           variant="outline"
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder="닉네임을 입력하세요"
           aria-invalid={isInvalid || undefined}
           className="flex-1"
