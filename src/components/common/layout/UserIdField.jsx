@@ -4,7 +4,7 @@ import { Field, FieldLabel, FieldError } from "@/components/common/ui/field"
 import { Input } from "@/components/common/ui/input"
 import { Button } from "@/components/common/ui/button"
 
-export function UserIdField({ value, onChange, onCheckDuplicate, checkResult, error }) {
+export function UserIdField({ value, onChange, onBlur, onCheckDuplicate, checkResult, error, disabled }) {
   const isInvalid = !!error || checkResult?.ok === false
 
   return (
@@ -16,15 +16,18 @@ export function UserIdField({ value, onChange, onCheckDuplicate, checkResult, er
           variant="outline"
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder="아이디를 입력하세요"
           aria-invalid={isInvalid || undefined}
           className="flex-1"
+          disabled={disabled}
         />
         <Button
           type="button"
           variant="secondary"
           onClick={onCheckDuplicate}
           className="shrink-0"
+          disabled={disabled}
         >
           중복확인
         </Button>
