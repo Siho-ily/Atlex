@@ -9,7 +9,6 @@ import PostEditorToolRail from "@/components/domain/post-editor/feature/PostEdit
 import PostEditorTopBar from "@/components/domain/post-editor/feature/PostEditorTopBar";
 import PostEditorCanvasLayout from "@/components/domain/post-editor/layout/PostEditorCanvasLayout";
 import PostEditorContainer from "@/components/domain/post-editor/layout/PostEditorContainer";
-import PostEditorHeader from "@/components/domain/post-editor/layout/PostEditorHeader";
 import { postEditorCopy } from "@/data/post-editor/post-editor-copy";
 import { postEditorDrafts } from "@/data/post-editor/post-editor-drafts";
 import { postEditorToolCategories } from "@/data/post-editor/post-editor-tool-categories";
@@ -51,11 +50,6 @@ export default function PostWritePage() {
 
   return (
     <PostEditorContainer>
-      <PostEditorHeader
-        pageTitle={postEditorCopy.pageTitle}
-        viewportLabel={postEditorCopy.viewportLabel}
-      />
-
       <div className="relative">
         <div
           data-post-editor-shell
