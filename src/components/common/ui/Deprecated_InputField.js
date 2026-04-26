@@ -1,6 +1,6 @@
 "use client";
 
-export default function InputField({ className = "", ...props }) {
+export default function Deprecated_InputField({ className = "", ...props }) {
     return (
         <input
             {...props}
