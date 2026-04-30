@@ -70,12 +70,14 @@ function PaginationLink({
   className,
   isActive,
   size = "icon",
+  disabled,
   ...props
 }) {
   return (
     <Button
       variant={isActive ? "outline" : "ghost"}
       size={size}
+      disabled={disabled}
       className={cn(className)}
       nativeButton={false}
       render={

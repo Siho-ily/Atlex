@@ -70,6 +70,8 @@ export default function PaginationLayout({
                             onClick={(e) => handlePage(1, e)}
                             aria-disabled={isPrevDisabled}
                             className={isPrevDisabled ? disabledClass : ""}
+                            disabled={isPrevDisabled}
+                            aria-label="첫 페이지로 이동"
                         >
                             «
                         </PaginationLink>
@@ -81,6 +83,8 @@ export default function PaginationLayout({
                         onClick={(e) => handlePage(currentPage - 1, e)}
                         aria-disabled={isPrevDisabled}
                         className={isPrevDisabled ? disabledClass : ""}
+                        disabled={isPrevDisabled}
+                        aria-label="이전 페이지로 이동"
                     />
                 </PaginationItem>
 
@@ -99,6 +103,8 @@ export default function PaginationLayout({
                                 href="#"
                                 isActive={item === currentPage}
                                 onClick={(e) => handlePage(item, e)}
+                                disabled={item === currentPage}
+                                aria-label={`${item} 페이지로 이동`}
                             >
                                 {item}
                             </PaginationLink>
@@ -112,6 +118,8 @@ export default function PaginationLayout({
                         onClick={(e) => handlePage(currentPage + 1, e)}
                         aria-disabled={isNextDisabled}
                         className={isNextDisabled ? disabledClass : ""}
+                        disabled={isNextDisabled}
+                        aria-label="다음 페이지로 이동"
                     />
                 </PaginationItem>
                 {showFirstLast && (
@@ -121,6 +129,8 @@ export default function PaginationLayout({
                             onClick={(e) => handlePage(totalPages, e)}
                             aria-disabled={isNextDisabled}
                             className={isNextDisabled ? disabledClass : ""}
+                            disabled={isNextDisabled}
+                            aria-label="마지막 페이지로 이동"
                         >
                             »
                         </PaginationLink>
