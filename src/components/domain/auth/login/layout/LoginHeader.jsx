@@ -1,17 +1,17 @@
-"use client";
+import LoginLogo from "./LoginLogo"
 
 export default function LoginHeader() {
-    return (
-        <>
-            {/* 페이지 제목 */}
-            <h2 className="text-2xl font-bold text-center mb-2 text-black dark:text-white">
-                로그인
-            </h2>
+  return (
+    <div className="flex flex-col items-center text-center">
+      <LoginLogo />
 
-            {/* 안내 문구 */}
-            <p className="text-sm text-gray-500 dark:text-gray-300 text-center mb-6">
-                아이디와 비밀번호를 입력해주세요.
-            </p>
-        </>
-    );
+      <h1 className="mt-12 font-serif text-5xl font-bold text-foreground">
+        로그인
+      </h1>
+
+      <p className="mt-5 font-serif text-xl text-muted-foreground">
+        아이디와 비밀번호를 입력해서 로그인해주세요.
+      </p>
+    </div>
+  )
 }
