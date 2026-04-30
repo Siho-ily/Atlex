@@ -4,13 +4,14 @@ import { Button } from "@/components/common/ui/button"
 import { Input } from "@/components/common/ui/input"
 import { Label } from "@/components/common/ui/label"
 import { Checkbox } from "@/components/common/ui/checkbox"
+import Link from "next/link"
 
 export default function LoginForm() {
   return (
     <form className="space-y-8">
-      
+
       {/* 아이디 */}
-      <section className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
+      <div className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
         <Label
           htmlFor="userId"
           className="mb-5 block font-serif text-2xl font-bold text-card-foreground"
@@ -20,14 +21,15 @@ export default function LoginForm() {
 
         <Input
           id="userId"
+          name="userId"
           type="text"
           placeholder="아이디를 입력하세요"
           className="h-16 rounded-2xl border-border bg-background px-6 font-serif text-xl"
         />
-      </section>
+      </div>
 
       {/* 비밀번호 */}
-      <section className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
+      <div className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
         <Label
           htmlFor="password"
           className="mb-5 block font-serif text-2xl font-bold text-card-foreground"
@@ -37,11 +39,12 @@ export default function LoginForm() {
 
         <Input
           id="password"
+          name="password"
           type="password"
           placeholder="비밀번호를 입력하세요"
           className="h-16 rounded-2xl border-border bg-background px-6 font-serif text-xl"
         />
-      </section>
+      </div>
 
       {/* 옵션 */}
       <div className="flex items-center justify-between px-2">
@@ -56,12 +59,13 @@ export default function LoginForm() {
           </Label>
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="link"
           className="font-serif text-lg text-primary hover:underline"
         >
           비밀번호 찾기
-        </button>
+        </Button>
       </div>
 
       {/* 로그인 버튼 */}
@@ -75,12 +79,15 @@ export default function LoginForm() {
       {/* 회원가입 */}
       <p className="text-center font-serif text-lg text-muted-foreground">
         아직 회원이 아니신가요?{" "}
-        <button
+        <Button
           type="button"
+          variant="link"
           className="font-bold text-primary hover:underline"
         >
-          회원가입
-        </button>
+          <Link href="/signup-page" className="font-bold text-primary hover:underline">
+            회원가입
+          </Link>
+        </Button>
       </p>
     </form>
   )
