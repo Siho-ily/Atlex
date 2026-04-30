@@ -5,6 +5,16 @@ import { NicknameField } from "@/components/common/layout/NicknameField";
 import { PasswordField } from "@/components/common/layout/PasswordField";
 import { UserIdField } from "@/components/common/layout/UserIdField";
 import { useState } from "react";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/common/ui/pagination"
+import PaginationLayout from "@/components/common/layout/PaginationLayout";
 
 export default function Test() {
     return (
@@ -13,6 +23,7 @@ export default function Test() {
             <NicknameTest />
             <PasswordTest />
             <EmailTest />
+            <PaginationTest />
         </div>
     )
 }
@@ -166,5 +177,24 @@ function UserIdTest() {
                 disabled={checkResult?.ok || false}
             />
         </div>
+    )
+}
+
+function PaginationTest() {
+    const [currentPage, setCurrentPage] = useState(1)
+    const onPageChange = (page) => {
+        setCurrentPage(page);
+        console.log(page);
+    }
+
+    return (
+        <PaginationLayout
+            totalPages={20}
+            currentPage={currentPage}
+            siblingCount={2}
+            showEllipsis={true}
+            showFirstLast={false}
+            onPageChange={onPageChange}
+        />
     )
 }
