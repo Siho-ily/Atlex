@@ -22,16 +22,8 @@ jobs:
           BRANCH: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
-          EXISTING=$(gh pr list \
-            --repo "$REPO" \
-            --head "$BRANCH" \
-            --base dev \
-            --state open \
-            --json number \
-            --jq 'length')
-          if [ "$EXISTING" = "0" ]; then
-            CHANGED_FILES=$(git diff --name-only origin/dev...HEAD | sed 's/^/- /')
-            cat > /tmp/pr_body.md << EOF
+          CHANGED_FILES=$(git diff --name-only origin/dev...HEAD | sed 's/^/- /')
+          cat > /tmp/pr_body.md << EOF
           Auto-generated PR from \`$BRANCH\`
 
           ## 작성자
@@ -40,6 +32,16 @@ jobs:
           ## 변경된 파일
           $CHANGED_FILES
           EOF
+
+          PR_NUMBER=$(gh pr list \
+            --repo "$REPO" \
+            --head "$BRANCH" \
+            --base dev \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -z "$PR_NUMBER" ]; then
             gh pr create \
               --repo "$REPO" \
               --head "$BRANCH" \
@@ -47,5 +49,7 @@ jobs:
               --title "$BRANCH → dev" \
               --body-file /tmp/pr_body.md
           else
-            echo "PR already exists, skipping."
+            gh pr edit "$PR_NUMBER" \
+              --repo "$REPO" \
+              --body-file /tmp/pr_body.md
           fi
