@@ -115,6 +115,46 @@ export const Invalid = {
   ),
 };
 
+export const DestructiveItems = {
+  render: () => (
+    <Select>
+      <SelectTrigger>
+        <SelectValue placeholder="작업을 선택하세요" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="edit">편집</SelectItem>
+          <SelectItem value="duplicate">복제</SelectItem>
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectItem value="delete" variant="destructive">삭제</SelectItem>
+          <SelectItem value="reset" variant="destructive">초기화</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ),
+};
+
+export const LongText = {
+  render: () => (
+    <div className="w-48">
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="항목을 선택하세요" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="short">짧은 텍스트</SelectItem>
+            <SelectItem value="long">매우 길고 긴 텍스트가 잘리는지 확인합니다</SelectItem>
+            <SelectItem value="longer">이것은 더욱더 길고 긴 텍스트로 truncate가 올바르게 동작하는지 검증합니다</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  ),
+};
+
 export const WithGroups = {
   render: () => (
     <Select>
