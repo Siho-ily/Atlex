@@ -54,12 +54,13 @@ function DialogClose({
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({
+const DialogOverlay = React.forwardRef(({
   className,
   ...props
-}) {
+}, ref) => {
   return (
     <DialogPrimitive.Backdrop
+      ref={ref}
       data-slot="dialog-overlay"
       className={cn(
         "fixed inset-0 isolate z-50 bg-black/40 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
@@ -67,20 +68,22 @@ function DialogOverlay({
       )}
       {...props} />
   );
-}
+});
+DialogOverlay.displayName = "DialogOverlay";
 
-function DialogContent({
+const DialogContent = React.forwardRef(({
   className,
   children,
   showCloseButton = true,
   variant = "default",
   size = "default",
   ...props
-}) {
+}, ref) => {
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Popup
+        ref={ref}
         data-slot="dialog-content"
         className={cn(dialogContentVariants({ variant, size }), className)}
         {...props}>
@@ -92,13 +95,14 @@ function DialogContent({
               <Button variant="ghost" className="absolute top-2 right-2" size="icon-sm" />
             }>
             <XIcon />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">닫기</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
     </DialogPortal>
   );
-}
+});
+DialogContent.displayName = "DialogContent";
 
 function DialogHeader({
   className,
@@ -136,24 +140,27 @@ function DialogFooter({
   );
 }
 
-function DialogTitle({
+const DialogTitle = React.forwardRef(({
   className,
   ...props
-}) {
+}, ref) => {
   return (
     <DialogPrimitive.Title
+      ref={ref}
       data-slot="dialog-title"
       className={cn("text-base leading-tight font-medium", className)}
       {...props} />
   );
-}
+});
+DialogTitle.displayName = "DialogTitle";
 
-function DialogDescription({
+const DialogDescription = React.forwardRef(({
   className,
   ...props
-}) {
+}, ref) => {
   return (
     <DialogPrimitive.Description
+      ref={ref}
       data-slot="dialog-description"
       className={cn(
         "text-sm text-muted-foreground [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
@@ -161,7 +168,8 @@ function DialogDescription({
       )}
       {...props} />
   );
-}
+});
+DialogDescription.displayName = "DialogDescription";
 
 export {
   Dialog,

@@ -50,7 +50,6 @@ export const Default = {
 };
 
 export const Destructive = {
-  args: { variant: "destructive", size: "default", showCloseButton: true },
   render: () => (
     <BasicDialog
       variant="destructive"
@@ -142,7 +141,6 @@ export const DestructiveWithFooter = {
 };
 
 export const NoCloseButton = {
-  args: { showCloseButton: false },
   render: () => (
     <Dialog>
       <DialogTrigger render={<Button variant="outline" />}>열기</DialogTrigger>
@@ -151,8 +149,7 @@ export const NoCloseButton = {
           <DialogTitle>닫기 버튼 없음</DialogTitle>
           <DialogDescription>X 버튼이 없는 다이얼로그입니다. 푸터 버튼으로만 닫을 수 있습니다.</DialogDescription>
         </DialogHeader>
-        <DialogFooter showCloseButton>
-        </DialogFooter>
+        <DialogFooter showCloseButton />
       </DialogContent>
     </Dialog>
   ),
