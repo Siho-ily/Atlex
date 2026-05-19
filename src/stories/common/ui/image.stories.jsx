@@ -1,40 +1,15 @@
-import { ImageIcon, Upload, UserRound } from "lucide-react"
+import {
+  ImageIcon,
+  Upload,
+  UserRound,
+} from "lucide-react"
 
-const ImageBox = ({
-  icon,
-  title,
-  description,
-  shape = "square",
-  size = "default",
-}) => {
-  const shapeStyle =
-    shape === "circle" ? "rounded-full" : "rounded-xl"
+import { Image } from "@/components/common/ui/image"
 
-  const sizeStyle =
-    size === "wide"
-      ? "h-40 w-72"
-      : "h-40 w-40"
-
-  return (
-    <div
-      className={`flex flex-col items-center justify-center gap-2 border border-dashed bg-muted/30 p-4 ${shapeStyle} ${sizeStyle}`}
-    >
-      {icon}
-
-      <div className="text-center">
-        <p className="text-sm font-medium">{title}</p>
-        <p className="text-xs text-muted-foreground">
-          {description}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-/** @type { import('@storybook/nextjs-vite').Meta<typeof ImageBox> } */
+/** @type { import('@storybook/nextjs-vite').Meta<typeof Image> } */
 const meta = {
   title: "Common/UI/Image",
-  component: ImageBox,
+  component: Image,
   tags: ["autodocs"],
 
   argTypes: {
@@ -45,15 +20,7 @@ const meta = {
 
     size: {
       control: "select",
-      options: ["default", "wide"],
-    },
-
-    title: {
-      control: "text",
-    },
-
-    description: {
-      control: "text",
+      options: ["sm", "default", "lg", "wide"],
     },
   },
 }
@@ -61,88 +28,46 @@ const meta = {
 export default meta
 
 export const Default = {
-  args: {
-    icon: (
-      <ImageIcon className="size-8 text-muted-foreground" />
-    ),
-    title: "이미지",
-    description: "이미지를 추가하세요",
-    shape: "square",
-    size: "default",
-  },
+  args: {},
 }
 
 export const UploadBox = {
   args: {
-    icon: (
-      <Upload className="size-8 text-muted-foreground" />
-    ),
-    title: "업로드",
-    description: "클릭해서 업로드",
-    shape: "square",
-    size: "default",
+    icon: <Upload className="size-8" />,
   },
 }
 
 export const Profile = {
   args: {
-    icon: (
-      <UserRound className="size-8 text-muted-foreground" />
-    ),
-    title: "프로필",
-    description: "프로필 사진 등록",
     shape: "circle",
-    size: "default",
+    icon: <UserRound className="size-8" />,
   },
 }
 
-export const WideImage = {
+export const Wide = {
   args: {
-    icon: (
-      <ImageIcon className="size-8 text-muted-foreground" />
-    ),
-    title: "대표 이미지",
-    description: "썸네일을 추가하세요",
-    shape: "square",
     size: "wide",
+    icon: <ImageIcon className="size-8" />,
   },
 }
 
 export const AllTypes = {
   render: () => (
-    <div className="flex flex-wrap gap-4">
-      <ImageBox
-        icon={
-          <ImageIcon className="size-8 text-muted-foreground" />
-        }
-        title="기본 이미지"
-        description="이미지 없음"
+    <div className="flex flex-wrap items-center gap-4">
+      <Image />
+
+      <Image
+        icon={<Upload className="size-8" />}
       />
 
-      <ImageBox
-        icon={
-          <Upload className="size-8 text-muted-foreground" />
-        }
-        title="업로드"
-        description="클릭해서 업로드"
-      />
-
-      <ImageBox
-        icon={
-          <UserRound className="size-8 text-muted-foreground" />
-        }
-        title="프로필"
-        description="사진 등록"
+      <Image
         shape="circle"
+        icon={<UserRound className="size-8" />}
       />
 
-      <ImageBox
-        icon={
-          <ImageIcon className="size-8 text-muted-foreground" />
-        }
-        title="대표 이미지"
-        description="썸네일 추가"
+      <Image
         size="wide"
+        icon={<ImageIcon className="size-8" />}
       />
     </div>
   ),
