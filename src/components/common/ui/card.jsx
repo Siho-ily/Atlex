@@ -12,7 +12,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-5 overflow-hidden rounded-2xl border border-border bg-card py-5 text-sm text-card-foreground shadow-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-2xl *:[img:last-child]:rounded-b-2xl",
+        "group/card flex flex-col gap-5 overflow-hidden rounded-2xl border border-border bg-card py-5 text-sm text-card-foreground shadow-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4 *:[img:first-child]:rounded-t-2xl *:[img:last-child]:rounded-b-2xl",
         className
       )}
       {...props} />
@@ -96,7 +96,7 @@ function CardFooter({
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center gap-2 rounded-b-2xl border-t bg-muted/40 px-5 py-4 group-data-[size=sm]/card:px-4 group-data-[size=sm]/card:py-3",
+        "flex items-center gap-2 rounded-b-2xl border-t bg-muted/40 px-5 py-5 group-data-[size=sm]/card:px-4 group-data-[size=sm]/card:py-4",
         className
       )}
       {...props} />
