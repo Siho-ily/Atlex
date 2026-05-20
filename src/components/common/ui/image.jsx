@@ -9,6 +9,7 @@ const imageVariants = cva(
   {
     variants: {
       shape: {
+        sharp: "rounded-none",
         square: "rounded-xl",
         circle: "rounded-full",
       },
