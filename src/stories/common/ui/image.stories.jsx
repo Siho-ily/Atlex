@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     shape: {
       control: "select",
-      options: ["square", "circle"],
+      options: ["sharp", "square", "circle"],
     },
 
     size: {
@@ -29,6 +29,12 @@ export default meta
 
 export const Default = {
   args: {},
+}
+
+export const Sharp = {
+  args: {
+    shape: "sharp",
+  },
 }
 
 export const UploadBox = {
@@ -55,6 +61,10 @@ export const AllTypes = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
       <Image />
+
+      <Image
+        shape="sharp"
+      />
 
       <Image
         icon={<Upload className="size-8" />}
