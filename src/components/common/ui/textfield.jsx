@@ -34,6 +34,7 @@ const textfieldVariants = cva(
         nowrap: "whitespace-nowrap",
         preline: "whitespace-pre-line",
         prewrap: "whitespace-pre-wrap",
+        keep: "whitespace-normal [word-break:keep-all] [overflow-wrap:normal]",
       },
     },
 
@@ -41,7 +42,7 @@ const textfieldVariants = cva(
       variant: "default",
       size: "default",
       weight: "normal",
-      whitespace: "normal",
+      whitespace: "keep",
     },
   }
 )

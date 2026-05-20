@@ -39,6 +39,7 @@ const meta = {
         "nowrap",
         "preline",
         "prewrap",
+        "keep",
       ],
     },
 
