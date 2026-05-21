@@ -1,4 +1,3 @@
-// 프로필 플레이스홀더
 import { cn } from "@/lib/utils";
 
 const sizeClassNameMap = {
@@ -7,7 +6,6 @@ const sizeClassNameMap = {
 };
 
 function renderLabel(label) {
-  // 두 단어 라벨 줄바꿈
   return label.split(" ").map((word, index) => (
     <span key={`${word}-${index}`} className="block">
       {word}
@@ -16,9 +14,9 @@ function renderLabel(label) {
 }
 
 export default function BlogHomeProfileAvatar({
-  alt = "프로필 사진",
+  alt = "\uD504\uB85C\uD544 \uC0AC\uC9C4",
   className,
-  label = "프로필 사진",
+  label = "\uD504\uB85C\uD544 \uC0AC\uC9C4",
   showLabel = true,
   size = "lg",
   src,
@@ -31,7 +29,6 @@ export default function BlogHomeProfileAvatar({
         className
       )}
     >
-      {/* 이미지 우선, 없으면 텍스트 */}
       {src ? (
         <img alt={alt} className="h-full w-full object-cover" src={src} />
       ) : showLabel ? (
