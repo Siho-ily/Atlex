@@ -1,6 +1,6 @@
-// 데이터 연결만 담당하는 페이지
 import BlogHomeFeed from "@/components/domain/blog-home/feature/BlogHomeFeed";
 import BlogHomeSidebar from "@/components/domain/blog-home/feature/BlogHomeSidebar";
+import BlogHomeBodyLayout from "@/components/domain/blog-home/layout/BlogHomeBodyLayout";
 import BlogHomeContainer from "@/components/domain/blog-home/layout/BlogHomeContainer";
 import BlogHomeHeader from "@/components/domain/blog-home/layout/BlogHomeHeader";
 import {
@@ -21,15 +21,13 @@ export default function BlogHomePage() {
       <div className="space-y-6">
         <BlogHomeHeader {...blogHomeHeaderData} />
 
-        {/* 프로필 보드 + 글 목록 2열 배치 */}
-        <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:items-start">
-          {/* 스크롤 시 사이드바 고정 */}
-          <div className="xl:sticky xl:top-8">
+        <BlogHomeBodyLayout
+          sidebar={
             <BlogHomeSidebar profile={blogHomeProfile} tags={blogHomeTags} />
-          </div>
-
+          }
+        >
           <BlogHomeFeed feed={blogHomeFeedData} />
-        </div>
+        </BlogHomeBodyLayout>
       </div>
     </BlogHomeContainer>
   );
