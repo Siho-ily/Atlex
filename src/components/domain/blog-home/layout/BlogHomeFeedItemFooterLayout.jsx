@@ -1,20 +1,27 @@
 import { Bookmark, Heart, MessageSquare } from "lucide-react";
 
+import { Button } from "@/components/common/ui/button";
 import { Separator } from "@/components/common/ui/separator";
 import { Textfield } from "@/components/common/ui/textfield";
 import { cn } from "@/lib/utils";
 
-function ReactionBadge({ active = false, icon: Icon, value }) {
+function ReactionButton({ active = false, icon: Icon, label, value }) {
   return (
-    <span
+    <Button
+      type="button"
+      variant="outline"
+      size="xs"
+      aria-label={`${label} ${value}`}
       className={cn(
-        "inline-flex items-center gap-1 text-xs font-semibold",
-        active ? "text-destructive" : "text-muted-foreground"
+        "h-auto rounded-full px-3 py-1 text-xs font-semibold",
+        active
+          ? "border-destructive/20 bg-destructive/5 text-destructive hover:bg-destructive/10 hover:text-destructive"
+          : "text-muted-foreground"
       )}
     >
       <Icon className="size-3.5" />
       {value}
-    </span>
+    </Button>
   );
 }
 
@@ -34,10 +41,23 @@ export default function BlogHomeFeedItemFooterLayout({
           {date}
         </Textfield>
 
-        <div className="flex flex-wrap items-center gap-4">
-          <ReactionBadge active={isLiked} icon={Heart} value={likes} />
-          <ReactionBadge icon={MessageSquare} value={comments} />
-          <ReactionBadge icon={Bookmark} value={bookmarks} />
+        <div className="flex flex-wrap items-center gap-2">
+          <ReactionButton
+            active={isLiked}
+            icon={Heart}
+            label="like"
+            value={likes}
+          />
+          <ReactionButton
+            icon={MessageSquare}
+            label="comment"
+            value={comments}
+          />
+          <ReactionButton
+            icon={Bookmark}
+            label="bookmark"
+            value={bookmarks}
+          />
         </div>
       </div>
     </div>
