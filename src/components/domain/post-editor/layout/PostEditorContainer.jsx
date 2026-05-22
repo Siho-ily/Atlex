@@ -1,3 +1,4 @@
+// [Layout] 페이지 전체 배경과 최대 너비 제한을 담당하는 최외곽 래퍼
 export default function PostEditorContainer({ children }) {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">

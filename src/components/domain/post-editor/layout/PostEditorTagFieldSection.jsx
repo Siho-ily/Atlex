@@ -1,3 +1,6 @@
+// [Group] usePostEditorTags 훅 출력 → PostEditorTagField props 변환 어댑터.
+// 훅이 반환하는 combinedTags(문자열 배열)를 TagField가 요구하는 객체 배열로 가공하고,
+// 수동 태그에만 onRemove를 붙여서 자동 태그(본문 #해시)와 구분한다.
 import PostEditorTagField from "@/components/domain/post-editor/ui/PostEditorTagField";
 
 const DETECTED_TAGS_LABEL_PREFIX =

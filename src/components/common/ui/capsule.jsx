@@ -17,6 +17,9 @@ const capsuleVariants = cva(
                 outline: "text-foreground border-border bg-transparent",
 
                 ghost: "border-transparent bg-transparent text-muted-foreground px-1",
+
+                success:
+                    "border-emerald-100 bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
             },
             size: {
                 sm: "h-5 px-2 text-[10px]",
