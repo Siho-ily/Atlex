@@ -4,7 +4,7 @@ import { Button } from "@/components/common/ui/button";
 import { Textfield } from "@/components/common/ui/textfield";
 
 const defaultEyebrowLabel = "Archive";
-const defaultTitle = "\uC804\uCCB4 \uAE00";
+const defaultTitle = "전체 글";
 
 export default function BlogHomeFeedSectionHeaderLayout({
   eyebrowLabel = defaultEyebrowLabel,

@@ -14,7 +14,6 @@ const defaultTitle = "Quick Actions";
 
 export default function BlogHomeSidebarQuickActionsLayout({
   actions,
-  categoryItems = [],
   title = defaultTitle,
 }) {
   return (
@@ -32,9 +31,8 @@ export default function BlogHomeSidebarQuickActionsLayout({
             return (
               <BlogHomeSidebarCategoryDialog
                 key={id}
+                actionId={id}
                 ariaLabel={label}
-                icon={Icon}
-                items={categoryItems}
                 label={label}
               />
             );

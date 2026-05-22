@@ -1,5 +1,7 @@
 "use client";
 
+import { FolderOpen } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -10,28 +12,32 @@ import {
 } from "@/components/common/ui/dialog";
 import { Textfield } from "@/components/common/ui/textfield";
 import BlogHomePillButton from "@/components/domain/blog-home/ui/BlogHomePillButton";
-import BlogHomeTagChip from "@/components/domain/blog-home/ui/BlogHomeTagChip";
 
-const defaultTitle = "\uCE74\uD14C\uACE0\uB9AC";
+const defaultTitle = "카테고리";
 const defaultDescription =
-  "\uD604\uC7AC \uBE14\uB85C\uADF8 \uD648\uC5D0\uC11C \uC0AC\uC6A9 \uC911\uC778 \uD0DC\uADF8 \uBAA9\uB85D\uC744 \uD55C \uBC88\uC5D0 \uD655\uC778\uD560 \uC218 \uC788\uB2E4.";
-const emptyText = "\uD45C\uC2DC\uD560 \uCE74\uD14C\uACE0\uB9AC\uAC00 \uC5C6\uB2E4.";
+  "카테고리 모달은 일단 표시만 하고, 세부 내용은 추후 추가할 예정이다.";
+const defaultBody = "공통 Dialog 연결은 완료된 상태이다.";
+
+const dialogIconMap = {
+  category: FolderOpen,
+};
 
 export default function BlogHomeSidebarCategoryDialog({
+  actionId = "category",
   ariaLabel,
-  icon,
-  items = [],
   label,
   title = defaultTitle,
   description = defaultDescription,
 }) {
+  const Icon = dialogIconMap[actionId];
+
   return (
     <Dialog>
       <DialogTrigger
         render={
           <BlogHomePillButton
             ariaLabel={ariaLabel ?? label}
-            icon={icon}
+            icon={Icon}
             iconOnly
             label={label}
             tone="neutral"
@@ -53,23 +59,9 @@ export default function BlogHomeSidebarCategoryDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {items.length > 0 ? (
-          <div className="flex flex-col gap-3">
-            {items.map((item) => (
-              <BlogHomeTagChip
-                key={item.id}
-                active={item.active}
-                count={item.count}
-                fullWidth
-                label={item.label}
-              />
-            ))}
-          </div>
-        ) : (
-          <Textfield variant="muted" size="sm">
-            {emptyText}
-          </Textfield>
-        )}
+        <Textfield variant="muted" size="sm">
+          {defaultBody}
+        </Textfield>
       </DialogContent>
     </Dialog>
   );

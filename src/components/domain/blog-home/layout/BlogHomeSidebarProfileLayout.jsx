@@ -7,7 +7,7 @@ import BlogHomeSidebarQuickActionsLayout from "@/components/domain/blog-home/lay
 import BlogHomeSidebarStatsLayout from "@/components/domain/blog-home/layout/BlogHomeSidebarStatsLayout";
 import BlogHomeProfileAvatar from "@/components/domain/blog-home/ui/BlogHomeProfileAvatar";
 
-export default function BlogHomeSidebarProfileLayout({ profile, tags = [] }) {
+export default function BlogHomeSidebarProfileLayout({ profile }) {
   const summaryStats = profile.stats.filter((stat) => stat.id !== "posts");
 
   return (
@@ -38,10 +38,7 @@ export default function BlogHomeSidebarProfileLayout({ profile, tags = [] }) {
       </div>
 
       <BlogHomeSidebarStatsLayout stats={summaryStats} />
-      <BlogHomeSidebarQuickActionsLayout
-        actions={profile.quickActions}
-        categoryItems={tags}
-      />
+      <BlogHomeSidebarQuickActionsLayout actions={profile.quickActions} />
     </BlogHomeSidebarCard>
   );
 }

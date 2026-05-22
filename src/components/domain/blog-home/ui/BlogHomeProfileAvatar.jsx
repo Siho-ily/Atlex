@@ -14,9 +14,9 @@ function renderLabel(label) {
 }
 
 export default function BlogHomeProfileAvatar({
-  alt = "\uD504\uB85C\uD544 \uC0AC\uC9C4",
+  alt = "프로필 사진",
   className,
-  label = "\uD504\uB85C\uD544 \uC0AC\uC9C4",
+  label = "프로필 사진",
   showLabel = true,
   size = "lg",
   src,

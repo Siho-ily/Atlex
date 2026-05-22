@@ -2,9 +2,9 @@ import { Textfield } from "@/components/common/ui/textfield";
 import BlogHomeSidebarCard from "@/components/domain/blog-home/layout/BlogHomeSidebarCard";
 import BlogHomeTagChip from "@/components/domain/blog-home/ui/BlogHomeTagChip";
 
-const defaultTitle = "\uD0DC\uADF8";
+const defaultTitle = "태그";
 const defaultDescription =
-  "\uAE00 \uBAA9\uB85D\uC5D0\uC11C \uC4F0\uB294 \uD0DC\uADF8\uB4E4\uC744 \uD55C \uBC88\uC5D0 \uD6D1\uC5B4\uBCFC \uC218 \uC788\uAC8C \uB454 \uC601\uC5ED\uC774\uB2E4.";
+  "글 목록에서 쓰는 태그들을 한 번에 훑어볼 수 있게 둔 영역이다.";
 
 export default function BlogHomeSidebarTagsLayout({
   description = defaultDescription,
