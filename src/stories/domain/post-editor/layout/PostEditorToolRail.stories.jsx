@@ -11,7 +11,7 @@ function ToolRailDemo({ initialToolId, initialOpen = false }) {
   );
 
   return (
-    <div className="flex h-[480px] overflow-hidden rounded-2xl border border-border bg-slate-100/70">
+    <div className="flex h-14 w-[640px] overflow-hidden rounded-2xl border border-border bg-slate-100/70">
       <PostEditorToolRail
         isToolPanelOpen={isToolPanelOpen}
         onSelectTool={openToolPanel}
