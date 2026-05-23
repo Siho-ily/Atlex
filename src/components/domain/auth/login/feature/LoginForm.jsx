@@ -1,94 +1,112 @@
 "use client"
 
+import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
+
 import { Button } from "@/components/common/ui/button"
-import { Input } from "@/components/common/ui/input"
-import { Label } from "@/components/common/ui/label"
 import { Checkbox } from "@/components/common/ui/checkbox"
-import Link from "next/link"
+import { Field, FieldGroup, FieldLabel } from "@/components/common/ui/field"
+import { Input } from "@/components/common/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/common/ui/input-group"
 
-export default function LoginForm() {
+function LoginForm() {
+  const [userId, setUserId] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+  }
+
   return (
-    <form className="space-y-8">
+    <form onSubmit={handleSubmit} className="mt-6">
+      <FieldGroup className="gap-5">
+        <Field>
+          <FieldLabel>아이디</FieldLabel>
 
-      {/* 아이디 */}
-      <div className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
-        <Label
-          htmlFor="userId"
-          className="mb-5 block font-serif text-2xl font-bold text-card-foreground"
-        >
-          아이디
-        </Label>
+          <Input
+            type="text"
+            variant="outline"
+            size="lg"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            placeholder="아이디를 입력하세요"
+            className="h-10 rounded-lg"
+          />
+        </Field>
 
-        <Input
-          id="userId"
-          name="userId"
-          type="text"
-          placeholder="아이디를 입력하세요"
-          className="h-16 rounded-2xl border-border bg-background px-6 font-serif text-xl"
-        />
-      </div>
+        <Field>
+          <FieldLabel>비밀번호</FieldLabel>
 
-      {/* 비밀번호 */}
-      <div className="rounded-[20px] border border-border bg-card p-8 shadow-sm">
-        <Label
-          htmlFor="password"
-          className="mb-5 block font-serif text-2xl font-bold text-card-foreground"
-        >
-          비밀번호
-        </Label>
+          <InputGroup variant="outline" className="h-10 rounded-lg">
+            <InputGroupInput
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호를 입력하세요"
+            />
 
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="비밀번호를 입력하세요"
-          className="h-16 rounded-2xl border-border bg-background px-6 font-serif text-xl"
-        />
-      </div>
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="button"
+                size="icon-xs"
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
+        </Field>
 
-      {/* 옵션 */}
-      <div className="flex items-center justify-between px-2">
-        <div className="flex items-center gap-3">
-          <Checkbox id="remember" />
-
-          <Label
-            htmlFor="remember"
-            className="font-serif text-lg text-muted-foreground"
-          >
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm text-foreground">
+            <Checkbox />
             아이디 저장
-          </Label>
+          </label>
+
+          <div className="flex items-center gap-2 text-sm">
+            <button
+              type="button"
+              className="font-semibold text-primary hover:underline"
+            >
+              아이디 찾기
+            </button>
+
+            <span className="text-muted-foreground">|</span>
+
+            <button
+              type="button"
+              className="font-semibold text-primary hover:underline"
+            >
+              비밀번호 초기화
+            </button>
+          </div>
         </div>
 
         <Button
-          type="button"
-          variant="link"
-          className="font-serif text-lg text-primary hover:underline"
+          type="submit"
+          className="h-10 w-full rounded-lg text-sm font-bold"
         >
-          비밀번호 찾기
+          로그인
         </Button>
-      </div>
 
-      {/* 로그인 버튼 */}
-      <Button
-        type="submit"
-        className="h-16 w-full rounded-2xl text-2xl font-bold"
-      >
-        로그인
-      </Button>
-
-      {/* 회원가입 */}
-      <p className="text-center font-serif text-lg text-muted-foreground">
-        아직 회원이 아니신가요?{" "}
-        <Button
-          type="button"
-          variant="link"
-          className="font-bold text-primary hover:underline"
-        >
-          <Link href="/signup-page" className="font-bold text-primary hover:underline">
+        <p className="border-t border-border/60 pt-5 text-center text-sm text-muted-foreground">
+          아직 계정이 없으신가요?{" "}
+          <button
+            type="button"
+            className="font-semibold text-primary hover:underline"
+          >
             회원가입
-          </Link>
-        </Button>
-      </p>
+          </button>
+        </p>
+      </FieldGroup>
     </form>
   )
 }
+
+export { LoginForm }
