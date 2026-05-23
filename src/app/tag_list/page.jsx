@@ -1,4 +1,4 @@
-"use client";
+ㅇ"use client";
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -129,7 +129,7 @@ function TagListContent() {
     return () => {
       observer.disconnect();
     };
-  }, [hasMore, page]);
+  }, [hasMore, page, maxPage]);
 
   return (
     <main className="min-h-screen bg-[#111] px-6 py-8 text-white">
