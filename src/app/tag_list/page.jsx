@@ -1,4 +1,4 @@
-ㅇ"use client";
+"use client";
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -60,17 +60,23 @@ function TagListContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentSort = searchParams.get("sort") || "trending";
+  const sortParam = searchParams.get("sort");
+
+  const currentSort = SORT_OPTIONS.some((option) => option.value === sortParam)
+    ? sortParam
+    : "trending";
 
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
 
   const observerTargetRef = useRef(null);
 
+  const normalizedKeyword = keyword.trim().toLowerCase();
+
   const sortedTags = useMemo(() => {
-    const filtered = keyword
+    const filtered = normalizedKeyword
       ? TAGS.filter((tag) =>
-          tag.name.toLowerCase().includes(keyword.toLowerCase())
+          tag.name.toLowerCase().includes(normalizedKeyword)
         )
       : TAGS;
 
@@ -81,11 +87,13 @@ function TagListContent() {
     }
 
     if (currentSort === "alphabet") {
-      return copiedTags.sort((a, b) => a.name.localeCompare(b.name));
+      return copiedTags.sort((a, b) =>
+        a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+      );
     }
 
     return copiedTags.sort((a, b) => b.trendScore - a.trendScore);
-  }, [currentSort, keyword]);
+  }, [currentSort, normalizedKeyword]);
 
   const visibleTags = useMemo(() => {
     return sortedTags.slice(0, page * PAGE_SIZE);
@@ -95,11 +103,17 @@ function TagListContent() {
   const maxPage = Math.ceil(sortedTags.length / PAGE_SIZE);
 
   const handleSortChange = (sortValue) => {
+    const isValidSort = SORT_OPTIONS.some((option) => option.value === sortValue);
+
+    if (!isValidSort) return;
+
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("sort", sortValue);
     params.delete("page");
+
     setPage(1);
-    router.replace(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   const handleKeywordChange = (e) => {
@@ -140,13 +154,17 @@ function TagListContent() {
               태그 목록
             </h1>
 
-            <Tabs value={currentSort} onValueChange={handleSortChange} className="mt-2">
-              <TabsList variant="line" className="gap-7 p-0 h-auto">
+            <Tabs
+              value={currentSort}
+              onValueChange={handleSortChange}
+              className="mt-2"
+            >
+              <TabsList variant="line" className="h-auto gap-7 p-0">
                 {SORT_OPTIONS.map((option) => (
                   <TabsTrigger
                     key={option.value}
                     value={option.value}
-                    className="px-0 pb-2 text-[15px] text-neutral-500 hover:text-neutral-300 data-active:font-bold data-active:text-white after:bg-white"
+                    className="px-0 pb-2 text-[15px] text-neutral-500 hover:text-neutral-300 data-active:font-bold data-active:text-white data-[state=active]:font-bold data-[state=active]:text-white after:bg-white"
                   >
                     {option.label}
                   </TabsTrigger>
@@ -158,6 +176,7 @@ function TagListContent() {
           <Input
             type="text"
             placeholder="태그 검색..."
+            aria-label="태그 검색"
             variant="filled"
             size="lg"
             value={keyword}
@@ -180,9 +199,7 @@ function TagListContent() {
                   "border-[#343434] text-white"
                 )}
               >
-                <p className="text-[15px] font-medium">
-                  {tag.name}
-                </p>
+                <p className="text-[15px] font-medium">{tag.name}</p>
 
                 <p className="mt-1 text-[12px] text-neutral-500">
                   {tag.postCount.toLocaleString()}개의 포스트
@@ -192,9 +209,9 @@ function TagListContent() {
           })}
         </div>
 
-        {keyword && sortedTags.length === 0 && (
+        {normalizedKeyword && sortedTags.length === 0 && (
           <p className="py-10 text-center text-[13px] text-neutral-500">
-            "{keyword}"에 해당하는 태그가 없습니다.
+            "{keyword.trim()}"에 해당하는 태그가 없습니다.
           </p>
         )}
 
@@ -219,7 +236,7 @@ function TagListContent() {
 
 export default function TagListPage() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <TagListContent />
     </Suspense>
   );
