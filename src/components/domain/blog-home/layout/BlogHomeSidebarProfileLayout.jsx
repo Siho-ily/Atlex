@@ -8,9 +8,10 @@ import BlogHomeSidebarStatsLayout from "@/components/domain/blog-home/layout/Blo
 import BlogHomeProfileAvatar from "@/components/domain/blog-home/ui/BlogHomeProfileAvatar";
 import { cn } from "@/lib/utils";
 
-export default function BlogHomeSidebarProfileLayout({ profile }) {
-  const summaryStats = profile.stats.filter((stat) => stat.id !== "posts");
-
+export default function BlogHomeSidebarProfileLayout({
+  profile,
+  summaryStats = [],
+}) {
   return (
     <BlogHomeSidebarCard>
       <div className="flex flex-col gap-4">

@@ -11,12 +11,12 @@ import {
   DialogTrigger,
 } from "@/components/common/ui/dialog";
 import { Textfield } from "@/components/common/ui/textfield";
-import BlogHomePillButton from "@/components/domain/blog-home/ui/BlogHomePillButton";
 
-const defaultTitle = "카테고리";
+const defaultTitle = "\uCE74\uD14C\uACE0\uB9AC";
 const defaultDescription =
-  "카테고리 모달은 일단 표시만 하고, 세부 내용은 추후 추가할 예정이다.";
-const defaultBody = "공통 Dialog 연결은 완료된 상태이다.";
+  "\uCE74\uD14C\uACE0\uB9AC \uBAA8\uB2EC\uC740 \uC77C\uB2E8 \uD45C\uC2DC\uB9CC \uD574\uB450\uACE0, \uB0B4\uBD80 \uCF58\uD150\uCE20\uB294 \uCD94\uD6C4 \uCD94\uAC00\uD560 \uC608\uC815\uC785\uB2C8\uB2E4.";
+const defaultBody =
+  "\uACF5\uD1B5 Dialog \uC5F0\uACB0\uC740 \uC644\uB8CC\uB41C \uC0C1\uD0DC\uC785\uB2C8\uB2E4.";
 
 const dialogIconMap = {
   category: FolderOpen,
@@ -34,17 +34,12 @@ export default function BlogHomeSidebarCategoryDialog({
   return (
     <Dialog>
       <DialogTrigger
-        render={
-          <BlogHomePillButton
-            ariaLabel={ariaLabel ?? label}
-            icon={Icon}
-            iconOnly
-            label={label}
-            tone="neutral"
-            size="md"
-          />
-        }
-      />
+        aria-label={ariaLabel ?? label}
+        className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-card p-0 font-semibold text-foreground shadow-none transition-colors hover:bg-card"
+      >
+        {Icon ? <Icon className="size-4" /> : null}
+        <span className="sr-only">{label}</span>
+      </DialogTrigger>
 
       <DialogContent
         size="md"

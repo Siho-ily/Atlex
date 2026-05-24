@@ -1,12 +1,9 @@
 import { Textfield, textfieldVariants } from "@/components/common/ui/textfield";
 import { cn } from "@/lib/utils";
 
-const defaultEyebrowLabel = "Archive";
-const defaultTitle = "전체 글";
-
 export default function BlogHomeFeedSectionHeaderLayout({
-  eyebrowLabel = defaultEyebrowLabel,
-  title = defaultTitle,
+  eyebrowLabel,
+  title,
   totalCount,
 }) {
   return (

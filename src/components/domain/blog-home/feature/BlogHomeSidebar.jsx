@@ -2,9 +2,15 @@ import BlogHomeSidebarProfileLayout from "@/components/domain/blog-home/layout/B
 import BlogHomeSidebarTagsLayout from "@/components/domain/blog-home/layout/BlogHomeSidebarTagsLayout";
 
 export default function BlogHomeSidebar({ onTagSelect, profile, tags }) {
+  const summaryStats =
+    profile?.stats?.filter((stat) => stat.id !== "posts") ?? [];
+
   return (
     <aside className="space-y-4">
-      <BlogHomeSidebarProfileLayout profile={profile} />
+      <BlogHomeSidebarProfileLayout
+        profile={profile}
+        summaryStats={summaryStats}
+      />
       <BlogHomeSidebarTagsLayout onTagSelect={onTagSelect} tags={tags} />
     </aside>
   );
