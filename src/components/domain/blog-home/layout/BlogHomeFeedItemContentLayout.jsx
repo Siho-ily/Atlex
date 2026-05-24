@@ -32,6 +32,7 @@ export default function BlogHomeFeedItemContentLayout({
     <>
       <div className="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         <Capsule
+          size="sm"
           className={cn(
             "gap-1 rounded-full border-transparent px-2.5 py-1",
             isPrivate
@@ -74,7 +75,8 @@ export default function BlogHomeFeedItemContentLayout({
         {tags.map((tag) => (
           <Capsule
             key={tag}
-            className="rounded-full border-border bg-background px-3 py-1 text-xs font-semibold text-muted-foreground hover:bg-background"
+            variant="outline"
+            className="bg-background px-3 py-1 text-xs font-semibold text-muted-foreground hover:bg-background"
           >
             {tag}
           </Capsule>
