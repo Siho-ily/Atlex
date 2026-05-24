@@ -1,4 +1,7 @@
-import { Textfield } from "@/components/common/ui/textfield";
+import {
+  CardDescription,
+  CardTitle,
+} from "@/components/common/ui/card";
 import BlogHomeSidebarCard from "@/components/domain/blog-home/layout/BlogHomeSidebarCard";
 import BlogHomeTagChip from "@/components/domain/blog-home/ui/BlogHomeTagChip";
 
@@ -8,16 +11,15 @@ const defaultDescription =
 
 export default function BlogHomeSidebarTagsLayout({
   description = defaultDescription,
+  onTagSelect,
   tags,
   title = defaultTitle,
 }) {
   return (
     <BlogHomeSidebarCard>
       <div className="space-y-1">
-        <h3 className="text-lg font-bold text-foreground">{title}</h3>
-        <Textfield variant="muted" size="sm" className="leading-6">
-          {description}
-        </Textfield>
+        <CardTitle className="text-lg font-bold">{title}</CardTitle>
+        <CardDescription className="leading-6">{description}</CardDescription>
       </div>
 
       {/* 좁은 사이드바 카드 폭에 맞춰 태그를 세로로 쌓아 보여준다. */}
@@ -28,6 +30,7 @@ export default function BlogHomeSidebarTagsLayout({
             active={tag.active}
             count={tag.count}
             label={tag.label}
+            onClick={() => onTagSelect?.(tag.id)}
           />
         ))}
       </div>

@@ -1,6 +1,4 @@
-import BlogHomeFeed from "@/components/domain/blog-home/feature/BlogHomeFeed";
-import BlogHomeSidebar from "@/components/domain/blog-home/feature/BlogHomeSidebar";
-import BlogHomeBodyLayout from "@/components/domain/blog-home/layout/BlogHomeBodyLayout";
+import BlogHomeContent from "@/components/domain/blog-home/feature/BlogHomeContent";
 import BlogHomeContainer from "@/components/domain/blog-home/layout/BlogHomeContainer";
 import BlogHomeHeader from "@/components/domain/blog-home/layout/BlogHomeHeader";
 import {
@@ -18,16 +16,13 @@ export const metadata = {
 export default function BlogHomePage() {
   return (
     <BlogHomeContainer>
-      <div className="space-y-6">
-        <BlogHomeHeader {...blogHomeHeaderData} />
-
-        <BlogHomeBodyLayout
-          sidebar={
-            <BlogHomeSidebar profile={blogHomeProfile} tags={blogHomeTags} />
-          }
-        >
-          <BlogHomeFeed feed={blogHomeFeedData} />
-        </BlogHomeBodyLayout>
+      <BlogHomeHeader {...blogHomeHeaderData} />
+      <div className="mx-auto w-full max-w-[1720px] px-4 py-8 sm:px-6 lg:px-8">
+        <BlogHomeContent
+          feed={blogHomeFeedData}
+          profile={blogHomeProfile}
+          tags={blogHomeTags}
+        />
       </div>
     </BlogHomeContainer>
   );
