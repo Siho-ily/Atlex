@@ -16,18 +16,13 @@ function SignupForm() {
 
   const [emailLocal, setEmailLocal] = useState("")
   const [emailDomain, setEmailDomain] = useState("")
-  const [selectedDomain, setSelectedDomain] =
-    useState("")
+  const [selectedDomain, setSelectedDomain] = useState("")
 
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] =
-    useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
-  const [userIdCheck, setUserIdCheck] =
-    useState(null)
-
-  const [nicknameCheck, setNicknameCheck] =
-    useState(null)
+  const [userIdCheck, setUserIdCheck] = useState(null)
+  const [nicknameCheck, setNicknameCheck] = useState(null)
 
   const passwordChecks = {
     length: password.length >= 10,
@@ -42,21 +37,15 @@ function SignupForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-6"
-    >
+    <form onSubmit={handleSubmit} className="mt-6">
       <FieldGroup className="gap-4">
         <UserIdField
           value={userId}
-          onChange={(e) =>
-            setUserId(e.target.value)
-          }
+          onChange={(e) => setUserId(e.target.value)}
           onCheckDuplicate={() =>
             setUserIdCheck({
               ok: true,
-              message:
-                "사용 가능한 아이디입니다.",
+              message: "사용 가능한 아이디입니다.",
             })
           }
           checkResult={userIdCheck}
@@ -66,41 +55,26 @@ function SignupForm() {
           localValue={emailLocal}
           domainValue={emailDomain}
           selectedDomain={selectedDomain}
-          onLocalChange={(e) =>
-            setEmailLocal(e.target.value)
-          }
-          onDomainChange={(e) =>
-            setEmailDomain(e.target.value)
-          }
-          onSelectedDomainChange={
-            setSelectedDomain
-          }
+          onLocalChange={(e) => setEmailLocal(e.target.value)}
+          onDomainChange={(e) => setEmailDomain(e.target.value)}
+          onSelectedDomainChange={setSelectedDomain}
         />
 
         <PasswordField
           value={password}
           confirmValue={confirmPassword}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          onConfirmChange={(e) =>
-            setConfirmPassword(
-              e.target.value
-            )
-          }
+          onChange={(e) => setPassword(e.target.value)}
+          onConfirmChange={(e) => setConfirmPassword(e.target.value)}
           checks={passwordChecks}
         />
 
         <NicknameField
           value={nickname}
-          onChange={(e) =>
-            setNickname(e.target.value)
-          }
+          onChange={(e) => setNickname(e.target.value)}
           onCheckDuplicate={() =>
             setNicknameCheck({
               ok: true,
-              message:
-                "사용 가능한 닉네임입니다.",
+              message: "사용 가능한 닉네임입니다.",
             })
           }
           checkResult={nicknameCheck}

@@ -1,23 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/common/ui/button"
 import { Checkbox } from "@/components/common/ui/checkbox"
-import { Field, FieldGroup, FieldLabel } from "@/components/common/ui/field"
-import { Input } from "@/components/common/ui/input"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/common/ui/input-group"
+import { FieldGroup } from "@/components/common/ui/field"
+
+import { UserIdField } from "@/components/common/layout/UserIdField"
+import { PasswordField } from "@/components/common/layout/PasswordField"
 
 function LoginForm() {
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -26,42 +20,18 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="mt-6">
       <FieldGroup className="gap-5">
-        <Field>
-          <FieldLabel>아이디</FieldLabel>
+        <UserIdField
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          showCheckButton={false}
+        />
 
-          <Input
-            type="text"
-            variant="outline"
-            size="lg"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-            placeholder="아이디를 입력하세요"
-            className="h-10 rounded-lg"
-          />
-        </Field>
-
-        <Field>
-          <FieldLabel>비밀번호</FieldLabel>
-
-          <InputGroup variant="outline" className="h-10 rounded-lg">
-            <InputGroupInput
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력하세요"
-            />
-
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton
-                type="button"
-                size="icon-xs"
-                onClick={() => setShowPassword((v) => !v)}
-              >
-                {showPassword ? <EyeOff /> : <Eye />}
-              </InputGroupButton>
-            </InputGroupAddon>
-          </InputGroup>
-        </Field>
+        <PasswordField
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          showConfirm={false}
+          showChecks={false}
+        />
 
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm text-foreground">
