@@ -13,6 +13,7 @@ const actionIconMap = {
 const defaultTitle = "Quick Actions";
 
 export default function BlogHomeSidebarQuickActionsLayout({
+  actionOverrides = {},
   actions,
   title = defaultTitle,
 }) {
@@ -22,10 +23,18 @@ export default function BlogHomeSidebarQuickActionsLayout({
         {title}
       </Textfield>
 
-      {/* 액션은 데이터로 관리하고 카테고리만 모달 트리거로 분기한다. */}
       <div className="flex flex-wrap items-center gap-3">
         {actions.map(({ id, label }) => {
           const Icon = actionIconMap[id];
+          const renderAction = actionOverrides[id];
+
+          if (renderAction) {
+            return renderAction({
+              icon: Icon,
+              id,
+              label,
+            });
+          }
 
           if (id === "category") {
             return (
