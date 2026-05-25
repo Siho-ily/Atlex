@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { FolderOpen } from "lucide-react";
 
 import {
@@ -11,12 +13,12 @@ import {
   DialogTrigger,
 } from "@/components/common/ui/dialog";
 import { Textfield } from "@/components/common/ui/textfield";
+import { cn } from "@/lib/utils";
 
-const defaultTitle = "\uCE74\uD14C\uACE0\uB9AC";
+const defaultTitle = "카테고리";
 const defaultDescription =
-  "\uCE74\uD14C\uACE0\uB9AC \uBAA8\uB2EC\uC740 \uC77C\uB2E8 \uD45C\uC2DC\uB9CC \uD574\uB450\uACE0, \uB0B4\uBD80 \uCF58\uD150\uCE20\uB294 \uCD94\uD6C4 \uCD94\uAC00\uD560 \uC608\uC815\uC785\uB2C8\uB2E4.";
-const defaultBody =
-  "\uACF5\uD1B5 Dialog \uC5F0\uACB0\uC740 \uC644\uB8CC\uB41C \uC0C1\uD0DC\uC785\uB2C8\uB2E4.";
+  "카테고리 모달은 일단 표시만 해두고, 내부 콘텐츠는 추후 추가할 예정입니다.";
+const defaultBody = "공통 Dialog 연결은 완료된 상태입니다.";
 
 const dialogIconMap = {
   category: FolderOpen,
@@ -25,14 +27,33 @@ const dialogIconMap = {
 export default function BlogHomeSidebarCategoryDialog({
   actionId = "category",
   ariaLabel,
+  body = defaultBody,
+  dialogContentClassName,
+  dialogSize = "md",
   label,
+  renderBody,
+  showHeader = true,
   title = defaultTitle,
   description = defaultDescription,
 }) {
+  const [open, setOpen] = useState(false);
   const Icon = dialogIconMap[actionId];
+  const resolvedBody = renderBody
+    ? renderBody({
+        closeDialog() {
+          setOpen(false);
+        },
+      })
+    : body
+      ? (
+          <Textfield variant="muted" size="sm">
+            {body}
+          </Textfield>
+        )
+      : null;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         aria-label={ariaLabel ?? label}
         className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-card p-0 font-semibold text-foreground shadow-none transition-colors hover:bg-card"
@@ -42,21 +63,24 @@ export default function BlogHomeSidebarCategoryDialog({
       </DialogTrigger>
 
       <DialogContent
-        size="md"
-        className="max-h-[70vh] gap-5 overflow-y-auto rounded-3xl p-5 sm:p-6"
+        size={dialogSize}
+        className={cn(
+          "max-h-[70vh] gap-5 overflow-y-auto rounded-3xl p-5 sm:p-6",
+          dialogContentClassName
+        )}
       >
-        <DialogHeader className="pr-8">
-          <DialogTitle className="text-lg font-bold tracking-tight">
-            {title}
-          </DialogTitle>
-          <DialogDescription className="leading-6">
-            {description}
-          </DialogDescription>
-        </DialogHeader>
+        {showHeader ? (
+          <DialogHeader className="pr-8">
+            <DialogTitle className="text-lg font-bold tracking-tight">
+              {title}
+            </DialogTitle>
+            <DialogDescription className="leading-6">
+              {description}
+            </DialogDescription>
+          </DialogHeader>
+        ) : null}
 
-        <Textfield variant="muted" size="sm">
-          {defaultBody}
-        </Textfield>
+        {resolvedBody}
       </DialogContent>
     </Dialog>
   );

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 export default function BlogHomeSidebarProfileLayout({
   profile,
+  quickActionOverrides,
   summaryStats = [],
 }) {
   return (
@@ -51,7 +52,10 @@ export default function BlogHomeSidebarProfileLayout({
       </div>
 
       <BlogHomeSidebarStatsLayout stats={summaryStats} />
-      <BlogHomeSidebarQuickActionsLayout actions={profile.quickActions} />
+      <BlogHomeSidebarQuickActionsLayout
+        actionOverrides={quickActionOverrides}
+        actions={profile.quickActions}
+      />
     </BlogHomeSidebarCard>
   );
 }
