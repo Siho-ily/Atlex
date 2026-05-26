@@ -3,7 +3,7 @@ import { SignupCard } from "@/components/domain/auth/signup/layout/SignupCard"
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#eef4ff,white_45%)]">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,var(--muted),var(--background)_45%)]">
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-6 lg:px-10">
         <header className="flex h-16 shrink-0 items-center justify-between">
           <div className="flex items-center gap-3">

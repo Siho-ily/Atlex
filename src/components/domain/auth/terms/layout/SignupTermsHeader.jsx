@@ -12,8 +12,8 @@ export default function SignupTermsHeader() {
             </div>
 
             <div className="mb-8 text-center">
-                <h1 className="text-3xl font-bold text-gray-900">약관 동의</h1>
-                <p className="mt-3 text-sm text-gray-500">
+                <h1 className="text-3xl font-bold text-foreground">약관 동의</h1>
+                <p className="mt-3 text-sm text-muted-foreground">
                     아틀라스 서비스 이용을 위해 아래 약관을 확인해 주세요.
                 </p>
             </div>

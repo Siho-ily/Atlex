@@ -34,7 +34,7 @@ const POLICIES = [
 
 function PolicySettingForm() {
   return (
-    <Card className="rounded-3xl border-border/60 bg-white/80 shadow-sm backdrop-blur">
+    <Card className="rounded-3xl border-border/60 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
         <CardTitle>서비스 정책</CardTitle>
 

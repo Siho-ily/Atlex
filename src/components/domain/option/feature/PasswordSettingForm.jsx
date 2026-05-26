@@ -14,7 +14,7 @@ import { PasswordField } from "@/components/common/layout/PasswordField"
 
 function PasswordSettingForm() {
   return (
-    <Card className="rounded-3xl border-border/60 bg-white/80 shadow-sm backdrop-blur">
+    <Card className="rounded-3xl border-border/60 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
         <CardTitle>비밀번호 변경</CardTitle>
 

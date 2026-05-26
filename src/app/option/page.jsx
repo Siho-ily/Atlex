@@ -9,7 +9,7 @@ export default function Page() {
   const [activeMenu, setActiveMenu] = useState("profile")
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#eef4ff,white_45%)]">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,var(--muted),var(--background)_45%)]">
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 lg:px-10">
         <header className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-3">

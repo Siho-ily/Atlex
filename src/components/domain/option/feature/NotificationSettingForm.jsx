@@ -31,7 +31,7 @@ const NOTIFICATIONS = [
 
 function NotificationSettingForm() {
   return (
-    <Card className="rounded-3xl border-border/60 bg-white/80 shadow-sm backdrop-blur">
+    <Card className="rounded-3xl border-border/60 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
         <CardTitle>알림 설정</CardTitle>
 
