@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import React, { useState } from "react";
-import Header from "@/components/common/layout/Header";
-import { Separator } from "@/components/common/ui/separator";
-import { TabsList, TabsTrigger } from "@/components/common/ui/tabs";
+import React, { useState } from 'react';
+import Header from '@/components/common/layout/UserBlogHeader';
+import { Separator } from '@/components/common/ui/separator';
+import { TabsList, TabsTrigger } from '@/components/common/ui/tabs';
 
 /**
  * 정책 페이지 전용 레이아웃 컴포넌트
@@ -11,9 +11,9 @@ import { TabsList, TabsTrigger } from "@/components/common/ui/tabs";
  * @param {ReactNode} sidebar - 우측 사이드바 컨텐츠 (목차)
  */
 export default function PolicyLayout({ children, sidebar }) {
-  const [activeTab, setActiveTab] = useState("이용 약관");
+  const [activeTab, setActiveTab] = useState('이용 약관');
 
-  const tabs = ["이용 약관", "개인정보처리방침", "쿠키 정책"];
+  const tabs = ['이용 약관', '개인정보처리방침', '쿠키 정책'];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -31,12 +31,8 @@ export default function PolicyLayout({ children, sidebar }) {
         {/* 공통 Tabs 컴포넌트 사용 */}
         <nav className="mb-8">
           <TabsList>
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab}
-                isActive={activeTab === tab}
-                onClick={() => setActiveTab(tab)}
-              >
+            {tabs.map(tab => (
+              <TabsTrigger key={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)}>
                 {tab}
               </TabsTrigger>
             ))}
@@ -48,9 +44,7 @@ export default function PolicyLayout({ children, sidebar }) {
         {/* 2단 그리드 레이아웃 */}
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
           {/* 본문 구역 */}
-          <div className="order-2 lg:order-1">
-            {children}
-          </div>
+          <div className="order-2 lg:order-1">{children}</div>
 
           {/* 사이드바 구역 */}
           <aside className="order-1 lg:order-2">
@@ -58,9 +52,7 @@ export default function PolicyLayout({ children, sidebar }) {
               <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground">
                 목차
               </h3>
-              <ul className="space-y-1">
-                {sidebar}
-              </ul>
+              <ul className="space-y-1">{sidebar}</ul>
             </div>
           </aside>
         </div>
