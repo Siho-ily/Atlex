@@ -1,13 +1,16 @@
 import { posts } from "@/data/post/posts";
 import { categories } from "@/data/category/categories";
+import { users } from "@/data/user/users";
 import { ok, fail, requireAuth, nowDt } from "@/lib/api/mock-response";
 
 const categoryById = new Map(categories.map((c) => [c.id, c]));
+const userById = new Map(users.map((u) => [u.id, u]));
 
-function withCategoryName(post) {
+function enrichPost(post) {
   return {
     ...post,
     categoryName: post.categoryId ? categoryById.get(post.categoryId)?.name ?? null : null,
+    authorUserId: userById.get(post.authorId)?.userId ?? null,
   };
 }
 
@@ -19,7 +22,7 @@ export async function GET(_req, { params }) {
     return fail("POST_NOT_FOUND", "존재하지 않는 게시글입니다.", 404);
   }
 
-  return ok(withCategoryName(post), null);
+  return ok(enrichPost(post), null);
 }
 
 export async function PATCH(req, { params }) {
@@ -45,7 +48,7 @@ export async function PATCH(req, { params }) {
     updatedAt: nowDt(),
   };
 
-  return ok(withCategoryName(updated), "게시글이 수정되었습니다.");
+  return ok(enrichPost(updated), "게시글이 수정되었습니다.");
 }
 
 export async function DELETE(req, { params }) {

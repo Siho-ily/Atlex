@@ -6,10 +6,11 @@ import { fetchUserByIdentifier } from "@/lib/api/users";
 import { fetchPosts } from "@/lib/api/posts";
 import { toBlogHomeProfile } from "@/lib/mappers/user";
 import { toBlogHomeFeedPost } from "@/lib/mappers/post";
+import { stripHandle } from "@/lib/url/handle";
 
-async function loadBlogHomeData(username) {
+async function loadBlogHomeData(identifier) {
   const [user, postsPage] = await Promise.all([
-    fetchUserByIdentifier(username),
+    fetchUserByIdentifier(identifier),
     fetchPosts({ page: 0, size: 10 }),
   ]);
 
@@ -35,10 +36,11 @@ async function loadBlogHomeData(username) {
 
 export default async function BlogHomePage({ params }) {
   const { username } = await params;
+  const identifier = stripHandle(username);
 
   let data;
   try {
-    data = await loadBlogHomeData(username);
+    data = await loadBlogHomeData(identifier);
   } catch (error) {
     if (error?.code === "USER_NOT_FOUND") {
       notFound();
@@ -49,7 +51,7 @@ export default async function BlogHomePage({ params }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <UserBlogHeader userId={username} />
+      <UserBlogHeader userId={identifier} />
       <div className="mx-auto w-full max-w-[1720px] px-4 py-8 sm:px-6 lg:px-8">
         <CategoryBlogHomeContent
           feed={data.feed}

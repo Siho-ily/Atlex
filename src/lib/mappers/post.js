@@ -32,6 +32,7 @@ export function toBlogMainPost(apiPost) {
     title: apiPost.title,
     excerpt: truncate(apiPost.content, 80),
     author: apiPost.authorName,
+    authorUserId: apiPost.authorUserId,
     likes: apiPost.likes ?? 0,
     comments: 0,
     publishedAt: formatKoreanDate(apiPost.createdAt),
@@ -39,6 +40,27 @@ export function toBlogMainPost(apiPost) {
     cover: apiPost.thumbnailUrl
       ? { variant: "image", url: apiPost.thumbnailUrl }
       : { variant: "none" },
+  };
+}
+
+// 블로그 상세 페이지 shape (src/data/blog-detail/blog-detail-preview.js 의 형태)
+export function toBlogDetail(apiPost) {
+  return {
+    blogTitle: apiPost.authorUserId ? `${apiPost.authorUserId}.log` : "blog",
+    category: apiPost.categoryName ?? "미분류",
+    title: apiPost.title,
+    excerpt: truncate(apiPost.content, 120),
+    publishedAt: formatKoreanDate(apiPost.createdAt),
+    updatedAt: formatKoreanDate(apiPost.updatedAt),
+    readTime: `${Math.max(1, Math.ceil((apiPost.content?.length ?? 0) / 300))} min read`,
+    visibilityLabel: apiPost.isPublic ? "공개" : "비공개",
+    adminActions: ["통계", "수정", "삭제"],
+    contentBlocks: [
+      ...(apiPost.thumbnailUrl
+        ? [{ id: "cover", type: "image", src: apiPost.thumbnailUrl, caption: "" }]
+        : []),
+      { id: "body", type: "paragraph", text: apiPost.content ?? "" },
+    ],
   };
 }
 

@@ -1,13 +1,16 @@
 import { posts } from "@/data/post/posts";
 import { categories } from "@/data/category/categories";
+import { users } from "@/data/user/users";
 import { ok, created, fail, requireAuth, nowDt } from "@/lib/api/mock-response";
 
 const categoryById = new Map(categories.map((c) => [c.id, c]));
+const userById = new Map(users.map((u) => [u.id, u]));
 
-function withCategoryName(post) {
+function enrichPost(post) {
   return {
     ...post,
     categoryName: post.categoryId ? categoryById.get(post.categoryId)?.name ?? null : null,
+    authorUserId: userById.get(post.authorId)?.userId ?? null,
   };
 }
 
@@ -21,7 +24,7 @@ export async function GET(req) {
   const totalPages = Math.ceil(totalElements / size);
   const start = page * size;
 
-  const content = publicPosts.slice(start, start + size).map(withCategoryName);
+  const content = publicPosts.slice(start, start + size).map(enrichPost);
 
   return ok(
     { content, totalElements, totalPages, number: page, size },
@@ -58,5 +61,5 @@ export async function POST(req) {
     updatedAt: now,
   };
 
-  return created(newPost, "게시글이 작성되었습니다.");
+  return created(enrichPost(newPost), "게시글이 작성되었습니다.");
 }
