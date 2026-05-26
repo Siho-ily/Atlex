@@ -4,12 +4,9 @@ import BlogDetailContainer from "@/components/domain/blog-detail/layout/BlogDeta
 import Header from "@/components/common/layout/Header";
 import { blogDetailPreview } from "@/data/blog-detail/blog-detail-preview";
 
-export const metadata = {
-  title: "Blog Detail Preview",
-  description: "Static blog detail UI preview page",
-};
+export default async function BlogDetailPage({ params }) {
+  const { username, postId } = await params;
 
-export default function BlogDetailPreviewPage() {
   return (
     <BlogDetailContainer>
       <Header logoHref="/" />
