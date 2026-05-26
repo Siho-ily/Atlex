@@ -30,13 +30,15 @@ export default function PolicyLayout({ children, sidebar }) {
 
         {/* 공통 Tabs 컴포넌트 사용 */}
         <nav className="mb-8">
-          <TabsList>
-            {tabs.map(tab => (
-              <TabsTrigger key={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)}>
-                {tab}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList>
+              {tabs.map(tab => (
+                <TabsTrigger key={tab} value={tab}>
+                  {tab}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         </nav>
 
         <Separator className="mb-8" />
