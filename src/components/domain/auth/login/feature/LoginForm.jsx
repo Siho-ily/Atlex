@@ -9,7 +9,7 @@ import { FieldGroup } from "@/components/common/ui/field"
 import { UserIdField } from "@/components/common/layout/UserIdField"
 import { PasswordField } from "@/components/common/layout/PasswordField"
 
-function LoginForm() {
+function LoginForm({ onSwitchMode }) {
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
 
@@ -69,6 +69,7 @@ function LoginForm() {
           아직 계정이 없으신가요?{" "}
           <button
             type="button"
+            onClick={onSwitchMode}
             className="font-semibold text-primary hover:underline"
           >
             회원가입
