@@ -1,4 +1,4 @@
-// 프로필 플레이스홀더
+import { Image } from "@/components/common/ui/image";
 import { cn } from "@/lib/utils";
 
 const sizeClassNameMap = {
@@ -7,7 +7,6 @@ const sizeClassNameMap = {
 };
 
 function renderLabel(label) {
-  // 두 단어 라벨 줄바꿈
   return label.split(" ").map((word, index) => (
     <span key={`${word}-${index}`} className="block">
       {word}
@@ -23,20 +22,23 @@ export default function BlogHomeProfileAvatar({
   size = "lg",
   src,
 }) {
+  const icon = src ? (
+    <img alt={alt} className="h-full w-full object-cover" src={src} />
+  ) : showLabel ? (
+    <span>{renderLabel(label)}</span>
+  ) : (
+    <span aria-hidden="true" />
+  );
+
   return (
-    <div
+    <Image
+      shape="circle"
+      icon={icon}
       className={cn(
-        "flex shrink-0 items-center justify-center overflow-hidden rounded-full border-primary/35 bg-primary/10 text-center font-semibold text-muted-foreground",
+        "shrink-0 overflow-hidden border-solid border-primary/35 bg-primary/10 text-center font-semibold text-muted-foreground",
         sizeClassNameMap[size],
         className
       )}
-    >
-      {/* 이미지 우선, 없으면 텍스트 */}
-      {src ? (
-        <img alt={alt} className="h-full w-full object-cover" src={src} />
-      ) : showLabel ? (
-        <span>{renderLabel(label)}</span>
-      ) : null}
-    </div>
+    />
   );
 }

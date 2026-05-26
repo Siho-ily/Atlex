@@ -1,6 +1,4 @@
-// 데이터 연결만 담당하는 페이지
-import BlogHomeFeed from "@/components/domain/blog-home/feature/BlogHomeFeed";
-import BlogHomeSidebar from "@/components/domain/blog-home/feature/BlogHomeSidebar";
+import CategoryBlogHomeContent from "@/components/domain/category/feature/CategoryBlogHomeContent";
 import BlogHomeContainer from "@/components/domain/blog-home/layout/BlogHomeContainer";
 import BlogHomeHeader from "@/components/domain/blog-home/layout/BlogHomeHeader";
 import {
@@ -18,18 +16,13 @@ export const metadata = {
 export default function BlogHomePage() {
   return (
     <BlogHomeContainer>
-      <div className="space-y-6">
-        <BlogHomeHeader {...blogHomeHeaderData} />
-
-        {/* 프로필 보드 + 글 목록 2열 배치 */}
-        <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:items-start">
-          {/* 스크롤 시 사이드바 고정 */}
-          <div className="xl:sticky xl:top-8">
-            <BlogHomeSidebar profile={blogHomeProfile} tags={blogHomeTags} />
-          </div>
-
-          <BlogHomeFeed feed={blogHomeFeedData} />
-        </div>
+      <BlogHomeHeader {...blogHomeHeaderData} />
+      <div className="mx-auto w-full max-w-[1720px] px-4 py-8 sm:px-6 lg:px-8">
+        <CategoryBlogHomeContent
+          feed={blogHomeFeedData}
+          profile={blogHomeProfile}
+          tags={blogHomeTags}
+        />
       </div>
     </BlogHomeContainer>
   );

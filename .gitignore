@@ -44,5 +44,9 @@ next-env.d.ts
 # vscode
 .vscode/
 
+# tools
+.bkit/
+.claude/
+
 *storybook.log
 storybook-static

@@ -3,6 +3,7 @@ export const postEditorToolCategories = [
   {
     id: "text-style",
     railLabel: "1",
+    railIcon: "Type",
     title: "글씨 체",
     caption: "기본 텍스트 스타일을 고르는 영역",
     groups: [
@@ -29,6 +30,7 @@ export const postEditorToolCategories = [
   {
     id: "heading",
     railLabel: "2",
+    railIcon: "Heading",
     title: "제목/문단",
     caption: "문단 구조를 빠르게 바꾸는 영역",
     groups: [
@@ -55,6 +57,7 @@ export const postEditorToolCategories = [
   {
     id: "insert-edit",
     railLabel: "3",
+    railIcon: "PenLine",
     title: "삽입/편집",
     caption: "콘텐츠 삽입과 편집 기능을 묶은 영역",
     groups: [

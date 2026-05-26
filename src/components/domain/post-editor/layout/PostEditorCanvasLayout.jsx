@@ -1,44 +1,41 @@
 "use client";
 
+// [Layout] 에디터 캔버스(본문 영역)와 하단 툴 도크(레일)를 배치하는 레이아웃 컴포넌트.
+//
+// 동작 방식:
+//   - 모바일/태블릿(< 1280px): 도크가 section 하단에 absolute로 붙는다.
+//   - 데스크탑(≥ 1280px): 도크가 PostEditorShell 하단에 fixed로 떠서 스크롤·리사이즈를 따라간다.
+//     위치 기준은 .closest("[data-post-editor-shell]") — PostEditorShell의 data 속성이 앵커 역할.
+
 import { useLayoutEffect, useRef, useState } from "react";
 
 const DESKTOP_BREAKPOINT = 1280;
-const TOOL_RAIL_WIDTH = 84;
-const TOOL_PANEL_WIDTH = 360;
-const TOOL_DOCK_GAP = 24;
+const TOOL_RAIL_HEIGHT = 56;  // 툴레일 고정 높이 px
+const TOOL_DOCK_GAP = 24;     // 뷰포트 상하 여백 px
+const RAIL_MARGIN = 12;       // 레일 좌우·하단 여백 px
 
-function getDesktopDockStyle(anchorElement, isToolPanelOpen) {
+// 데스크탑 플로팅 도크의 fixed position·크기를 계산한다.
+// 쉘(anchorElement)의 BoundingClientRect 하단에 붙이되 여백·뷰포트를 벗어나지 않도록 클램핑한다.
+function getDesktopDockStyle(anchorElement) {
   const anchorRect = anchorElement.getBoundingClientRect();
-  const dockWidth = isToolPanelOpen
-    ? TOOL_PANEL_WIDTH + TOOL_RAIL_WIDTH
-    : TOOL_RAIL_WIDTH;
-  const dockHeight = Math.min(
-    anchorRect.height,
-    window.innerHeight - TOOL_DOCK_GAP * 2,
-  );
-  const nextTop = Math.min(
-    Math.max(anchorRect.top, TOOL_DOCK_GAP),
-    anchorRect.bottom - dockHeight,
-  );
-  const nextLeft = Math.min(
-    anchorRect.right + TOOL_DOCK_GAP,
-    window.innerWidth - dockWidth - TOOL_DOCK_GAP,
+  const nextTop = Math.max(
+    Math.min(
+      anchorRect.bottom - TOOL_RAIL_HEIGHT - RAIL_MARGIN,
+      window.innerHeight - TOOL_RAIL_HEIGHT - TOOL_DOCK_GAP,
+    ),
+    anchorRect.top,
   );
 
   return {
-    height: `${dockHeight}px`,
-    left: `${nextLeft}px`,
+    height: `${TOOL_RAIL_HEIGHT}px`,
+    // 쉘 중앙에서 translateX(-50%)로 가운데 정렬 — width는 콘텐츠에 맞게 자동
+    left: `${anchorRect.left + anchorRect.width / 2}px`,
     top: `${nextTop}px`,
-    width: `${dockWidth}px`,
+    transform: "translateX(-50%)",
   };
 }
 
-export default function PostEditorCanvasLayout({
-  content,
-  isToolPanelOpen,
-  toolPanel,
-  toolRail,
-}) {
+export default function PostEditorCanvasLayout({ content, toolRail }) {
   const sectionRef = useRef(null);
   const [desktopDockStyle, setDesktopDockStyle] = useState(null);
 
@@ -55,9 +52,7 @@ export default function PostEditorCanvasLayout({
         sectionRef.current.closest("[data-post-editor-shell]") ??
         sectionRef.current;
 
-      setDesktopDockStyle(
-        getDesktopDockStyle(anchorElement, isToolPanelOpen),
-      );
+      setDesktopDockStyle(getDesktopDockStyle(anchorElement));
     }
 
     function scheduleDockPositionUpdate() {
@@ -67,58 +62,33 @@ export default function PostEditorCanvasLayout({
 
     scheduleDockPositionUpdate();
     window.addEventListener("resize", scheduleDockPositionUpdate);
-    window.addEventListener("scroll", scheduleDockPositionUpdate, {
-      passive: true,
-    });
+    window.addEventListener("scroll", scheduleDockPositionUpdate, { passive: true });
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", scheduleDockPositionUpdate);
       window.removeEventListener("scroll", scheduleDockPositionUpdate);
     };
-  }, [isToolPanelOpen]);
+  }, []);
 
   const isDesktopFloatingDock = Boolean(desktopDockStyle);
 
   return (
     <section ref={sectionRef} className="relative h-[820px] min-h-[820px]">
-      <div
-        className={[
-          "h-full min-h-0 min-w-0 pr-[84px]",
-          isToolPanelOpen && !isDesktopFloatingDock ? "xl:pr-[444px]" : "xl:pr-0",
-        ].join(" ")}
-      >
+      {/* 본문 영역 — 레일 높이 + 여백만큼 하단 패딩을 줘서 레일에 가려지지 않게 한다 */}
+      <div className="h-full min-h-0 min-w-0 pb-[68px]">
         {content}
       </div>
 
+      {/* 툴 도크 — 콘텐츠 너비에 맞게 w-fit, 가운데 정렬 */}
       <aside
         className={[
-          "z-10 flex min-h-0 items-stretch overflow-hidden",
-          desktopDockStyle ? "fixed" : "absolute inset-y-0 right-0",
-          isDesktopFloatingDock
-            ? "rounded-[26px] border border-slate-200 bg-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.28)]"
-            : "",
-          isToolPanelOpen
-            ? "w-[min(444px,100%)] shadow-[-24px_0_48px_-24px_rgba(15,23,42,0.24)]"
-            : "w-[84px]",
+          "z-10 h-[56px] w-max overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_4px_24px_-4px_rgba(15,23,42,0.14)]",
+          desktopDockStyle ? "fixed" : "absolute bottom-3 left-1/2 -translate-x-1/2",
         ].join(" ")}
         style={desktopDockStyle ?? undefined}
       >
-        {isToolPanelOpen ? (
-          <div
-            id="post-editor-tool-panel"
-            className={[
-              "min-w-0 flex-1 overflow-hidden bg-white",
-              isDesktopFloatingDock ? "" : "border-l border-slate-200",
-            ].join(" ")}
-          >
-            {toolPanel}
-          </div>
-        ) : null}
-
-        <div className="w-[84px] min-h-0 border-l border-slate-200 bg-slate-100/70">
-          {toolRail}
-        </div>
+        {toolRail}
       </aside>
     </section>
   );

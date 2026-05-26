@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Nanum_Gothic_Coding } from "next/font/google";
+import { TooltipProvider } from "@/components/common/ui/tooltip";
 import "./globals.css";
 
 const nanumGothicCoding = Nanum_Gothic_Coding({
@@ -45,7 +46,7 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );
