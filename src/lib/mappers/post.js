@@ -36,7 +36,9 @@ export function toBlogMainPost(apiPost) {
     comments: 0,
     publishedAt: formatKoreanDate(apiPost.createdAt),
     eyebrow: apiPost.categoryName ?? "post",
-    cover: { variant: "none", size: "medium", tone: "cream" },
+    cover: apiPost.thumbnailUrl
+      ? { variant: "image", url: apiPost.thumbnailUrl }
+      : { variant: "none" },
   };
 }
 
