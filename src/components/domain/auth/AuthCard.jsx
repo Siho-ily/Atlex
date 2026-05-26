@@ -51,7 +51,10 @@ function AuthCard({ mode, onModeChange }) {
         )}
 
         {mode === "signup" && (
-          <SignupForm onSwitchMode={() => onModeChange("terms")} />
+          <SignupForm
+            onBack={() => onModeChange("terms")}
+            onLogin={() => onModeChange("login")}
+          />
         )}
       </div>
     </section>
