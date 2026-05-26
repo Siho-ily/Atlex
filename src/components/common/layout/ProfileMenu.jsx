@@ -4,12 +4,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/common/ui/popover';
 import { useAuthStore } from '@/store/authStore';
+import { logoutApi } from '@/lib/api/auth';
 
 export default function ProfileMenu() {
   const router = useRouter();
-  const { isLoggedIn, user, logout } = useAuthStore();
+  const { isLoggedIn, user, accessToken, logout } = useAuthStore();
 
-  function handleLogout() {
+  async function handleLogout() {
+    try {
+      await logoutApi(accessToken);
+    } catch {
+      // 서버 에러여도 클라이언트 상태는 초기화
+    }
     logout();
     router.push('/');
   }
