@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Header from '@/components/common/layout/UserBlogHeader';
+import Header from '@/components/common/layout/Header';
 import { Separator } from '@/components/common/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/components/common/ui/tabs';
 
@@ -17,8 +17,9 @@ export default function PolicyLayout({ children, sidebar }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* 글로벌 헤더 */}
-      <Header userId="jaehwan" />
+      <div className="container mx-auto px-4 sm:px-6">
+        <Header />
+      </div>
 
       <main className="container mx-auto px-4 py-8 sm:px-6">
         <div className="mb-8">
@@ -30,13 +31,15 @@ export default function PolicyLayout({ children, sidebar }) {
 
         {/* 공통 Tabs 컴포넌트 사용 */}
         <nav className="mb-8">
-          <TabsList>
-            {tabs.map(tab => (
-              <TabsTrigger key={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)}>
-                {tab}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList>
+              {tabs.map(tab => (
+                <TabsTrigger key={tab} value={tab}>
+                  {tab}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         </nav>
 
         <Separator className="mb-8" />

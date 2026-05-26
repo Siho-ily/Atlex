@@ -1,7 +1,7 @@
 import BlogDetailContent from "@/components/domain/blog-detail/feature/BlogDetailContent";
 import BlogDetailSidebar from "@/components/domain/blog-detail/feature/BlogDetailSidebar";
 import BlogDetailContainer from "@/components/domain/blog-detail/layout/BlogDetailContainer";
-import BlogDetailHeader from "@/components/domain/blog-detail/layout/BlogDetailHeader";
+import Header from "@/components/common/layout/Header";
 import { blogDetailPreview } from "@/data/blog-detail/blog-detail-preview";
 
 export const metadata = {
@@ -12,7 +12,7 @@ export const metadata = {
 export default function BlogDetailPreviewPage() {
   return (
     <BlogDetailContainer>
-      <BlogDetailHeader />
+      <Header logoHref="/" />
 
       <div className="mx-auto grid w-full max-w-[1080px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)] xl:items-start">
         <BlogDetailSidebar

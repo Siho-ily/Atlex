@@ -30,7 +30,7 @@ const MENUS = [
 
 function OptionSidebar({ activeMenu, onChangeMenu }) {
   return (
-    <Card className="h-fit rounded-3xl border-border/60 bg-white/80 backdrop-blur">
+    <Card className="h-fit rounded-3xl border-border/60 bg-card/80 backdrop-blur">
       <CardContent className="p-3">
         <div className="mb-4 px-3 pt-2">
           <h2 className="text-sm font-bold text-foreground">

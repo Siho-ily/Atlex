@@ -10,7 +10,7 @@ import { EmailField } from "@/components/common/layout/EmailField"
 import { PasswordField } from "@/components/common/layout/PasswordField"
 import { NicknameField } from "@/components/common/layout/NicknameField"
 
-function SignupForm() {
+function SignupForm({ onBack, onLogin }) {
   const [userId, setUserId] = useState("")
   const [nickname, setNickname] = useState("")
 
@@ -84,6 +84,7 @@ function SignupForm() {
           <Button
             type="button"
             variant="outline"
+            onClick={onBack}
             className="h-10 flex-1 rounded-lg text-sm font-bold"
           >
             뒤로가기
@@ -101,6 +102,7 @@ function SignupForm() {
           이미 계정이 있으신가요?{" "}
           <button
             type="button"
+            onClick={onLogin}
             className="font-semibold text-primary hover:underline"
           >
             로그인

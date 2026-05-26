@@ -1,7 +1,7 @@
 import BlogMainPostGrid from '@/components/domain/blog-main/feature/BlogMainPostGrid';
 import BlogMainToolbar from '@/components/domain/blog-main/feature/BlogMainToolbar';
 import BlogMainContainer from '@/components/domain/blog-main/layout/BlogMainContainer';
-import BlogMainHeader from '@/components/domain/blog-main/layout/BlogMainHeader';
+import Header from '@/components/common/layout/Header';
 import { blogMainFilters, blogMainPeriods, blogMainPosts } from '@/data/blog-main/blog-main-posts';
 
 export const metadata = {
@@ -16,7 +16,7 @@ export default function MainPage() {
 
   return (
     <BlogMainContainer>
-      <BlogMainHeader />
+      <Header />
       <BlogMainToolbar
         activeFilterId={activeFilter.id}
         activePeriodId={activePeriod.id}

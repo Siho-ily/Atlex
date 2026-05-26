@@ -25,7 +25,7 @@ import { Field, FieldLabel } from "@/components/common/ui/field"
 
 function DeleteAccountForm() {
   return (
-    <Card className="rounded-3xl border-destructive/20 bg-white/80 shadow-sm backdrop-blur">
+    <Card className="rounded-3xl border-destructive/20 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
         <CardTitle className="text-destructive">
           회원 탈퇴

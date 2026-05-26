@@ -3,7 +3,7 @@ import { BarChart3, Network, Sparkles } from "lucide-react"
 import { Capsule } from "@/components/common/ui/capsule"
 import { Textfield } from "@/components/common/ui/textfield"
 
-function LoginHero() {
+function AuthHero() {
   return (
     <section className="hidden lg:block">
       <Capsule variant="outline">
@@ -69,4 +69,4 @@ function Feature({ title, description }) {
   )
 }
 
-export { LoginHero }
+export { AuthHero }
