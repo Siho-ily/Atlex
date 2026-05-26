@@ -10,7 +10,7 @@ export default function BlogMainPostCard({ post }) {
       <BlogMainPostCover cover={post.cover} />
 
       {/* 커버가 없는 카드는 상단 여백을 조금 더 줘서 텍스트 덩어리의 균형을 맞춥니다. */}
-      <CardContent className={`px-3 pb-3 ${hasCover ? "pt-3" : "pt-3.5"}`}>
+      <CardContent className={`flex-1 px-3 pb-3 ${hasCover ? "pt-3" : "pt-3.5"}`}>
         {post.eyebrow ? (
           <p className="mb-1 text-[0.56rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             {post.eyebrow}
