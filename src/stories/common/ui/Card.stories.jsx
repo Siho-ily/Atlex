@@ -27,9 +27,14 @@ const meta = {
       control: "select",
       options: ["default", "sm"],
     },
+    variant: {
+      control: "select",
+      options: ["default", "dashed"],
+    },
   },
   args: {
     size: "default",
+    variant: "default",
   },
 };
 
@@ -126,6 +131,23 @@ export const Compact = {
 
             <BellRing className="size-4 text-muted-foreground" />
           </div>
+        </CardContent>
+      </Card>
+    </div>
+  ),
+};
+
+export const Dashed = {
+  render: () => (
+    <div className="w-[380px]">
+      <Card variant="dashed" size="sm">
+        <CardHeader>
+          <CardTitle>본문 영역</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            점선 테두리 카드입니다. 에디터 본문 프레임 등에 사용합니다.
+          </p>
         </CardContent>
       </Card>
     </div>
