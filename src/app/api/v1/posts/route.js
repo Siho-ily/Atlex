@@ -1,5 +1,15 @@
 import { posts } from "@/data/post/posts";
+import { categories } from "@/data/category/categories";
 import { ok, created, fail, requireAuth, nowDt } from "@/lib/api/mock-response";
+
+const categoryById = new Map(categories.map((c) => [c.id, c]));
+
+function withCategoryName(post) {
+  return {
+    ...post,
+    categoryName: post.categoryId ? categoryById.get(post.categoryId)?.name ?? null : null,
+  };
+}
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -11,7 +21,7 @@ export async function GET(req) {
   const totalPages = Math.ceil(totalElements / size);
   const start = page * size;
 
-  const content = publicPosts.slice(start, start + size).map(({ content: _, thumbnailUrl: __, ...rest }) => rest);
+  const content = publicPosts.slice(start, start + size).map(withCategoryName);
 
   return ok(
     { content, totalElements, totalPages, number: page, size },

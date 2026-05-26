@@ -1,4 +1,6 @@
-const DEFAULT_API_BASE_URL = "http://localhost:8000/api/v1";
+// 현재는 Next.js 내부 mock 라우트(src/app/api/v1/*)를 호출하므로 같은 호스트(:3000)를 가리킨다.
+// 실제 백엔드 연동 시 BASE_API_URL 환경변수로 외부 주소(예: http://localhost:8000/api/v1)를 덮어쓴다.
+const DEFAULT_API_BASE_URL = "http://localhost:3000/api/v1";
 
 // base URL 끝의 /를 제거해서 endpoint를 붙일 때 //가 생기지 않게 한다.
 function trimTrailingSlashes(value) {

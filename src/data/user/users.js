@@ -1,5 +1,6 @@
 // User 엔티티 더미 데이터
 // API 응답 스키마 기준: GET /api/v1/users/{id}
+// 로그인 검증용 password 는 별도 파일(src/data/auth/credentials.js)에서 관리한다.
 export const users = [
   {
     id: 1,

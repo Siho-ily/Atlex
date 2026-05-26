@@ -1,5 +1,15 @@
 import { posts } from "@/data/post/posts";
+import { categories } from "@/data/category/categories";
 import { ok, fail, requireAuth, nowDt } from "@/lib/api/mock-response";
+
+const categoryById = new Map(categories.map((c) => [c.id, c]));
+
+function withCategoryName(post) {
+  return {
+    ...post,
+    categoryName: post.categoryId ? categoryById.get(post.categoryId)?.name ?? null : null,
+  };
+}
 
 export async function GET(_req, { params }) {
   const { postId } = await params;
@@ -9,7 +19,7 @@ export async function GET(_req, { params }) {
     return fail("POST_NOT_FOUND", "존재하지 않는 게시글입니다.", 404);
   }
 
-  return ok(post, null);
+  return ok(withCategoryName(post), null);
 }
 
 export async function PATCH(req, { params }) {
@@ -35,7 +45,7 @@ export async function PATCH(req, { params }) {
     updatedAt: nowDt(),
   };
 
-  return ok(updated, "게시글이 수정되었습니다.");
+  return ok(withCategoryName(updated), "게시글이 수정되었습니다.");
 }
 
 export async function DELETE(req, { params }) {

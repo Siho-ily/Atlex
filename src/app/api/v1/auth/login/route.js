@@ -1,4 +1,5 @@
 import { users } from "@/data/user/users";
+import { authCredentials } from "@/data/auth/credentials";
 import { ok, fail } from "@/lib/api/mock-response";
 
 export async function POST(req) {
@@ -9,7 +10,9 @@ export async function POST(req) {
     return fail("INVALID_CREDENTIALS", "아이디 또는 비밀번호가 올바르지 않습니다.", 400);
   }
 
-  const user = users.find((u) => u.userId === userId);
+  const credential = authCredentials.find((c) => c.userId === userId && c.password === password);
+  const user = credential ? users.find((u) => u.userId === userId) : null;
+
   if (!user) {
     return fail("INVALID_CREDENTIALS", "아이디 또는 비밀번호가 올바르지 않습니다.", 400);
   }
