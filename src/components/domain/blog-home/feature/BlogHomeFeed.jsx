@@ -1,7 +1,7 @@
-import { Textfield } from "@/components/common/ui/textfield";
+import { Card } from "@/components/common/ui/card";
+import { Textfield, textfieldVariants } from "@/components/common/ui/textfield";
+import { cn } from "@/lib/utils";
 import BlogHomeFeedItemLayout from "@/components/domain/blog-home/layout/BlogHomeFeedItemLayout";
-import BlogHomeFeedListLayout from "@/components/domain/blog-home/layout/BlogHomeFeedListLayout";
-import BlogHomeFeedSectionHeaderLayout from "@/components/domain/blog-home/layout/BlogHomeFeedSectionHeaderLayout";
 import BlogHomePagination from "@/components/domain/blog-home/ui/BlogHomePagination";
 import { blogHomeFeedCopy } from "@/data/blog-home/blog-home-copy";
 
@@ -17,14 +17,22 @@ export default function BlogHomeFeed({ feed }) {
 
   return (
     <section className="space-y-5">
-      <BlogHomeFeedSectionHeaderLayout
-        eyebrowLabel={eyebrowLabel}
-        title={title}
-        totalCount={totalCount}
-      />
+      <div className="space-y-2">
+        <Textfield className="text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          {eyebrowLabel}
+        </Textfield>
+        <h2
+          className={cn(
+            textfieldVariants({ size: "xl", weight: "bold" }),
+            "text-3xl tracking-tight"
+          )}
+        >
+          {title} <span className="text-primary">{totalCount}</span>
+        </h2>
+      </div>
 
       {hasPosts ? (
-        <BlogHomeFeedListLayout>
+        <Card className="overflow-hidden rounded-3xl gap-0 border-border bg-card/40 py-0 shadow-none">
           {posts.map((post, index) => (
             <BlogHomeFeedItemLayout
               key={post.id}
@@ -32,9 +40,9 @@ export default function BlogHomeFeed({ feed }) {
               isLast={index === posts.length - 1}
             />
           ))}
-        </BlogHomeFeedListLayout>
+        </Card>
       ) : (
-        <BlogHomeFeedListLayout>
+        <Card className="overflow-hidden rounded-3xl gap-0 border-border bg-card/40 py-0 shadow-none">
           <div className="flex min-h-64 flex-col items-center justify-center gap-2 px-6 py-16 text-center">
             <Textfield size="lg" weight="bold">
               {blogHomeFeedCopy.getEmptyStateTitle(title)}
@@ -43,7 +51,7 @@ export default function BlogHomeFeed({ feed }) {
               {blogHomeFeedCopy.emptyStateDescription}
             </Textfield>
           </div>
-        </BlogHomeFeedListLayout>
+        </Card>
       )}
 
       {hasPosts && pagination.length > 0 ? (
