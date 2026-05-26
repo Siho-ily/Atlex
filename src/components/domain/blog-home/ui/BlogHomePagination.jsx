@@ -1,42 +1,136 @@
-// 페이지네이션 UI
+"use client";
+
+import { useEffect, useState } from "react";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/common/ui/pagination";
 import { cn } from "@/lib/utils";
 
-export default function BlogHomePagination({ items }) {
-  return (
-    <nav
-      aria-label="블로그 글 페이지네이션"
-      className="flex flex-wrap items-center justify-center gap-2 pt-2"
-    >
-      {items.map((item) => {
-        // 생략부호
-        if (item.kind === "ellipsis") {
-          return (
-            <span
-              key={item.id}
-              className="inline-flex h-10 min-w-10 items-center justify-center px-2 text-sm font-semibold text-muted-foreground"
-            >
-              {item.label}
-            </span>
-          );
-        }
+function getNumericPages(items) {
+  return items
+    .map((item) => Number.parseInt(item.label, 10))
+    .filter((page) => Number.isFinite(page));
+}
 
-        return (
-          <button
-            key={item.id}
-            type="button"
-            aria-current={item.current ? "page" : undefined}
+function getPageRange(currentPage, totalPages, siblingCount = 1) {
+  const left = Math.max(1, currentPage - siblingCount);
+  const right = Math.min(totalPages, currentPage + siblingCount);
+  const pages = [];
+
+  if (left > 1) {
+    pages.push(1);
+    if (left > 2) {
+      pages.push("ellipsis-left");
+    }
+  }
+
+  for (let page = left; page <= right; page += 1) {
+    pages.push(page);
+  }
+
+  if (right < totalPages) {
+    if (right < totalPages - 1) {
+      pages.push("ellipsis-right");
+    }
+    pages.push(totalPages);
+  }
+
+  return pages;
+}
+
+export default function BlogHomePagination({ items }) {
+  const numericPages = getNumericPages(items);
+  const totalPages = Math.max(...numericPages, 1);
+  const initialCurrentPage =
+    Number.parseInt(items.find((item) => item.current)?.label, 10) || 1;
+  const [currentPage, setCurrentPage] = useState(initialCurrentPage);
+  const pages = getPageRange(currentPage, totalPages, 1);
+  const isPrevDisabled = currentPage <= 1;
+  const isNextDisabled = currentPage >= totalPages;
+
+  useEffect(() => {
+    setCurrentPage(initialCurrentPage);
+  }, [initialCurrentPage]);
+
+  function handlePageChange(page, event) {
+    event.preventDefault();
+
+    if (page < 1 || page > totalPages || page === currentPage) {
+      return;
+    }
+
+    setCurrentPage(page);
+  }
+
+  return (
+    <Pagination className="pt-2">
+      <PaginationContent className="flex-wrap gap-2">
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            text=""
+            onClick={(event) => handlePageChange(currentPage - 1, event)}
+            aria-disabled={isPrevDisabled}
+            disabled={isPrevDisabled}
             className={cn(
-              "inline-flex h-10 min-w-10 items-center justify-center rounded-lg border px-3 text-sm font-semibold transition-colors",
-              // 현재 페이지 강조
-              item.current
-                ? "border-foreground bg-foreground text-background"
-                : "border-border bg-card text-muted-foreground"
+              "h-10 min-w-10 rounded-lg border border-border bg-card px-3 text-sm font-semibold text-muted-foreground shadow-none transition-colors hover:no-underline",
+              isPrevDisabled && "pointer-events-none opacity-50"
             )}
-          >
-            {item.label}
-          </button>
-        );
-      })}
-    </nav>
+          />
+        </PaginationItem>
+
+        {pages.map((page) => {
+          if (page === "ellipsis-left" || page === "ellipsis-right") {
+            return (
+              <PaginationItem key={page}>
+                <PaginationEllipsis className="h-10 min-w-10 px-2 text-muted-foreground" />
+              </PaginationItem>
+            );
+          }
+
+          const isActive = page === currentPage;
+
+          return (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href="#"
+                isActive={isActive}
+                onClick={(event) => handlePageChange(page, event)}
+                disabled={isActive}
+                className={cn(
+                  "h-10 min-w-10 rounded-lg border px-3 text-sm font-semibold shadow-none transition-colors hover:no-underline",
+                  isActive
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border bg-card text-muted-foreground"
+                )}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          );
+        })}
+
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            text=""
+            onClick={(event) => handlePageChange(currentPage + 1, event)}
+            aria-disabled={isNextDisabled}
+            disabled={isNextDisabled}
+            className={cn(
+              "h-10 min-w-10 rounded-lg border border-border bg-card px-3 text-sm font-semibold text-muted-foreground shadow-none transition-colors hover:no-underline",
+              isNextDisabled && "pointer-events-none opacity-50"
+            )}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

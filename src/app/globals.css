@@ -36,3 +36,14 @@ input[type="password"]::-webkit-textfield-decoration-container {
     font-family: var(--font-nanum-gothic-coding), "Apple SD Gothic Neo", "Malgun Gothic", monospace;
   }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -8,7 +8,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "secondary", "outline", "ghost"],
+      options: ["default", "secondary", "outline", "ghost", "success"],
     },
     size: {
       control: "select",
@@ -63,6 +63,13 @@ export const Large = {
   },
 };
 
+export const Success = {
+  args: {
+    children: "Success",
+    variant: "success",
+  },
+};
+
 export const AllVariants = {
   render: () => (
     <div className="flex flex-wrap gap-2">
@@ -70,6 +77,7 @@ export const AllVariants = {
       <Capsule variant="secondary">Secondary</Capsule>
       <Capsule variant="outline">Outline</Capsule>
       <Capsule variant="ghost">Ghost</Capsule>
+      <Capsule variant="success">Success</Capsule>
     </div>
   ),
 };
