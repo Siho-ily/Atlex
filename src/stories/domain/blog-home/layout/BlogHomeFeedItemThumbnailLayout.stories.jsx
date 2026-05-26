@@ -10,14 +10,11 @@ const meta = {
 
 export default meta;
 
-export const WithPlaceholder = {
+export const WithImage = {
   render: () => (
     <div className="w-60">
       <BlogHomeFeedItemThumbnailLayout
-        thumbnail={{
-          label: "썸네일 이미지",
-          className: "border-b border-border bg-muted/60",
-        }}
+        thumbnailUrl="https://placehold.co/600x400?text=IMG"
       />
     </div>
   ),
@@ -26,21 +23,8 @@ export const WithPlaceholder = {
 export const NoThumbnail = {
   render: () => (
     <div className="w-60 rounded-xl border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
-      thumbnail prop이 없으면 렌더링되지 않습니다.
-      <BlogHomeFeedItemThumbnailLayout thumbnail={null} />
-    </div>
-  ),
-};
-
-export const CustomLabel = {
-  render: () => (
-    <div className="w-80">
-      <BlogHomeFeedItemThumbnailLayout
-        thumbnail={{
-          label: "커버 이미지 (16:10)",
-          className: "bg-primary/10",
-        }}
-      />
+      thumbnailUrl prop이 없으면 렌더링되지 않습니다.
+      <BlogHomeFeedItemThumbnailLayout thumbnailUrl={null} />
     </div>
   ),
 };
@@ -49,10 +33,7 @@ export const Wide = {
   render: () => (
     <div className="w-[600px]">
       <BlogHomeFeedItemThumbnailLayout
-        thumbnail={{
-          label: "넓은 썸네일",
-          className: "bg-muted/60",
-        }}
+        thumbnailUrl="https://placehold.co/600x400?text=IMG"
       />
     </div>
   ),

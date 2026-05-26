@@ -41,10 +41,7 @@ const mockFeed = {
       comments: 8,
       bookmarks: 2,
       isLiked: true,
-      thumbnail: {
-        label: "썸네일 이미지",
-        className: "border-b border-border bg-muted/60",
-      },
+      thumbnailUrl: "https://placehold.co/600x400?text=IMG",
     },
     {
       id: 2,

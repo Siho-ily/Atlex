@@ -45,10 +45,7 @@ export const WithThumbnail = {
     <div className="max-w-2xl rounded-3xl border border-border overflow-hidden">
       <BlogHomeFeedItemLayout
         {...mockPost}
-        thumbnail={{
-          label: "썸네일 이미지",
-          className: "border-b border-border bg-muted/60",
-        }}
+        thumbnailUrl="https://placehold.co/600x400?text=IMG"
         isLast
       />
     </div>

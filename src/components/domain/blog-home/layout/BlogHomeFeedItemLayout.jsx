@@ -15,10 +15,10 @@ export default function BlogHomeFeedItemLayout({
   isPrivate = false,
   likes = 0,
   tags = [],
-  thumbnail,
+  thumbnailUrl,
   title,
 }) {
-  const hasThumbnail = Boolean(thumbnail);
+  const hasThumbnail = Boolean(thumbnailUrl);
 
   return (
     <article
@@ -37,7 +37,7 @@ export default function BlogHomeFeedItemLayout({
             : ""
         )}
       >
-        <BlogHomeFeedItemThumbnailLayout thumbnail={thumbnail} />
+        <BlogHomeFeedItemThumbnailLayout thumbnailUrl={thumbnailUrl} />
 
         <div className="min-w-0 flex flex-1 flex-col">
           <BlogHomeFeedItemContentLayout
