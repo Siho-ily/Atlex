@@ -40,11 +40,11 @@ export default function BlogMainPostCard({ post }) {
   return (
     <Card className="gap-0 rounded-[9px] py-0">
       {detailHref ? (
-        <Link href={detailHref} className="group flex flex-col">
+        <Link href={detailHref} className="group flex flex-1 flex-col">
           {detailBody}
         </Link>
       ) : (
-        <div className="flex flex-col">{detailBody}</div>
+        <div className="flex flex-1 flex-col">{detailBody}</div>
       )}
 
       <CardFooter className="justify-between rounded-b-[9px] bg-transparent px-3 py-2 text-[0.68rem] text-muted-foreground">

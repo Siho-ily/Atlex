@@ -8,7 +8,7 @@ import { Capsule } from "@/components/common/ui/capsule";
 import { Image } from "@/components/common/ui/image";
 import ProfileMenu from "@/components/common/layout/ProfileMenu";
 
-export default function Header({
+export default function UserBlogHeader({
   logoSrc = "/default-logo.png",
   userId = "User",
   onSearch,
