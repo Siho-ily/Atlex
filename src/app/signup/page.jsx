@@ -1,5 +1,5 @@
-import { LoginHero } from "@/components/domain/auth/login/layout/LoginHero"
-import { LoginCard } from "@/components/domain/auth/login/layout/LoginCard"
+import { SignupHero } from "@/components/domain/auth/signup/layout/SignupHero"
+import { SignupCard } from "@/components/domain/auth/signup/layout/SignupCard"
 
 export default function Page() {
   return (
@@ -20,13 +20,13 @@ export default function Page() {
             type="button"
             className="text-sm font-semibold text-primary hover:underline"
           >
-            회원가입
+            로그인
           </button>
         </header>
 
         <div className="grid flex-1 grid-cols-1 items-center gap-14 py-8 lg:grid-cols-[1.05fr_480px]">
-          <LoginHero />
-          <LoginCard />
+          <SignupHero />
+          <SignupCard />
         </div>
       </div>
     </main>
