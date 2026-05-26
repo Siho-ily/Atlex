@@ -1,7 +1,7 @@
-import Header from "@/components/common/layout/Header";
+import Header from '@/components/common/layout/UserBlogHeader';
 
 function findToolbarButton(toolbarButtons, id) {
-  return toolbarButtons.find((button) => button.id === id);
+  return toolbarButtons.find(button => button.id === id);
 }
 
 function getHeaderUserId(userId, blogTitle) {
@@ -13,7 +13,7 @@ function getHeaderUserId(userId, blogTitle) {
     return undefined;
   }
 
-  return blogTitle.replace(/'s blog$/i, "");
+  return blogTitle.replace(/'s blog$/i, '');
 }
 
 export default function BlogHomeHeader({
@@ -21,10 +21,10 @@ export default function BlogHomeHeader({
   logoSrc,
   onProfileClick,
   toolbarButtons = [],
-  userId,
+  userId
 }) {
-  const searchButton = findToolbarButton(toolbarButtons, "search");
-  const notificationButton = findToolbarButton(toolbarButtons, "alert");
+  const searchButton = findToolbarButton(toolbarButtons, 'search');
+  const notificationButton = findToolbarButton(toolbarButtons, 'alert');
 
   return (
     <Header
