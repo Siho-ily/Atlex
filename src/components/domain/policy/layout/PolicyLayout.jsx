@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Header from '@/components/common/layout/UserBlogHeader';
+import Header from '@/components/common/layout/Header';
 import { Separator } from '@/components/common/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/components/common/ui/tabs';
 
@@ -17,8 +17,9 @@ export default function PolicyLayout({ children, sidebar }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* 글로벌 헤더 */}
-      <Header userId="jaehwan" />
+      <div className="container mx-auto px-4 sm:px-6">
+        <Header />
+      </div>
 
       <main className="container mx-auto px-4 py-8 sm:px-6">
         <div className="mb-8">

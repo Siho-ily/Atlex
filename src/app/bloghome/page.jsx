@@ -1,9 +1,8 @@
 import CategoryBlogHomeContent from "@/components/domain/category/feature/CategoryBlogHomeContent";
 import BlogHomeContainer from "@/components/domain/blog-home/layout/BlogHomeContainer";
-import BlogHomeHeader from "@/components/domain/blog-home/layout/BlogHomeHeader";
+import UserBlogHeader from "@/components/common/layout/UserBlogHeader";
 import {
   blogHomeFeedData,
-  blogHomeHeaderData,
   blogHomeProfile,
   blogHomeTags,
 } from "@/data/blog-home/blog-home-mock-data";
@@ -16,7 +15,7 @@ export const metadata = {
 export default function BlogHomePage() {
   return (
     <BlogHomeContainer>
-      <BlogHomeHeader {...blogHomeHeaderData} />
+      <UserBlogHeader userId={blogHomeProfile.userId} />
       <div className="mx-auto w-full max-w-[1720px] px-4 py-8 sm:px-6 lg:px-8">
         <CategoryBlogHomeContent
           feed={blogHomeFeedData}
