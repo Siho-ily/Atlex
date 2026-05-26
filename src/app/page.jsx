@@ -1,4 +1,3 @@
-import Header from '@/components/common/layout/UserBlogHeader';
 import BlogMainPostGrid from '@/components/domain/blog-main/feature/BlogMainPostGrid';
 import BlogMainToolbar from '@/components/domain/blog-main/feature/BlogMainToolbar';
 import BlogMainContainer from '@/components/domain/blog-main/layout/BlogMainContainer';

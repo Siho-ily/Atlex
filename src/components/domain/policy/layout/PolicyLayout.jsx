@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Header from '@/components/common/layout/UserBlogHeader';
 import { Separator } from '@/components/common/ui/separator';
-import { TabsList, TabsTrigger } from '@/components/common/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/common/ui/tabs';
 
 /**
  * 정책 페이지 전용 레이아웃 컴포넌트
