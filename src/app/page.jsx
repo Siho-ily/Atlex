@@ -1,4 +1,4 @@
-import BlogMainPostGrid from '@/components/domain/blog-main/feature/BlogMainPostGrid';
+import BlogMainInfinitePostGrid from '@/components/domain/blog-main/feature/BlogMainInfinitePostGrid';
 import BlogMainToolbar from '@/components/domain/blog-main/feature/BlogMainToolbar';
 import BlogMainContainer from '@/components/domain/blog-main/layout/BlogMainContainer';
 import Header from '@/components/common/layout/Header';
@@ -13,19 +13,21 @@ export const metadata = {
 
 async function loadMainPosts() {
   try {
-    const page = await fetchPosts({ page: 0, size: 10 });
-    return page.content.map(toBlogMainPost);
+    const data = await fetchPosts({ page: 0, size: 10 });
+    return {
+      posts: data.content.map(toBlogMainPost),
+      totalPages: data.totalPages,
+    };
   } catch (error) {
     console.error('[MainPage] fetchPosts 실패:', error?.message || error);
-    return [];
+    return { posts: [], totalPages: 0 };
   }
 }
 
 export default async function MainPage() {
-  // 아직 상호작용이 연결되지 않아 각 그룹의 첫 항목을 기본 선택 상태로 둡니다.
   const activeFilter = blogMainFilters[0];
   const activePeriod = blogMainPeriods[0];
-  const posts = await loadMainPosts();
+  const { posts, totalPages } = await loadMainPosts();
 
   return (
     <BlogMainContainer>
@@ -37,7 +39,7 @@ export default async function MainPage() {
         periods={blogMainPeriods}
       />
 
-      <BlogMainPostGrid posts={posts} emptyMessage="아직 표시할 게시글이 없습니다." />
+      <BlogMainInfinitePostGrid initialPosts={posts} totalPages={totalPages} />
     </BlogMainContainer>
   );
 }

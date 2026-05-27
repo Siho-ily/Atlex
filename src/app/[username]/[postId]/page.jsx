@@ -8,11 +8,14 @@ import { toBlogDetail } from "@/lib/mappers/post";
 import { stripHandle } from "@/lib/url/handle";
 
 export default async function BlogDetailPage({ params }) {
-  const { postId } = await params;
+  const { username, postId } = await params;
 
   let detail;
   try {
-    const apiPost = await fetchPostById(stripHandle(postId));
+    const apiPost = await fetchPostById(postId);
+    if (apiPost.authorUserId !== stripHandle(username)) {
+      notFound();
+    }
     detail = toBlogDetail(apiPost);
   } catch (error) {
     if (error?.code === "POST_NOT_FOUND") {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/common/ui/popover';
@@ -9,6 +10,11 @@ import { logoutApi } from '@/lib/api/auth';
 export default function ProfileMenu() {
   const router = useRouter();
   const { isLoggedIn, user, accessToken, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleLogout() {
     try {
@@ -32,7 +38,7 @@ export default function ProfileMenu() {
       </PopoverTrigger>
 
       <PopoverContent side="bottom" align="end" sideOffset={8} className="w-40 p-1">
-        {isLoggedIn ? (
+        {mounted && isLoggedIn ? (
           <>
             <Link
               href={`/${user?.userId}`}

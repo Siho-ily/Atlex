@@ -43,13 +43,10 @@ export async function PUT(req, { params }) {
     return fail("VALIDATION_ERROR", "입력값이 올바르지 않습니다.", 400, errors);
   }
 
-  const updated = {
-    ...user,
-    ...(userId && { userId }),
-    ...(email && { email }),
-    ...(name && { name }),
-    updatedAt: nowDt(),
-  };
+  if (userId) user.userId = userId;
+  if (email) user.email = email;
+  if (name) user.name = name;
+  user.updatedAt = nowDt();
 
-  return ok(updated, `${updated.name} 님의 정보가 수정되었습니다.`);
+  return ok(user, `${user.name} 님의 정보가 수정되었습니다.`);
 }

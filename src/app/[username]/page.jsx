@@ -11,7 +11,7 @@ import { stripHandle } from "@/lib/url/handle";
 async function loadBlogHomeData(identifier) {
   const [user, postsPage] = await Promise.all([
     fetchUserByIdentifier(identifier),
-    fetchPosts({ page: 0, size: 10 }),
+    fetchPosts({ page: 0, size: 10, authorUserId: identifier }),
   ]);
 
   const profile = toBlogHomeProfile(user);
