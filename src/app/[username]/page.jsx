@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import CategoryBlogHomeContent from "@/components/domain/category/feature/CategoryBlogHomeContent";
 import Header from "@/components/common/layout/Header";
 import { blogHomeTags } from "@/data/blog-home/blog-home-mock-data";
@@ -36,6 +37,11 @@ async function loadBlogHomeData(identifier) {
 
 export default async function BlogHomePage({ params }) {
   const { username } = await params;
+  const headersList = await headers();
+  if (!headersList.get("x-handle-prefix")) {
+    notFound();
+  }
+
   const identifier = stripHandle(username);
 
   let data;
