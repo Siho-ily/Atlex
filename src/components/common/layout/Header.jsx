@@ -2,29 +2,28 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, ImageIcon } from 'lucide-react';
 import { Capsule } from '@/components/common/ui/capsule';
-import { Image } from '@/components/common/ui/image';
 import ProfileMenu from '@/components/common/layout/ProfileMenu';
 
 export default function Header({ logoSrc = '', logoHref = '/', onSearch, onNotification }) {
   const [showLogoImage, setShowLogoImage] = useState(Boolean(logoSrc));
 
   const logoImage = (
-    <Image
-      shape="sharp"
-      icon={
-        showLogoImage ? (
-          <img
-            src={logoSrc}
-            alt="Logo"
-            className="h-full w-full object-contain p-1"
-            onError={() => setShowLogoImage(false)}
-          />
-        ) : null
-      }
-      className="h-10 w-20 overflow-hidden rounded border-solid border-border bg-muted/30 transition-colors hover:bg-muted/50"
-    />
+    <div className="flex h-10 w-20 items-center">
+      {showLogoImage ? (
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className="max-h-full max-w-full object-contain"
+          onError={() => setShowLogoImage(false)}
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center rounded bg-muted/30">
+          <ImageIcon className="size-5 text-muted-foreground" />
+        </div>
+      )}
+    </div>
   );
 
   return (
