@@ -1,8 +1,11 @@
+"use client";
+
 import Link from 'next/link';
 import { Bell, Search } from 'lucide-react';
 import { Button } from '@/components/common/ui/button';
+import ProfileMenu from '@/components/common/layout/ProfileMenu';
 
-export default function Header({ logoHref, onSearch, onNotification }) {
+export default function Header({ logoHref = "/", onSearch, onNotification }) {
   const logoText = (
     <span className="text-[3rem] font-bold tracking-[-0.14em] text-foreground">LOGO</span>
   );
@@ -38,14 +41,7 @@ export default function Header({ logoHref, onSearch, onNotification }) {
           <span>알림</span>
         </Button>
 
-        <button
-          type="button"
-          aria-label="프로필"
-          className="inline-flex h-14 w-14 cursor-default items-center justify-center rounded-full border-[3px] border-primary/40 bg-card text-center text-[0.62rem] font-semibold leading-4 text-muted-foreground">
-          프로필
-          <br />
-          사진
-        </button>
+        <ProfileMenu />
       </div>
     </header>
   );

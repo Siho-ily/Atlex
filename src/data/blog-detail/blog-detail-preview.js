@@ -13,6 +13,7 @@ export const blogDetailPreview = {
     {
       id: "image-1",
       type: "image",
+      src: "https://placehold.co/600x400?text=IMG",
       caption: "본문 이미지는 글의 흐름을 끊지 않도록 넓은 여백 안에 조용히 배치합니다.",
     },
     {
@@ -30,6 +31,7 @@ export const blogDetailPreview = {
     {
       id: "image-2",
       type: "image",
+      src: "https://placehold.co/600x400?text=IMG",
       caption: "장식적인 카드 대신 본문 이미지 하나만으로도 화면의 호흡을 충분히 만들 수 있습니다.",
     },
     {

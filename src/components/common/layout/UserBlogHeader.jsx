@@ -1,41 +1,43 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Search, Bell } from "lucide-react";
 
 import { Capsule } from "@/components/common/ui/capsule";
 import { Image } from "@/components/common/ui/image";
+import ProfileMenu from "@/components/common/layout/ProfileMenu";
 
-export default function Header({
+export default function UserBlogHeader({
   logoSrc = "/default-logo.png",
   userId = "User",
   onSearch,
   onNotification,
-  onProfileClick,
 }) {
   const [showLogoImage, setShowLogoImage] = React.useState(Boolean(logoSrc));
-  const [showProfileImage, setShowProfileImage] = React.useState(true);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-4">
-          <Image
-            shape="sharp"
-            icon={
-              showLogoImage ? (
-                <img
-                  src={logoSrc}
-                  alt="Logo"
-                  className="h-full w-full object-contain p-1"
-                  onError={() => {
-                    setShowLogoImage(false);
-                  }}
-                />
-              ) : null
-            }
-            className="h-10 w-20 overflow-hidden rounded border-solid border-border bg-muted/30 transition-colors hover:bg-muted/50"
-          />
+          <Link href="/">
+            <Image
+              shape="sharp"
+              icon={
+                showLogoImage ? (
+                  <img
+                    src={logoSrc}
+                    alt="Logo"
+                    className="h-full w-full object-contain p-1"
+                    onError={() => {
+                      setShowLogoImage(false);
+                    }}
+                  />
+                ) : null
+              }
+              className="h-10 w-20 overflow-hidden rounded border-solid border-border bg-muted/30 transition-colors hover:bg-muted/50"
+            />
+          </Link>
 
           <span className="hidden h-6 w-px bg-border/60 md:block" />
 
@@ -74,29 +76,7 @@ export default function Header({
 
           <div className="mx-1 hidden h-6 w-px bg-border/60 md:block" />
 
-          <button
-            type="button"
-            className="group relative ml-1 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-primary/20 bg-muted transition-all hover:border-primary/40 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            onClick={onProfileClick}
-            aria-label="Profile"
-          >
-            <Image
-              shape="circle"
-              icon={
-                showProfileImage ? (
-                  <img
-                    src="/images/profile-sample.png"
-                    className="h-full w-full object-cover transition-transform group-hover:scale-110"
-                    alt="profile"
-                    onError={() => {
-                      setShowProfileImage(false);
-                    }}
-                  />
-                ) : null
-              }
-              className="h-full w-full overflow-hidden border-0 bg-transparent"
-            />
-          </button>
+          <ProfileMenu />
         </div>
       </div>
     </header>

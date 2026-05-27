@@ -6,11 +6,6 @@ const toneStyles = {
   cream: "bg-background",
 };
 
-const coverHeights = {
-  large: "h-36",
-  medium: "h-32",
-  small: "h-24",
-};
 
 function CoverFrame({ children, toneClass }) {
   return <div className={`relative h-full overflow-hidden ${toneClass}`}>{children}</div>;
@@ -227,13 +222,31 @@ function MinimalCover({ cover, toneClass }) {
   );
 }
 
+function ImageCover({ cover }) {
+  return (
+    <CoverFrame toneClass="bg-muted">
+      <img
+        src={cover.url}
+        alt=""
+        className="h-full w-full object-cover"
+      />
+    </CoverFrame>
+  );
+}
+
 export default function BlogMainPostCover({ cover }) {
   if (!cover || cover.variant === "none") return null;
 
-  const toneClass = toneStyles[cover.tone] ?? toneStyles.slate;
-  const heightClass = coverHeights[cover.size] ?? coverHeights.medium;
+  if (cover.variant === "image") {
+    return (
+      <div className="h-36 border-b border-border">
+        <ImageCover cover={cover} />
+      </div>
+    );
+  }
 
-  // 커버는 데이터로 선택해 각 카드가 이미지를 따로 업로드하지 않아도 다양하게 보이게 합니다.
+  const toneClass = toneStyles[cover.tone] ?? toneStyles.slate;
+
   let content = null;
   switch (cover.variant) {
     case "stack":   content = <StackCover  cover={cover} toneClass={toneClass} />; break;
@@ -249,7 +262,7 @@ export default function BlogMainPostCover({ cover }) {
   }
 
   return (
-    <div className={`${heightClass} border-b border-border`}>
+    <div className="h-36 border-b border-border">
       {content}
     </div>
   );
