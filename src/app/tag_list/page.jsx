@@ -253,7 +253,7 @@ function TagListContent() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header logoHref="/" />
-      <main className="px-5 pb-12 pt-7 sm:px-8 lg:px-10">
+      <main className="mx-auto w-full max-w-content-wide px-5 pb-12 pt-7 sm:px-8 lg:px-10">
       <section className="mx-auto w-full max-w-[820px]">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>

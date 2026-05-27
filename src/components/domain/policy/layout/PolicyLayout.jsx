@@ -17,11 +17,9 @@ export default function PolicyLayout({ children, sidebar }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 sm:px-6">
-        <Header />
-      </div>
+      <Header />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6">
+      <main className="mx-auto w-full max-w-content-narrow px-5 pb-12 pt-7 sm:px-8 lg:px-10">
         <div className="mb-8">
           <h2 className="text-3xl font-black tracking-tight">이용약관 및 정책</h2>
           <p className="mt-2 text-muted-foreground">
