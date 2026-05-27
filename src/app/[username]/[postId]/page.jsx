@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import BlogDetailContent from "@/components/domain/blog-detail/feature/BlogDetailContent";
 import BlogDetailSidebar from "@/components/domain/blog-detail/feature/BlogDetailSidebar";
 import BlogDetailContainer from "@/components/domain/blog-detail/layout/BlogDetailContainer";
-import Header from "@/components/common/layout/Header";
+import UserBlogHeader from "@/components/common/layout/UserBlogHeader";
 import { fetchPostById } from "@/lib/api/posts";
 import { toBlogDetail } from "@/lib/mappers/post";
 import { stripHandle } from "@/lib/url/handle";
@@ -26,17 +26,17 @@ export default async function BlogDetailPage({ params }) {
   }
 
   return (
-    <BlogDetailContainer>
-      <Header logoHref="/" />
-
-      <div className="mx-auto grid w-full max-w-[1080px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)] xl:items-start">
-        <BlogDetailSidebar
-          bookmarks={7}
-          likes={18}
-        />
-
-        <BlogDetailContent {...detail} />
-      </div>
-    </BlogDetailContainer>
+    <main className="min-h-screen bg-background text-foreground">
+      <UserBlogHeader userId={stripHandle(username)} />
+      <BlogDetailContainer>
+        <div className="mx-auto grid w-full max-w-[1080px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)] xl:items-start">
+          <BlogDetailSidebar
+            bookmarks={7}
+            likes={18}
+          />
+          <BlogDetailContent {...detail} />
+        </div>
+      </BlogDetailContainer>
+    </main>
   );
 }

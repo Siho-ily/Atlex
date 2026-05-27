@@ -18,7 +18,7 @@ export default function UserBlogHeader({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+      <div className="flex w-full items-center justify-between px-5 pb-6 pt-5 sm:px-8 sm:pt-6 lg:px-10">
         <div className="flex items-center gap-4">
           <Link href="/">
             <Image

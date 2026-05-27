@@ -30,16 +30,17 @@ export default async function MainPage() {
   const { posts, totalPages } = await loadMainPosts();
 
   return (
-    <BlogMainContainer>
+    <main className="min-h-screen bg-background text-foreground">
       <Header />
-      <BlogMainToolbar
-        activeFilterId={activeFilter.id}
-        activePeriodId={activePeriod.id}
-        filters={blogMainFilters}
-        periods={blogMainPeriods}
-      />
-
-      <BlogMainInfinitePostGrid initialPosts={posts} totalPages={totalPages} />
-    </BlogMainContainer>
+      <BlogMainContainer>
+        <BlogMainToolbar
+          activeFilterId={activeFilter.id}
+          activePeriodId={activePeriod.id}
+          filters={blogMainFilters}
+          periods={blogMainPeriods}
+        />
+        <BlogMainInfinitePostGrid initialPosts={posts} totalPages={totalPages} />
+      </BlogMainContainer>
+    </main>
   );
 }

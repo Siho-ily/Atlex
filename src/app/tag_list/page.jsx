@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/common/ui/tabs";
 import { Input } from "@/components/common/ui/input";
 import { cn } from "@/lib/utils";
+import Header from "@/components/common/layout/Header";
 
 const SORT_OPTIONS = [
   { label: "트렌딩", value: "trending" },
@@ -250,7 +251,9 @@ function TagListContent() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-6 py-8 text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
+      <Header logoHref="/" />
+      <main className="px-5 pb-12 pt-7 sm:px-8 lg:px-10">
       <section className="mx-auto w-full max-w-[820px]">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -355,7 +358,8 @@ function TagListContent() {
           </>
         )}
       </section>
-    </main>
+      </main>
+    </div>
   );
 }
 

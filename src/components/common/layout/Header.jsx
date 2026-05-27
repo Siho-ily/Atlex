@@ -1,45 +1,68 @@
-"use client";
+'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Bell, Search } from 'lucide-react';
-import { Button } from '@/components/common/ui/button';
+import { Capsule } from '@/components/common/ui/capsule';
+import { Image } from '@/components/common/ui/image';
 import ProfileMenu from '@/components/common/layout/ProfileMenu';
 
-export default function Header({ logoHref = "/", onSearch, onNotification }) {
-  const logoText = (
-    <span className="text-[3rem] font-bold tracking-[-0.14em] text-foreground">LOGO</span>
+export default function Header({ logoSrc = '', logoHref = '/', onSearch, onNotification }) {
+  const [showLogoImage, setShowLogoImage] = useState(Boolean(logoSrc));
+
+  const logoImage = (
+    <Image
+      shape="sharp"
+      icon={
+        showLogoImage ? (
+          <img
+            src={logoSrc}
+            alt="Logo"
+            className="h-full w-full object-contain p-1"
+            onError={() => setShowLogoImage(false)}
+          />
+        ) : null
+      }
+      className="h-10 w-20 overflow-hidden rounded border-solid border-border bg-muted/30 transition-colors hover:bg-muted/50"
+    />
   );
 
   return (
-    <header className="mb-7 flex items-center justify-between border-b border-border pb-8">
+    <header className="flex items-center justify-between border-b border-border px-5 pb-6 pt-5 sm:px-8 sm:pt-6 lg:px-10">
       <div>
         {logoHref ? (
           <Link href={logoHref} className="inline-flex">
-            {logoText}
+            {logoImage}
           </Link>
         ) : (
-          logoText
+          logoImage
         )}
       </div>
 
-      <div className="flex items-center gap-3">
-        <Button
-          variant="outline"
-          aria-label="검색"
-          className="h-auto cursor-default gap-2 rounded-full bg-card px-4 py-3 font-semibold text-card-foreground"
-          onClick={onSearch}>
-          <Search className="h-[18px] w-[18px]" strokeWidth={2.1} />
-          <span>검색</span>
-        </Button>
+      <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-3">
+          <Capsule
+            variant="outline"
+            size="lg"
+            className="h-10 cursor-pointer gap-2 px-3 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground sm:px-4"
+            onClick={onSearch}
+          >
+            <Search className="size-4" strokeWidth={2.5} />
+            <span className="hidden text-sm font-bold sm:inline">검색</span>
+          </Capsule>
 
-        <Button
-          variant="outline"
-          aria-label="알림"
-          className="h-auto cursor-default gap-2 rounded-full bg-card px-4 py-3 font-semibold text-card-foreground"
-          onClick={onNotification}>
-          <Bell className="h-[18px] w-[18px]" strokeWidth={2.1} />
-          <span>알림</span>
-        </Button>
+          <Capsule
+            variant="outline"
+            size="lg"
+            className="h-10 cursor-pointer gap-2 px-3 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground sm:px-4"
+            onClick={onNotification}
+          >
+            <Bell className="size-4" strokeWidth={2.5} />
+            <span className="hidden text-sm font-bold sm:inline">알림</span>
+          </Capsule>
+        </div>
+
+        <div className="mx-1 hidden h-6 w-px bg-border/60 md:block" />
 
         <ProfileMenu />
       </div>
