@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/store/authStore"
 import { Button } from "@/components/common/ui/button"
 
-export function AdminActions({ authorUserId, actions }) {
+export function AdminActions({ authorUserId, actions = [] }) {
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
   const user = useAuthStore((s) => s.user)
 

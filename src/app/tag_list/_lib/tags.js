@@ -52,7 +52,7 @@ export function getCacheKey(sort, keyword) {
   return `${sort}:${keyword}`;
 }
 
-export async function fetchTags({ sort, keyword, page }) {
+export async function fetchTags({ sort, keyword = "", page }) {
   // 실제 API 붙일 때 이 부분만 교체하면 됨
   await new Promise((resolve) => setTimeout(resolve, 250));
 

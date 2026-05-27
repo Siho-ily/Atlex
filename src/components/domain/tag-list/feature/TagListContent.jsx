@@ -21,6 +21,7 @@ export default function TagListContent() {
   const [tags, setTags] = useState([]);
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +38,14 @@ export default function TagListContent() {
   const loadMoreCallbackRef = useRef(null);
   const observerInstanceRef = useRef(null);
 
-  const normalizedKeyword = keyword.trim().toLowerCase();
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedKeyword(keyword);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [keyword]);
+
+  const normalizedKeyword = debouncedKeyword.trim().toLowerCase();
 
   const loadTags = useCallback(
     async ({ targetPage, reset = false }) => {
