@@ -1,3 +1,5 @@
+import { Capsule } from "@/components/common/ui/capsule"
+
 export default function BlogDetailAuthorCard({ authorCard }) {
   return (
     <section className="rounded-[2.2rem] border border-border bg-card px-7 py-8 shadow-[0_18px_50px_rgba(15,23,42,0.05)] sm:px-8">
@@ -15,9 +17,9 @@ export default function BlogDetailAuthorCard({ authorCard }) {
             <h2 className="mt-3 text-[1.9rem] font-bold tracking-[-0.08em] text-foreground">
               {authorCard.name}
             </h2>
-            <span className="mt-3 inline-flex rounded-full border border-border bg-background px-3 py-1.5 text-[0.72rem] font-semibold text-muted-foreground">
+            <Capsule variant="outline" className="mt-3 text-[0.72rem]">
               {authorCard.role}
-            </span>
+            </Capsule>
           </div>
         </div>
 
@@ -28,12 +30,9 @@ export default function BlogDetailAuthorCard({ authorCard }) {
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             {authorCard.badges.map((badge) => (
-              <span
-                key={badge}
-                className="rounded-full border border-border bg-background px-3 py-1.5 text-[0.72rem] font-semibold text-muted-foreground"
-              >
+              <Capsule key={badge} variant="outline" className="text-[0.72rem]">
                 {badge}
-              </span>
+              </Capsule>
             ))}
           </div>
         </div>

@@ -29,12 +29,14 @@ export default async function BlogDetailPage({ params }) {
     <main className="min-h-screen bg-background text-foreground">
       <UserBlogHeader userId={stripHandle(username)} />
       <BlogDetailContainer>
-        <div className="mx-auto grid w-full max-w-[1080px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)] xl:items-start">
-          <BlogDetailSidebar
-            bookmarks={7}
-            likes={18}
-          />
-          <BlogDetailContent {...detail} />
+        <div className="mx-auto grid w-full max-w-[1328px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)_214px] xl:items-start">
+          <div className="order-2 xl:order-1 xl:self-stretch">
+            <BlogDetailSidebar bookmarks={7} likes={18} />
+          </div>
+          <div className="order-1 xl:order-2">
+            <BlogDetailContent {...detail} />
+          </div>
+          <div aria-hidden="true" className="hidden xl:block xl:order-3" />
         </div>
       </BlogDetailContainer>
     </main>

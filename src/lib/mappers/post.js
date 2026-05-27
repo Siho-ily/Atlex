@@ -54,6 +54,7 @@ export function toBlogDetail(apiPost) {
     updatedAt: formatKoreanDate(apiPost.updatedAt),
     readTime: `${Math.max(1, Math.ceil((apiPost.content?.length ?? 0) / 300))} min read`,
     visibilityLabel: apiPost.isPublic ? "공개" : "비공개",
+    authorUserId: apiPost.authorUserId ?? null,
     adminActions: ["통계", "수정", "삭제"],
     contentBlocks: [
       ...(apiPost.thumbnailUrl
