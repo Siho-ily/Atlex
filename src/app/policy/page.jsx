@@ -18,7 +18,10 @@ export default function PolicyPage() {
               key={data.id}
               item={data}
               isActive={activeId === data.id}
-              onClick={() => setActiveId(data.id)}
+              onClick={() => {
+                setActiveId(data.id);
+                document.getElementById(`policy-section-${data.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
             />
           ))}
         </>

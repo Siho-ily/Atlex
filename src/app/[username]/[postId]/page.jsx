@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import BlogDetailContent from "@/components/domain/blog-detail/feature/BlogDetailContent";
 import BlogDetailSidebar from "@/components/domain/blog-detail/feature/BlogDetailSidebar";
-import BlogDetailContainer from "@/components/domain/blog-detail/layout/BlogDetailContainer";
 import Header from "@/components/common/layout/Header";
 import { fetchPostById } from "@/lib/api/posts";
 import { toBlogDetail } from "@/lib/mappers/post";
@@ -26,17 +25,19 @@ export default async function BlogDetailPage({ params }) {
   }
 
   return (
-    <BlogDetailContainer>
-      <Header logoHref="/" />
-
-      <div className="mx-auto grid w-full max-w-[1080px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)] xl:items-start">
-        <BlogDetailSidebar
-          bookmarks={7}
-          likes={18}
-        />
-
-        <BlogDetailContent {...detail} />
+    <main className="min-h-screen bg-background text-foreground">
+      <Header blogUserId={stripHandle(username)} />
+      <div className="mx-auto w-full max-w-content-wide px-5 pb-12 pt-7 sm:px-8 lg:px-10">
+        <div className="mx-auto grid w-full max-w-[1328px] gap-10 xl:grid-cols-[214px_minmax(0,1fr)_214px] xl:items-start">
+          <div className="order-2 xl:order-1 xl:self-stretch">
+            <BlogDetailSidebar bookmarks={7} likes={18} />
+          </div>
+          <div className="order-1 xl:order-2">
+            <BlogDetailContent {...detail} />
+          </div>
+          <div aria-hidden="true" className="hidden xl:block xl:order-3" />
+        </div>
       </div>
-    </BlogDetailContainer>
+    </main>
   );
 }

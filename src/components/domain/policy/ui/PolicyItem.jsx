@@ -12,7 +12,7 @@ export default function PolicyItem({ item }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Card className="mb-6 overflow-hidden transition-all duration-300">
+    <Card id={`policy-section-${item.id}`} className="mb-6 overflow-hidden transition-all duration-300">
       <CardHeader className="pb-2">
         <CardTitle>{item.title}</CardTitle>
       </CardHeader>

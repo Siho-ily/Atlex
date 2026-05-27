@@ -4,7 +4,7 @@ import { Field, FieldLabel, FieldError } from "@/components/common/ui/field"
 import { Input } from "@/components/common/ui/input"
 import { Button } from "@/components/common/ui/button"
 
-export function UserIdField({ value, onChange, onBlur, onCheckDuplicate, checkResult, error, disabled }) {
+export function UserIdField({ value, onChange, onBlur, onCheckDuplicate, checkResult, error, disabled, showCheckButton = true }) {
   const isInvalid = !!error || checkResult?.ok === false
 
   return (
@@ -22,15 +22,17 @@ export function UserIdField({ value, onChange, onBlur, onCheckDuplicate, checkRe
           className="flex-1"
           disabled={disabled}
         />
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCheckDuplicate}
-          className="shrink-0"
-          disabled={disabled}
-        >
-          중복확인
-        </Button>
+        {showCheckButton && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onCheckDuplicate}
+            className="shrink-0"
+            disabled={disabled}
+          >
+            중복확인
+          </Button>
+        )}
       </div>
 
       {checkResult && (

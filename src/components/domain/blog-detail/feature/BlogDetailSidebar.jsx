@@ -43,7 +43,7 @@ export default function BlogDetailSidebar({
   });
 
   return (
-    <aside className="space-y-6 xl:sticky xl:top-28 xl:self-start">
+    <aside className="flex flex-col items-end gap-6 xl:sticky xl:top-1/2 xl:-translate-y-1/2">
       <BlogDetailActionRail bookmarks={bookmarks} likes={likes} />
 
       {shouldRenderMetaAside ? (

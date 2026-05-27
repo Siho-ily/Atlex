@@ -1,3 +1,5 @@
+import { Capsule } from "@/components/common/ui/capsule"
+
 function InfoRow({ label, value }) {
   return (
     <div className="flex items-start justify-between gap-4 text-[0.84rem] leading-6">
@@ -50,9 +52,7 @@ export default function BlogDetailMetaAside({
                 href={`#${section.id}`}
                 className="flex items-start gap-3 rounded-[1rem] border border-transparent px-3 py-3 transition hover:border-border hover:bg-background"
               >
-                <span className="inline-flex rounded-full border border-border bg-card px-2.5 py-1 text-[0.62rem] font-semibold text-muted-foreground">
-                  {section.eyebrow}
-                </span>
+                <Capsule size="sm">{section.eyebrow}</Capsule>
                 <span className="text-[0.88rem] leading-6 text-foreground/78">
                   {section.heading}
                 </span>
@@ -106,12 +106,9 @@ export default function BlogDetailMetaAside({
           {keywords.length > 0 ? (
             <div className="mt-5 flex flex-wrap gap-2">
               {keywords.map((keyword) => (
-                <span
-                  key={keyword}
-                  className="rounded-full border border-border bg-background px-3 py-1.5 text-[0.72rem] font-semibold text-muted-foreground"
-                >
+                <Capsule key={keyword} variant="outline" className="text-[0.72rem]">
                   {keyword}
-                </span>
+                </Capsule>
               ))}
             </div>
           ) : null}

@@ -5,6 +5,7 @@ import BlogDetailHero from "@/components/domain/blog-detail/ui/BlogDetailHero";
 export default function BlogDetailContent({
   adminActions,
   authorCard,
+  authorUserId,
   category,
   contentBlocks,
   excerpt,
@@ -15,9 +16,10 @@ export default function BlogDetailContent({
   visibilityLabel,
 }) {
   return (
-    <div className="w-full max-w-[820px] space-y-12">
+    <div className="mx-auto w-full max-w-[820px] space-y-12">
       <BlogDetailHero
         adminActions={adminActions}
+        authorUserId={authorUserId}
         category={category}
         excerpt={excerpt}
         publishedAt={publishedAt}

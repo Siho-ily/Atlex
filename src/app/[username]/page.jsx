@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import CategoryBlogHomeContent from "@/components/domain/category/feature/CategoryBlogHomeContent";
-import UserBlogHeader from "@/components/common/layout/UserBlogHeader";
+import Header from "@/components/common/layout/Header";
 import { blogHomeTags } from "@/data/blog-home/blog-home-mock-data";
 import { fetchUserByIdentifier } from "@/lib/api/users";
 import { fetchPosts } from "@/lib/api/posts";
@@ -36,6 +37,11 @@ async function loadBlogHomeData(identifier) {
 
 export default async function BlogHomePage({ params }) {
   const { username } = await params;
+  const headersList = await headers();
+  if (!headersList.get("x-handle-prefix")) {
+    notFound();
+  }
+
   const identifier = stripHandle(username);
 
   let data;
@@ -51,8 +57,8 @@ export default async function BlogHomePage({ params }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <UserBlogHeader userId={identifier} />
-      <div className="mx-auto w-full max-w-[1720px] px-4 py-8 sm:px-6 lg:px-8">
+      <Header blogUserId={identifier} />
+      <div className="mx-auto w-full max-w-content-wide px-5 pb-12 pt-7 sm:px-8 lg:px-10">
         <CategoryBlogHomeContent
           feed={data.feed}
           profile={data.profile}

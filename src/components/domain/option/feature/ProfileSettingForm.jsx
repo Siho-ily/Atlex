@@ -1,3 +1,7 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
 import {
   Card,
   CardContent,
@@ -11,8 +15,39 @@ import { Button } from "@/components/common/ui/button"
 import { Input } from "@/components/common/ui/input"
 import { Image } from "@/components/common/ui/image"
 import { Field, FieldLabel } from "@/components/common/ui/field"
+import { ToggleGroup, ToggleGroupItem } from "@/components/common/ui/toggle-group"
+
+const THEME_OPTIONS = [
+  { value: "light", label: "라이트" },
+  { value: "dark", label: "다크" },
+  { value: "system", label: "시스템" },
+]
+
+function applyTheme(value) {
+  if (value === "system") {
+    localStorage.removeItem("theme")
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+    document.documentElement.classList.toggle("dark", systemDark)
+  } else {
+    localStorage.setItem("theme", value)
+    document.documentElement.classList.toggle("dark", value === "dark")
+  }
+}
 
 function ProfileSettingForm() {
+  const [theme, setTheme] = useState("system")
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme")
+    if (saved) setTheme(saved)
+  }, [])
+
+  function handleThemeChange(val) {
+    if (!val.length) return
+    const next = val[0]
+    setTheme(next)
+    applyTheme(next)
+  }
   return (
     <Card className="rounded-3xl border-border/60 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
@@ -74,6 +109,23 @@ function ProfileSettingForm() {
           <p className="mt-2 text-sm text-muted-foreground">
             이메일 변경 시 인증 메일이 발송됩니다.
           </p>
+        </Field>
+
+        <Field>
+          <FieldLabel>테마</FieldLabel>
+          <ToggleGroup
+            value={[theme]}
+            onValueChange={handleThemeChange}
+            spacing={0}
+            variant="outline"
+            className="w-full rounded-xl [&>*]:flex-1 [&>*]:rounded-none [&>*]:first:rounded-l-xl [&>*]:last:rounded-r-xl"
+          >
+            {THEME_OPTIONS.map(({ value, label }) => (
+              <ToggleGroupItem key={value} value={value} className="h-11 text-sm">
+                {label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </Field>
       </CardContent>
 

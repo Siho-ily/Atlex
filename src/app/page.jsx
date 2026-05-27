@@ -1,6 +1,5 @@
 import BlogMainInfinitePostGrid from '@/components/domain/blog-main/feature/BlogMainInfinitePostGrid';
 import BlogMainToolbar from '@/components/domain/blog-main/feature/BlogMainToolbar';
-import BlogMainContainer from '@/components/domain/blog-main/layout/BlogMainContainer';
 import Header from '@/components/common/layout/Header';
 import { blogMainFilters, blogMainPeriods } from '@/data/blog-main/blog-main-posts';
 import { fetchPosts } from '@/lib/api/posts';
@@ -30,16 +29,17 @@ export default async function MainPage() {
   const { posts, totalPages } = await loadMainPosts();
 
   return (
-    <BlogMainContainer>
+    <main className="min-h-screen bg-background text-foreground">
       <Header />
-      <BlogMainToolbar
-        activeFilterId={activeFilter.id}
-        activePeriodId={activePeriod.id}
-        filters={blogMainFilters}
-        periods={blogMainPeriods}
-      />
-
-      <BlogMainInfinitePostGrid initialPosts={posts} totalPages={totalPages} />
-    </BlogMainContainer>
+      <div className="mx-auto w-full max-w-content-wide px-5 pb-12 pt-7 sm:px-8 lg:px-10">
+        <BlogMainToolbar
+          activeFilterId={activeFilter.id}
+          activePeriodId={activePeriod.id}
+          filters={blogMainFilters}
+          periods={blogMainPeriods}
+        />
+        <BlogMainInfinitePostGrid initialPosts={posts} totalPages={totalPages} />
+      </div>
+    </main>
   );
 }

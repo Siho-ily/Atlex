@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
+export function proxy(request) {
   const pathname = request.nextUrl.pathname;
 
   if (pathname.startsWith('/@')) {
     const url = request.nextUrl.clone();
     url.pathname = '/' + pathname.slice(2);
-    return NextResponse.rewrite(url);
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-handle-prefix', '1');
+    return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
   }
 
   return NextResponse.next();

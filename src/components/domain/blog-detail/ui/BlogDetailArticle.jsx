@@ -1,3 +1,5 @@
+import { textfieldVariants } from "@/components/common/ui/textfield"
+
 function ArticleImage({ src, caption }) {
   return (
     <figure className="space-y-4">
@@ -31,7 +33,7 @@ export default function BlogDetailArticle({ contentBlocks }) {
         return (
           <p
             key={block.id}
-            className="text-[1rem] leading-9 text-foreground/84 sm:text-[1.05rem]"
+            className={textfieldVariants({ whitespace: "keep", className: "text-[1rem] leading-9 text-foreground/84 sm:text-[1.05rem]" })}
           >
             {block.text}
           </p>
