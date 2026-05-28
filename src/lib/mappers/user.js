@@ -1,5 +1,9 @@
-// API User 엔티티를 블로그 홈 프로필 UI shape 으로 변환.
-// API 미정 필드(stats, bio, quickActions)는 기본값으로 채운다.
+// API User 엔티티를 UI shape 으로 변환하는 순수 매퍼.
+// 비동기 호출 금지. 백엔드 필드명이 바뀌면 input 부분만 수정한다.
+
+// input: fetchUserByIdentifier 응답 (ApiUser)
+// output: 유저 블로그 홈 프로필 shape (CategoryBlogHomeContent 의 profile)
+// API 미정 필드(stats, bio, quickActions)는 임시 mock 값으로 채워둔다 — 백엔드 추가 시 교체.
 export function toBlogHomeProfile(apiUser) {
   return {
     userId: apiUser.userId,

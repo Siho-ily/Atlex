@@ -1,4 +1,6 @@
-// API Post 엔티티를 도메인별 UI shape 으로 변환하는 매퍼.
+// API Post 엔티티를 도메인별 UI shape 으로 변환하는 순수 매퍼.
+// 비동기 호출 금지(여기서 추가 fetch 가 필요해지면 query 레이어로 옮긴다).
+// 백엔드 응답 필드명이 바뀌면 input 부분만 수정하면 된다 (호출부 무영향).
 // API 스펙에 없는 필드는 기본값/유도값으로 채운다.
 
 function truncate(text, max) {
@@ -25,7 +27,8 @@ export function formatDotDate(iso) {
   return `${d.getFullYear()}.${pad2(d.getMonth() + 1)}.${pad2(d.getDate())}`;
 }
 
-// 블로그 메인 카드 shape (src/data/blog-main/blog-main-posts.js 의 한 항목)
+// input: fetchPosts 의 content[] 한 항목 (ApiPost)
+// output: 메인 피드 카드 shape (BlogMainPostGrid 에서 소비)
 export function toBlogMainPost(apiPost) {
   return {
     id: String(apiPost.id),
@@ -43,7 +46,8 @@ export function toBlogMainPost(apiPost) {
   };
 }
 
-// 블로그 상세 페이지 shape (src/data/blog-detail/blog-detail-preview.js 의 형태)
+// input: fetchPostById 응답 (ApiPost)
+// output: 상세 페이지 shape (BlogDetailContent 에서 소비)
 export function toBlogDetail(apiPost) {
   return {
     blogTitle: apiPost.authorUserId ? `${apiPost.authorUserId}.log` : "blog",
@@ -65,7 +69,8 @@ export function toBlogDetail(apiPost) {
   };
 }
 
-// 유저 블로그 피드 카드 shape (src/data/blog-home/blog-home-mock-data.js 의 posts 항목)
+// input: fetchPosts 의 content[] 한 항목 (ApiPost, authorUserId 필터링 후)
+// output: 유저 블로그 홈 피드 카드 shape (CategoryBlogHomeContent 의 feed.posts)
 export function toBlogHomeFeedPost(apiPost) {
   return {
     id: apiPost.id,

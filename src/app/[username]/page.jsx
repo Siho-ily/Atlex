@@ -3,41 +3,13 @@ import { headers } from "next/headers";
 import CategoryBlogHomeContent from "@/components/domain/category/feature/CategoryBlogHomeContent";
 import Header from "@/components/common/layout/Header";
 import { blogHomeTags } from "@/data/blog-home/blog-home-mock-data";
-import { fetchUserByIdentifier } from "@/lib/api/users";
-import { fetchPosts } from "@/lib/api/posts";
-import { toBlogHomeProfile } from "@/lib/mappers/user";
-import { toBlogHomeFeedPost } from "@/lib/mappers/post";
+import { loadBlogHomeData } from "@/lib/queries/blog-home";
 import { stripHandle } from "@/lib/url/handle";
-
-async function loadBlogHomeData(identifier) {
-  const [user, postsPage] = await Promise.all([
-    fetchUserByIdentifier(identifier),
-    fetchPosts({ page: 0, size: 10, authorUserId: identifier }),
-  ]);
-
-  const profile = toBlogHomeProfile(user);
-  const mappedPosts = postsPage.content.map(toBlogHomeFeedPost);
-
-  const feed = {
-    totalCount: postsPage.totalElements,
-    filterLabel: "이번 주",
-    sortLabel: "최신순",
-    helperText:
-      "제목과 본문은 카드형 목록으로 유지하고, 피드 중심의 배치로 재정렬한 정적 목업입니다.",
-    pageSizeLabel: "한 페이지에 최대 10개",
-    posts: mappedPosts,
-    pagination: [
-      { id: "prev", label: "<", kind: "control" },
-      { id: "page-1", label: "1", current: true },
-    ],
-  };
-
-  return { profile, feed };
-}
 
 export default async function BlogHomePage({ params }) {
   const { username } = await params;
   const headersList = await headers();
+  // 유저 핸들 prefix(@) 없는 경로는 블로그 홈으로 인정하지 않는다.
   if (!headersList.get("x-handle-prefix")) {
     notFound();
   }

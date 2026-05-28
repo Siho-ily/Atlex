@@ -9,33 +9,24 @@ import { FieldGroup } from "@/components/common/ui/field"
 import { UserIdField } from "@/components/common/layout/UserIdField"
 import { PasswordField } from "@/components/common/layout/PasswordField"
 
-import { loginApi } from "@/lib/api/auth"
-import { fetchUserByIdentifier } from "@/lib/api/users"
-import { useAuthStore } from "@/store/authStore"
+import { useLogin } from "@/hooks/queries/auth/useLogin"
 
 function LoginForm({ onSwitchMode }) {
   const router = useRouter()
-  const login = useAuthStore((s) => s.login)
+  const { mutateAsync: login, isPending } = useLogin()
 
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e) {
     e.preventDefault()
     setError("")
-    setLoading(true)
-
     try {
-      const { accessToken } = await loginApi({ userId, password })
-      const user = await fetchUserByIdentifier(userId)
-      login({ user, accessToken })
+      await login({ userId, password })
       router.push("/")
     } catch (err) {
       setError(err.message ?? "로그인에 실패했습니다.")
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -86,10 +77,10 @@ function LoginForm({ onSwitchMode }) {
 
         <Button
           type="submit"
-          disabled={loading}
+          disabled={isPending}
           className="h-10 w-full rounded-lg text-sm font-bold"
         >
-          {loading ? "로그인 중..." : "로그인"}
+          {isPending ? "로그인 중..." : "로그인"}
         </Button>
 
         <p className="border-t border-border/60 pt-5 text-center text-sm text-muted-foreground">

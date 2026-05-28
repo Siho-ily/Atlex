@@ -10,6 +10,8 @@ import { EmailField } from "@/components/common/layout/EmailField"
 import { PasswordField } from "@/components/common/layout/PasswordField"
 import { NicknameField } from "@/components/common/layout/NicknameField"
 
+import { useSignup } from "@/hooks/queries/auth/useSignup"
+
 function SignupForm({ onBack, onLogin }) {
   const [userId, setUserId] = useState("")
   const [nickname, setNickname] = useState("")
@@ -23,6 +25,9 @@ function SignupForm({ onBack, onLogin }) {
 
   const [userIdCheck, setUserIdCheck] = useState(null)
   const [nicknameCheck, setNicknameCheck] = useState(null)
+  const [error, setError] = useState("")
+
+  const { mutateAsync: signup, isPending } = useSignup()
 
   const passwordChecks = {
     length: password.length >= 10,
@@ -32,8 +37,28 @@ function SignupForm({ onBack, onLogin }) {
     special: /[^A-Za-z0-9]/.test(password),
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
+    setError("")
+
+    const domain = emailDomain || selectedDomain
+    const email = emailLocal && domain ? `${emailLocal}@${domain}` : ""
+
+    try {
+      await signup({
+        userId,
+        password,
+        name: nickname,
+        email,
+        // 약관 동의 UI 가 추가되면 실제 체크 상태로 교체할 자리.
+        termsAgreed: true,
+        privacyAgreed: true,
+        marketingAgreed: false,
+      })
+      onLogin?.()
+    } catch (err) {
+      setError(err.message ?? "회원가입에 실패했습니다.")
+    }
   }
 
   return (
@@ -80,6 +105,10 @@ function SignupForm({ onBack, onLogin }) {
           checkResult={nicknameCheck}
         />
 
+        {error && (
+          <p className="text-sm text-destructive">{error}</p>
+        )}
+
         <div className="flex gap-3 pt-2">
           <Button
             type="button"
@@ -92,9 +121,10 @@ function SignupForm({ onBack, onLogin }) {
 
           <Button
             type="submit"
+            disabled={isPending}
             className="h-10 flex-1 rounded-lg text-sm font-bold"
           >
-            회원가입
+            {isPending ? "처리 중..." : "회원가입"}
           </Button>
         </div>
 

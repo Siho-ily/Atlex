@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/common/ui/popover';
 import { useAuthStore } from '@/store/authStore';
-import { logoutApi } from '@/lib/api/auth';
+import { useLogout } from '@/hooks/queries/auth/useLogout';
 
 export default function ProfileMenu() {
   const router = useRouter();
-  const { isLoggedIn, user, accessToken, logout } = useAuthStore();
+  const { isLoggedIn, user } = useAuthStore();
+  const { mutateAsync: logout } = useLogout();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -17,12 +18,7 @@ export default function ProfileMenu() {
   }, []);
 
   async function handleLogout() {
-    try {
-      await logoutApi(accessToken);
-    } catch {
-      // 서버 에러여도 클라이언트 상태는 초기화
-    }
-    logout();
+    await logout();
     router.push('/');
   }
 
