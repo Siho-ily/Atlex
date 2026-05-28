@@ -13,9 +13,13 @@ function trimLeadingSlashes(value) {
 }
 
 export function getApiBaseUrl() {
-    // 서버 라우트에서만 사용하는 값이라 NEXT_PUBLIC_ 없이 .env에서 읽는다.
-    const baseUrl = process.env.BASE_API_URL || DEFAULT_API_BASE_URL;
+    // 클라이언트: 같은 앱의 API 라우트를 호출하므로 상대경로로 충분하다.
+    if (typeof window !== "undefined") {
+        return "/api/v1";
+    }
 
+    // 서버: BASE_API_URL 환경변수로 외부 백엔드 주소를 덮어쓸 수 있다.
+    const baseUrl = process.env.BASE_API_URL || DEFAULT_API_BASE_URL;
     return trimTrailingSlashes(baseUrl.trim());
 }
 
