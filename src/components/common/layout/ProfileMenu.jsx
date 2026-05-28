@@ -37,7 +37,7 @@ export default function ProfileMenu() {
         {mounted && isLoggedIn ? (
           <>
             <Link
-              href={`/${user?.userId}`}
+              href={`/@${user?.userId}`}
               className="flex w-full items-center rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent"
             >
               내 블로그
