@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Bell, Search, ImageIcon } from 'lucide-react';
+import { Bell, Search, ImageIcon, PenLine } from 'lucide-react';
 import { Capsule } from '@/components/common/ui/capsule';
 import ProfileMenu from '@/components/common/layout/ProfileMenu';
 
@@ -80,6 +80,14 @@ export default function Header({
               <Bell className="size-4" strokeWidth={2.5} />
               <span className="hidden text-sm font-bold sm:inline">알림</span>
             </Capsule>
+
+            <Link
+              href="/write"
+              className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-border px-3 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground sm:px-4"
+            >
+              <PenLine className="size-4" strokeWidth={2.5} />
+              <span className="hidden text-sm font-bold sm:inline">글쓰기</span>
+            </Link>
           </div>
 
           <div className="mx-1 hidden h-6 w-px bg-border/60 md:block" />
